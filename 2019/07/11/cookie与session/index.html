@@ -15,25 +15,27 @@
     
     
     
-    <title>vue组件传值的方法有哪些？ | 十年 | 在等待的日子里，刻苦读书，锻炼身体，谦卑做人，养的深根，日后才能枝繁叶茂。</title>
+    <title>cookie与ssession | 十年 | 在等待的日子里，刻苦读书，锻炼身体，谦卑做人，养的深根，日后才能枝繁叶茂。</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
-    <meta name="keywords" content="vue">
-    <meta name="description" content="父子组件传值1props  父传子子传父">
-<meta name="keywords" content="vue">
+    <meta name="keywords" content>
+    <meta name="description" content="cookie1.cookie是存储于访问者的计算机中的数据，用于同一浏览器访问统一域的时候共享数据。2.HTTP是无状态协议。也就是说：当你浏览了一个页面，然后跳转到同一网站的另一个页面，服务器无法识别到这是同一个浏览器在访问在访问同一个网站。每次的访问是没有关系的，也就是说服务器无法检测到这个状态。 特点：保存在客户端、用于同一浏览器访问同一个域的时候共享数据。 作用，例如：1.保存用户信息2.">
+<meta name="keywords" content="web全栈 node.js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vue组件传值的方法有哪些？">
-<meta property="og:url" content="http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/index.html">
+<meta property="og:title" content="cookie与ssession">
+<meta property="og:url" content="http://yoursite.com/shinian/2019/07/11/cookie与session/index.html">
 <meta property="og:site_name" content="十年">
-<meta property="og:description" content="父子组件传值1props  父传子子传父">
+<meta property="og:description" content="cookie1.cookie是存储于访问者的计算机中的数据，用于同一浏览器访问统一域的时候共享数据。2.HTTP是无状态协议。也就是说：当你浏览了一个页面，然后跳转到同一网站的另一个页面，服务器无法识别到这是同一个浏览器在访问在访问同一个网站。每次的访问是没有关系的，也就是说服务器无法检测到这个状态。 特点：保存在客户端、用于同一浏览器访问同一个域的时候共享数据。 作用，例如：1.保存用户信息2.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-04T12:47:28.568Z">
+<meta property="og:image" content="http://yoursite.com/shinian/.com//cookie.png">
+<meta property="og:updated_time" content="2019-07-11T11:47:25.313Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="vue组件传值的方法有哪些？">
-<meta name="twitter:description" content="父子组件传值1props  父传子子传父">
+<meta name="twitter:title" content="cookie与ssession">
+<meta name="twitter:description" content="cookie1.cookie是存储于访问者的计算机中的数据，用于同一浏览器访问统一域的时候共享数据。2.HTTP是无状态协议。也就是说：当你浏览了一个页面，然后跳转到同一网站的另一个页面，服务器无法识别到这是同一个浏览器在访问在访问同一个网站。每次的访问是没有关系的，也就是说服务器无法检测到这个状态。 特点：保存在客户端、用于同一浏览器访问同一个域的时候共享数据。 作用，例如：1.保存用户信息2.">
+<meta name="twitter:image" content="http://yoursite.com/shinian/.com//cookie.png">
     
     <link rel="shortcut icon" href="/shinian/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -105,7 +107,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">vue组件传值的方法有哪些？</div>
+        <div class="flex-col header-title ellipsis">cookie与ssession</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -127,11 +129,11 @@
 <header class="content-header post-header">
 
     <div class="container fade-scale">
-        <h1 class="title">vue组件传值的方法有哪些？</h1>
+        <h1 class="title">cookie与ssession</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-07-04T11:54:55.000Z" itemprop="datePublished" class="page-time">
-  2019-07-04
+                <time datetime="2019-07-11T10:02:33.000Z" itemprop="datePublished" class="page-time">
+  2019-07-11
 </time>
 
 
@@ -150,18 +152,18 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#父子组件传值"><span class="post-toc-number">1.</span> <span class="post-toc-text">父子组件传值</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#父传子"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">父传子</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#子传父"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">子传父</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cookie"><span class="post-toc-number">1.</span> <span class="post-toc-text">cookie</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#特点："><span class="post-toc-number">1.1.</span> <span class="post-toc-text">特点：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#作用，例如："><span class="post-toc-number">1.2.</span> <span class="post-toc-text">作用，例如：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#koa中设置cookie的值"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">koa中设置cookie的值</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
 
-<article id="post-vue组件传值的方法有哪些？"
+<article id="post-cookie与session"
   class="post-article article-type-post fade" itemprop="blogPost">
 
     <div class="post-card">
-        <h1 class="post-card-title">vue组件传值的方法有哪些？</h1>
+        <h1 class="post-card-title">cookie与ssession</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-07-04 19:54:55" datetime="2019-07-04T11:54:55.000Z"  itemprop="datePublished">2019-07-04</time>
+            <time class="post-time" title="2019-07-11 18:02:33" datetime="2019-07-11T10:02:33.000Z"  itemprop="datePublished">2019-07-11</time>
 
             
 
@@ -174,9 +176,23 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="父子组件传值"><a href="#父子组件传值" class="headerlink" title="父子组件传值"></a>父子组件传值</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">props</span><br></pre></td></tr></table></figure>
+            <h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p>1.cookie是存储于访问者的计算机中的数据，用于同一浏览器访问统一域的时候共享数据。<br>2.HTTP是无状态协议。也就是说：当你浏览了一个页面，然后跳转到同一网站的另一个页面，服务器无法识别到这是同一个浏览器在访问在访问同一个网站。每次的访问是没有关系的，也就是说服务器无法检测到这个状态。</p>
+<h3 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h3><p>保存在客户端、用于同一浏览器访问同一个域的时候共享数据。</p>
+<h3 id="作用，例如："><a href="#作用，例如：" class="headerlink" title="作用，例如："></a>作用，例如：</h3><p>1.保存用户信息<br>2.浏览历史记录<br>3.10天免登录</p>
+<h3 id="koa中设置cookie的值"><a href="#koa中设置cookie的值" class="headerlink" title="koa中设置cookie的值"></a>koa中设置cookie的值</h3><p>1.设置cookie</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">router.get(<span class="string">'/'</span>, async(ctx, next)=&gt;&#123;</span><br><span class="line">    ctx.cookies.set(<span class="string">"userInfo"</span>, <span class="string">"gouzi"</span>, &#123;</span><br><span class="line">        maxAge: 1000*60*60</span><br><span class="line">    &#125;</span><br><span class="line">    await ctx.render(<span class="string">'index'</span>,&#123;</span><br><span class="line">        title: <span class="string">"Hello Koa"</span></span><br><span class="line">    &#125;)  </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-<h3 id="父传子"><a href="#父传子" class="headerlink" title="父传子"></a>父传子</h3><h3 id="子传父"><a href="#子传父" class="headerlink" title="子传父"></a>子传父</h3>
+<p>2.获取cookie</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> userInfo = ctx.cookies.get(<span class="string">"userInfo"</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/shinian/.com//cookie.png" alt="cookie的参数" title>
+                </div>
+                <div class="image-caption">cookie的参数</div>
+            </figure>
+
         </div>
 
         <blockquote class="post-copyright">
@@ -184,12 +200,12 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-07-04T12:47:28.568Z" itemprop="dateUpdated">2019-07-04 20:47:28</time>
+    最后更新时间：<time datetime="2019-07-11T11:47:25.313Z" itemprop="dateUpdated">2019-07-11 19:47:25</time>
 </span><br>
 
 
         
-        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/shinian/2019/07/04/vue组件传值的方法有哪些？/" target="_blank" rel="external">http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/</a>
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/shinian/2019/07/11/cookie与session/" target="_blank" rel="external">http://yoursite.com/shinian/2019/07/11/cookie与session/</a>
         
     </div>
     
@@ -210,8 +226,6 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/shinian/tags/vue/">vue</a></li></ul>
-
 
             
 <div class="page-share-wrap">
@@ -220,7 +234,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/&title=《vue组件传值的方法有哪些？》 — 十年&pic=http://yoursite.com/shinian/img/heads.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/shinian/2019/07/11/cookie与session/&title=《cookie与ssession》 — 十年&pic=http://yoursite.com/shinian/img/heads.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -230,22 +244,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/&title=《vue组件传值的方法有哪些？》 — 十年&source=十年的个人博客" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/shinian/2019/07/11/cookie与session/&title=《cookie与ssession》 — 十年&source=十年的个人博客" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/shinian/2019/07/11/cookie与session/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《vue组件传值的方法有哪些？》 — 十年&url=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/&via=http://yoursite.com/shinian" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《cookie与ssession》 — 十年&url=http://yoursite.com/shinian/2019/07/11/cookie与session/&via=http://yoursite.com/shinian" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/shinian/2019/07/11/cookie与session/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -265,21 +279,14 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/shinian/2019/07/04/闭包/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">闭包</h4>
-      </a>
-    </div>
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
   
 
   
     <div class="waves-block waves-effect next">
-      <a href="/shinian/2019/07/04/HTTP/" id="post-next" class="post-nav-link">
+      <a href="/shinian/2019/07/09/jquery简单封装/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">HTTP</h4>
+        <h4 class="title">jquery简单封装</h4>
       </a>
     </div>
   
@@ -401,7 +408,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/&title=《vue组件传值的方法有哪些？》 — 十年&pic=http://yoursite.com/shinian/img/heads.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/shinian/2019/07/11/cookie与session/&title=《cookie与ssession》 — 十年&pic=http://yoursite.com/shinian/img/heads.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -411,22 +418,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/&title=《vue组件传值的方法有哪些？》 — 十年&source=十年的个人博客" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/shinian/2019/07/11/cookie与session/&title=《cookie与ssession》 — 十年&source=十年的个人博客" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/shinian/2019/07/11/cookie与session/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《vue组件传值的方法有哪些？》 — 十年&url=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/&via=http://yoursite.com/shinian" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《cookie与ssession》 — 十年&url=http://yoursite.com/shinian/2019/07/11/cookie与session/&via=http://yoursite.com/shinian" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/shinian/2019/07/11/cookie与session/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -437,7 +444,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://yoursite.com/shinian/2019/07/04/vue组件传值的方法有哪些？/" alt="微信分享二维码">
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://yoursite.com/shinian/2019/07/11/cookie与session/" alt="微信分享二维码">
 </div>
 
 
