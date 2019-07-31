@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>vue组件设计 | 十年 | 在等待的日子里，刻苦读书，锻炼身体，谦卑做人，养的深根，日后才能枝繁叶茂。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="组件的分类1.通用组件基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等2.业务组件业务需求强挂钩会被复用，比如抽奖，摇一摇等等3.页面组件每个页面都是组件，不会复用 完成功能 Vue组件开发1.注册2.使用3.给传递什么值     props4.组件通知外部    事件5.扩展组件        插槽 组件注册HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写字">
+<meta name="keywords" content="web全栈 node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue组件设计">
+<meta property="og:url" content="http://shinian156.github.io/2019/07/18/vue组件设计/index.html">
+<meta property="og:site_name" content="十年">
+<meta property="og:description" content="组件的分类1.通用组件基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等2.业务组件业务需求强挂钩会被复用，比如抽奖，摇一摇等等3.页面组件每个页面都是组件，不会复用 完成功能 Vue组件开发1.注册2.使用3.给传递什么值     props4.组件通知外部    事件5.扩展组件        插槽 组件注册HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写字">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-29T05:42:54.370Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue组件设计">
+<meta name="twitter:description" content="组件的分类1.通用组件基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等2.业务组件业务需求强挂钩会被复用，比如抽奖，摇一摇等等3.页面组件每个页面都是组件，不会复用 完成功能 Vue组件开发1.注册2.使用3.给传递什么值     props4.组件通知外部    事件5.扩展组件        插槽 组件注册HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写字">
+    
+    <link rel="shortcut icon" href="/shinian/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/shinian/img/brand.jpg)">
+      <div class="brand">
+        <a href="/shinian/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/shinian/img/heads.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">十年</h5>
+          <a href="mailto:3183309703@qq.com" title="3183309703@qq.com" class="mail">3183309703@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/shinian/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/shinian/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/shinian/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/shinian156" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">vue组件设计</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">vue组件设计</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-07-18T14:30:29.000Z" itemprop="datePublished" class="page-time">
+  2019-07-18
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#组件的分类"><span class="post-toc-number">1.</span> <span class="post-toc-text">组件的分类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Vue组件开发"><span class="post-toc-number">2.</span> <span class="post-toc-text">Vue组件开发</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#组件注册"><span class="post-toc-number">3.</span> <span class="post-toc-text">组件注册</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Props"><span class="post-toc-number">4.</span> <span class="post-toc-text">Props</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#事件"><span class="post-toc-number">5.</span> <span class="post-toc-text">事件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#插槽"><span class="post-toc-number">6.</span> <span class="post-toc-text">插槽</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#组件设计"><span class="post-toc-number">7.</span> <span class="post-toc-text">组件设计</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#v-model实现原理"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">v-model实现原理</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-vue组件设计"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">vue组件设计</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-07-18 22:30:29" datetime="2019-07-18T14:30:29.000Z"  itemprop="datePublished">2019-07-18</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="组件的分类"><a href="#组件的分类" class="headerlink" title="组件的分类"></a>组件的分类</h2><p>1.通用组件<br>基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等<br>2.业务组件<br>业务需求强挂钩会被复用，比如抽奖，摇一摇等等<br>3.页面组件<br>每个页面都是组件，不会复用 完成功能</p>
+<h2 id="Vue组件开发"><a href="#Vue组件开发" class="headerlink" title="Vue组件开发"></a>Vue组件开发</h2><p>1.注册<br>2.使用<br>3.给传递什么值     props<br>4.组件通知外部    事件<br>5.扩展组件        插槽</p>
+<h2 id="组件注册"><a href="#组件注册" class="headerlink" title="组件注册"></a>组件注册</h2><p>HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。这意味着你使用Dom中的模板时，camelCasa的prop名需要其等价的kebab-case</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//注册全局组件</span><br><span class="line">Vue.component(<span class="string">'component-a'</span>,&#123;&#125;)</span><br><span class="line">Vue.component(<span class="string">'component-b'</span>,&#123;&#125;)</span><br><span class="line">//使用</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;component<span class="_">-a</span>&gt;&lt;/component<span class="_">-a</span>&gt;</span><br><span class="line">    &lt;component-b&gt;&lt;/component-b&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">//局部注册组件(推荐，依赖可追溯)</span><br><span class="line">new Vue(&#123;</span><br><span class="line">    el: <span class="string">"#app"</span>,</span><br><span class="line">    components: &#123;</span><br><span class="line">        <span class="string">"component-a"</span>: component<span class="_">-a</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Props"><a href="#Props" class="headerlink" title="Props"></a>Props</h2><p>使用v-bind:xx(简写:xx)来传递数据，组件内部props字段接受，使用和挂在this上的数据没有本质区别</p>
+<p>props属于单向数据流，也就是只能通过父级修改，组件自己不能修改props的值，只能修改定义在data里的数据，非要修改，也是通过后面介绍的自定义事件通知父级，由父级来修改。</p>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>组件内部通知外部的变化 this.$emit</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;button @click=<span class="string">"handleClick"</span>&gt;</span><br><span class="line">        向父级传递数据</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="built_in">export</span> dafault &#123;</span><br><span class="line">        methods: &#123;</span><br><span class="line">            handleClick (e)&#123;</span><br><span class="line">                this.<span class="variable">$emit</span>(<span class="string">"bind-click"</span>,e)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>v-model是一个特殊的属性，相当于绑定了:value和@input俩个事件</p>
+<h2 id="插槽"><a href="#插槽" class="headerlink" title="插槽"></a>插槽</h2><p>插槽用来扩展组件的内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;button @click=<span class="string">"handleClick"</span>&gt;</span><br><span class="line">    &lt;solt&gt;</span><br><span class="line">        组件扩展内容</span><br><span class="line">    &lt;solt&gt;</span><br><span class="line">&lt;/button&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="组件设计"><a href="#组件设计" class="headerlink" title="组件设计"></a>组件设计</h2><p>表单组件，组件分层</p>
+<p>1.Form负责定义校验规则<br>2.FormItem负责显示错误信息<br>3.k-input负责数据双向绑定<br>4.使用provide和inject内部共享数据</p>
+<h3 id="v-model实现原理"><a href="#v-model实现原理" class="headerlink" title="v-model实现原理"></a>v-model实现原理</h3>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-07-29T05:42:54.370Z" itemprop="dateUpdated">2019-07-29 13:42:54</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/shinian/2019/07/18/vue组件设计/" target="_blank" rel="external">http://shinian156.github.io/2019/07/18/vue组件设计/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://shinian156.github.io">
+            <img src="/shinian/img/heads.jpg" alt="十年">
+            十年
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://shinian156.github.io/2019/07/18/vue组件设计/&title=《vue组件设计》 — 十年&pic=http://shinian156.github.io/img/heads.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://shinian156.github.io/2019/07/18/vue组件设计/&title=《vue组件设计》 — 十年&source=十年的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://shinian156.github.io/2019/07/18/vue组件设计/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《vue组件设计》 — 十年&url=http://shinian156.github.io/2019/07/18/vue组件设计/&via=http://shinian156.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://shinian156.github.io/2019/07/18/vue组件设计/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/shinian/2019/07/18/使用hexo搭建一篇属于自己的博客/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">使用hexo搭建一篇属于自己的博客</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "CWYS8CBPWv5HysiDggSarBm5-gzGzoHsz",
+            appKey: "rJjJss3a4nOrmCvq0VYxyz0b",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/shinian/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/shinian/img/wechat.jpg" data-alipay="/shinian/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>十年 &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://shinian156.github.io/2019/07/18/vue组件设计/&title=《vue组件设计》 — 十年&pic=http://shinian156.github.io/img/heads.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://shinian156.github.io/2019/07/18/vue组件设计/&title=《vue组件设计》 — 十年&source=十年的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://shinian156.github.io/2019/07/18/vue组件设计/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《vue组件设计》 — 十年&url=http://shinian156.github.io/2019/07/18/vue组件设计/&via=http://shinian156.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://shinian156.github.io/2019/07/18/vue组件设计/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://shinian156.github.io/2019/07/18/vue组件设计/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/shinian/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

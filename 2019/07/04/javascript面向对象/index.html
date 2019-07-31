@@ -22,18 +22,18 @@
     
     
     <meta name="keywords" content="javascript">
-    <meta name="description" content="十年的个人博客">
+    <meta name="description" content="前  言 JRedu 面向对象程序设计（简称OOP）是现在最流行的程序设计方法，这种方法有别于基于过程的程序设计方法。在写面向对象的WEB应用程序方面JavaScript是一种很好的选择.它能支持OOP.因为它通过原型支持继承的方式和通过属性和方法的方式一样好.很多开发者试图抛弃JS,试着用C#或JAVA仅是因为JS不是他认为合适的面向对象的语言.许多人还没有认识到javascript支持继承">
 <meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="javascript面向对象">
-<meta property="og:url" content="http://yoursite.com/shinian/2019/07/04/javascript面向对象/index.html">
+<meta property="og:url" content="http://shinian156.github.io/2019/07/04/javascript面向对象/index.html">
 <meta property="og:site_name" content="十年">
-<meta property="og:description" content="十年的个人博客">
+<meta property="og:description" content="前  言 JRedu 面向对象程序设计（简称OOP）是现在最流行的程序设计方法，这种方法有别于基于过程的程序设计方法。在写面向对象的WEB应用程序方面JavaScript是一种很好的选择.它能支持OOP.因为它通过原型支持继承的方式和通过属性和方法的方式一样好.很多开发者试图抛弃JS,试着用C#或JAVA仅是因为JS不是他认为合适的面向对象的语言.许多人还没有认识到javascript支持继承">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-04T11:55:45.257Z">
+<meta property="og:updated_time" content="2019-07-22T08:14:40.128Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="javascript面向对象">
-<meta name="twitter:description" content="十年的个人博客">
+<meta name="twitter:description" content="前  言 JRedu 面向对象程序设计（简称OOP）是现在最流行的程序设计方法，这种方法有别于基于过程的程序设计方法。在写面向对象的WEB应用程序方面JavaScript是一种很好的选择.它能支持OOP.因为它通过原型支持继承的方式和通过属性和方法的方式一样好.很多开发者试图抛弃JS,试着用C#或JAVA仅是因为JS不是他认为合适的面向对象的语言.许多人还没有认识到javascript支持继承">
     
     <link rel="shortcut icon" href="/shinian/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -167,7 +167,67 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            
+            <p>  前  言</p>
+<p>JRedu</p>
+<pre><code>面向对象程序设计（简称OOP）是现在最流行的程序设计方法，这种方法有别于基于过程的程序设计方法。在写面向对象的WEB应用程序方面JavaScript是一种很好的选择.它能支持OOP.因为它通过原型支持继承的方式和通过属性和方法的方式一样好.很多开发者试图抛弃JS,试着用C#或JAVA仅是因为JS不是他认为合适的面向对象的语言.许多人还没有认识到javascript支持继承.当你写面向对象的代码时.它能给你很强大的能量.你也可以使用它写出可复用,可封装的代码.</code></pre><p>一、什么是面向对象编程(OOP)?<br>        在了解什么是面向对象编程之前，我们来看看语言的分类。总体可以分为三类：面向机器、面向过程还有面向对象。面向对象的语言主要有C++、Java、PHP等。</p>
+<p>1面向过程与面向对象<br>1)面向过程：面向过程专注于如何去解决一个问题的过程步骤。编程特点是由一个个函数去实现每一步的过程步骤，没有类和对象的概念。<br>2)面向对象：专注于由哪一个对象来解决这个问题，编程特点是出现了一个类，从类中拿到对象，由这个对象去解决具体问题。<br>         对于调用者来说，面向过程需要调用者自己去实现各种函数。而面向对象，只需要告诉调用者，对象中具体方法的功能，而不需要调用者了解方法中的实现细节。</p>
+<p>2面向对象的三大特征<br>      这个对于计算机专业的人来说，相信大家已经很熟悉啦，那我就再说一遍吧~</p>
+<pre><code>面向对象的三大特征是继承、封装、多态。JS可以模拟实现继承和封装，但是无法模拟实现多态，所以我们说JS是一门基于对象的语言，而非是面向对象的语言。</code></pre><p>3类和对象</p>
+<p>1、类：一类具有相同特征（属性）和行为（方法）的集合。<br>比如，人类具有身高、体重等属性，吃饭、大笑等行为，所以，我们可以把人划分为一类。</p>
+<p>2、对象：从类中，拿出具有确定属性值和方法的个体。<br>比如，张三–&gt;属性：身高180体重180 方法：说话–&gt;我叫张三，身高180</p>
+<p>3、类和对象的关系：<br>①类是抽象的，对象是具体的(类是对象的抽象化，对象是类的具体化)</p>
+<p>②类是一个抽象的概念，只能说类有属性和方法，但是不能给属性赋具体的。比如，人类有姓名，但是不能说人类的姓名叫什么。<br>   对象是一个具体的个例，是将类中的属性进行具体赋值而来的个体。<br>比如，张三是一个人类的个体。可以说张三的姓名叫张三。也就是张三对人类的每一个属性进行了具体的赋值，那么张三就是由人类产生的一个对象。</p>
+<p>4、使用类和对象的步骤：</p>
+<p>1)创建一个类(构造函数):类名必须使用大驼峰法则。即每个单词首字母都要大写</p>
+<p>function 类名(属性1){<br>     this.属性1=属性1;<br>     this.方法=function(){<br>      //方法中要调用自身属性，必须使用this.属性<br>     }<br>}<br>2)通过类实例化(new)出一个对象。</p>
+<p>var obj=new 类名(属性1的具体值);<br>obj.属性; 调用属性<br>obj.方法; 调用方法<br>3)注意事项：<br>①通过类名，new出一个对象的过程，叫做”类的实例化”。<br>②类中的this,会在实例化的时候，指向新new出的对象。<br>所以，this.属性 this.方法实际上是将属性和方法绑定在即将new出的对象上面。<br>③在类中，要调用自身属性，必须使用this.属性名。如果直接使用变量名，则无法访问对应的属性。</p>
+<p>复制代码<br>function Person(name,age){<br>   this.name=name;<br>   this.age=age;<br>   this.say=function(content){<br>       //在类中，访问类自身的属性，必须使用this.属性调用。<br>       alert(“我叫”+this.name+”,今年”+this.age+”岁,我说了一句话：”+content);<br>   }<br>}<br>var zhangsan=new Person(“姐姐”,18);<br>zhangsan.say(“你好呀”);<br>复制代码<br>④类名必须使用大驼峰法则，注意与普通函数区分。</p>
+<p>4面向对象的两个重要属性<br>1)constructor:返回当前对象的构造函数。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>zhangsan.constructor==Person;  ( true)<br>2)instanceof:检测一个对象是不是一个类的实例；<br>lisi instanceof Person              √ lisi是通过Person类new出的<br>lisi instanceof Object              √ 所有对象都是Object的实例<br>Person instanceof Object        √ 函数本身也是对象</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>5广义对象与狭义对象<br>1)狭义对象：只有属性和方法，除此之外没有任何其他内容。</p>
+<p>var obj={};  //用{}声明的对象<br>var obj=new Object(); //用new声明的对象</p>
+<p>2)广义对象：除了用字面量声明的基本数据类型之外，JS中万物皆对象。换句话说，只要能添加属性和方法的变量，都可以称为对象。</p>
+<p>复制代码<br>var s=”123”;  //不是对象<br>s.name=”aaa”;<br>console.log(typeof(s)); //String<br>console.log(s.name); //undfined 字面量声明的字符串不是对象，不能添加属性<br>var s=new String(“123”);  //是对象<br>s.name=”aaa”;<br>console.log(typeof(s)); //Object<br>console.log(s.name); //“aaa” 使用new声明的字符串是对象，能添加属性和方法。<br>复制代码</p>
+<p>二、 成员属性、静态属性和私有属性<br>1、在构造函数中，使用this.属性声明。或者在实例化出对象以后，使用”对象.属性”追加的，都属于成员属性或成员方法。也叫实例属性或实例方法。<br>     成员属性/方法，是属于由类new出的对象的。<br>     需要使用”对象名.属性名”调用。</p>
+<p>【静态属性与静态方法】<br>2、通过“类名.属性名”、“类名.方法名”声明的属性和方法，称为静态属性、静态方法。也叫类属性和类方法。<br>     类属性/类方法，是属于类的(属于构造函数的)<br>     通过”类名.属性名”调用。</p>
+<p>3、成员属性是属于实例化出的对象的，只能使用对象调用。<br>静态属性是属于构造函数的，只能使用类名调用。</p>
+<p>[私有属性和私有方法]<br>4、在构造函数中，使用var声明的变量称为私有属性；<br>在构造函数中，使用function声明的函数，称为私有方法；</p>
+<p>function Person(){<br>    var num=1;//私有属性<br>    function func(){}//私有方法<br>}<br>私有属性和私有方法的作用域，只在构造函数内容有效。即只能在构造函数内部使用，在构造函数外部，无论使用对象名还是类名都无法调用。</p>
+<p>复制代码<br>function Person(name){<br>    this.name=name; //声明成员属性<br>    var sex=”男”;//私有属性</p>
+<p>}</p>
+<p>var zhangsan=new Person(“张三”);<br>zhangsan.age=14; //追加成员属性<br>alert(zhangsan.name); //调用成员属性</p>
+<p>Person.count=”60亿”; //声明静态属性<br>alert(Person.count); //调用静态属性<br>var lisi=new Person(“李四”);<br>console.log(lisi.count); //undefined 静态属性是属于类的，只能用类名调用。<br>复制代码</p>
+<p>三、 JavaScript模拟实现封装<br>1、什么叫封装？<br>①方法的封装：将类内部的函数进行私有化处理，不对外提供接口，无法在类外部使用的方法，称为私有方法，即方法的封装。<br>②属性的封装：将类中的属性进行私有化处理，对外不能直接使用对象名访问(私有属性)。同时，需要提供专门用于设置和读取私有属性的set/get方法，让外部使用我们提供的方法，对属性进行操作。这就叫属性的封装。<br>2、注意：封装不是拒绝访问，而是限制访问。要求调用者，必须使用我们提供的set/get方法进行属性的操作，而不是直接拒绝操作。<br>因此，单纯的属性私有化，不能称为封装！必须要有私有化后，提供对应的set/get方法。</p>
+<p>复制代码<br>function Person(name,age1){<br>    this.name=name;<br>//  this.age=age;<br>    var age=0;</p>
+<pre><code>this.setAge=function(ages){
+    if(ages&gt;0&amp;&amp;ages&lt;=120){
+        age=ages;
+    }else{
+        alert(&quot;年龄赋值失败&quot;);
+    }
+}</code></pre><p>// 当实例化类拿到对象时，可以直接通过类名的()传入年龄，设置私有属性<br>   if(age1!=undefined) this.setAge(age1);<br>   this.getAge=function(){<br>       return age;<br>   }<br>   this.sayTime=function(){<br>       alert(“我说当前时间是：”+getTime());<br>   }<br>   this.writeTime=function(){<br>       alert(“我写了当前时间是：”+getTime());<br>   }</p>
+<p>/<em>私有化的方法，只能在类内部被其他方法调用，而不能对外提供功能。这就是方法的封装</em>/<br>   function getTime(){<br>       return new Date();<br>   }<br>}</p>
+<p>var zhangsan=new Person(“张三”,99);<br>zhangsan.setAge(99);<br>alert(“张三的年龄是”+zhangsan.getAge());</p>
+<p>var lisi=new Person(“李四”,99);<br>lisi.setAge(110);<br>alert(“李四的年龄是:”+lisi.getAge());<br>复制代码</p>
+<p>四、JavaScript中的this指向详解<br>1、谁最终调用函数，this最终指向谁(记住！)<br>①this指向谁，不应考虑函数在哪声明，而应该考虑函数在哪调用！！！<br>②this指向的永远只可能是对象，而不可能是函数。<br>③this指向的对象，叫做函数的上下文context，也叫函数的调用者。</p>
+<p>2、this指向的规律！！！(跟函数的调用方式息息相关，记住这点，相信你一定会分清this指向哒)<br>①通过函数名()调用的，this永远指向window<br>②通过对象.方法调用的，this指向这个对象。<br>③函数作为数组中的一个元素，用数组下标调用的，this指向这个数组<br>④函数作为window内置函数的回调函数使用，this指向window。<br>setInterval setTimeout 等。<br>⑤函数作为构造函数，使用new关键字调用，this指向新new出的对象。</p>
+<p>复制代码<br>function func(){<br>    console.log(this);<br>}<br>var obj={<br>    name:”zhangsan”,<br>    func:func<br>}<br>//①通过函数名()调用的，this永远指向window。<br>func();<br>//②通过对象.方法调用的，this指向这个对象<br>obj.func();//狭义对象</p>
+<p>window.onclick=function(){<br>    document.getElementById(“div1”).onclick=function(){<br>        func();//最终还是使用()调用，所以指向window<br>    }<br>    document.getElementById(“div1”).onclick=func;//广义对象，指向div<br>}<br>//③函数作为数组中的一个元素，用数组下标调用的，this指向这个数组<br>var arr=[1,2,3,func,4,5,6];<br>arr<a href>3</a>;</p>
+<p>//④函数作为window内置函数的回调函数使用，this指向window。<br>setTimeout(func,1000);</p>
+<p>//⑤函数作为构造函数，使用new关键字调用，this指向新new出的对象。<br>var obj1=new func();<br>复制代码<br>现在，你一定分清了this指向了吧，下面我们来看一个综合案例：</p>
+<p>复制代码<br>var obj1={<br>    name:”obj1”,<br>    arr:[func,1,{name:”obj2”,func:func},3,4],<br>}<br>obj1.arr<a href>0</a>;//最终的调用者是数组。this–&gt;obj.arr<br>setTimeout(obj1,arr[0],2000);//obj.arr[0]仅仅是取到函数赋给setTimeout，但并没有调用。函数的最终调用者是setTimeout。这个式子相当于setTimeout(func,2000);<br>obj1.arr[2].func();//最终调用者是{name:”obj2”,func:func}<br>setTimeout(obj1.arr[2].func,2000);//最终调用者是setTimeout</p>
+<p>//↓最终的调用者是div1<br>//document.getElementById(“div1”).onclick=obj1.arr[0];<br>//document.getElementById(“div1”).onclick=arr[2].func;<br>复制代码<br>最后，我们再来看一道面试题：</p>
+<p>复制代码<br>var fullname = ‘John Doe’;<br>var obj = {<br>   fullname: ‘Colin Ihrig’,<br>   prop: {<br>      fullname: ‘Aurelio De Rosa’,<br>      getFullname: function() {<br>         return this.fullname;<br>      }<br>   }<br>};<br>console.log(obj.prop.getFullname());<br>// 函数的最终调用者 obj.prop </p>
+<p>var test = obj.prop.getFullname;<br>console.log(test());<br>// 函数的最终调用者 test()  this-&gt; window</p>
+<p>obj.func = obj.prop.getFullname;<br>console.log(obj.func());<br>// 函数最终调用者是obj</p>
+<p>var arr = [obj.prop.getFullname,1,2];<br>arr.fullname = “JiangHao”;<br>console.log(arr<a href>0</a>);<br>// 函数最终调用者数组<br>复制代码</p>
+
         </div>
 
         <blockquote class="post-copyright">
@@ -175,17 +235,17 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-07-04T11:55:45.257Z" itemprop="dateUpdated">2019-07-04 19:55:45</time>
+    最后更新时间：<time datetime="2019-07-22T08:14:40.128Z" itemprop="dateUpdated">2019-07-22 16:14:40</time>
 </span><br>
 
 
         
-        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/shinian/2019/07/04/javascript面向对象/" target="_blank" rel="external">http://yoursite.com/shinian/2019/07/04/javascript面向对象/</a>
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/shinian/2019/07/04/javascript面向对象/" target="_blank" rel="external">http://shinian156.github.io/2019/07/04/javascript面向对象/</a>
         
     </div>
     
     <footer>
-        <a href="http://yoursite.com/shinian">
+        <a href="http://shinian156.github.io">
             <img src="/shinian/img/heads.jpg" alt="十年">
             十年
         </a>
@@ -211,7 +271,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/shinian/2019/07/04/javascript面向对象/&title=《javascript面向对象》 — 十年&pic=http://yoursite.com/shinian/img/heads.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://shinian156.github.io/2019/07/04/javascript面向对象/&title=《javascript面向对象》 — 十年&pic=http://shinian156.github.io/img/heads.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -221,22 +281,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/shinian/2019/07/04/javascript面向对象/&title=《javascript面向对象》 — 十年&source=十年的个人博客" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://shinian156.github.io/2019/07/04/javascript面向对象/&title=《javascript面向对象》 — 十年&source=十年的个人博客" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/shinian/2019/07/04/javascript面向对象/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://shinian156.github.io/2019/07/04/javascript面向对象/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《javascript面向对象》 — 十年&url=http://yoursite.com/shinian/2019/07/04/javascript面向对象/&via=http://yoursite.com/shinian" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《javascript面向对象》 — 十年&url=http://shinian156.github.io/2019/07/04/javascript面向对象/&via=http://shinian156.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/shinian/2019/07/04/javascript面向对象/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://shinian156.github.io/2019/07/04/javascript面向对象/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -392,7 +452,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/shinian/2019/07/04/javascript面向对象/&title=《javascript面向对象》 — 十年&pic=http://yoursite.com/shinian/img/heads.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://shinian156.github.io/2019/07/04/javascript面向对象/&title=《javascript面向对象》 — 十年&pic=http://shinian156.github.io/img/heads.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -402,22 +462,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/shinian/2019/07/04/javascript面向对象/&title=《javascript面向对象》 — 十年&source=十年的个人博客" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://shinian156.github.io/2019/07/04/javascript面向对象/&title=《javascript面向对象》 — 十年&source=十年的个人博客" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/shinian/2019/07/04/javascript面向对象/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://shinian156.github.io/2019/07/04/javascript面向对象/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《javascript面向对象》 — 十年&url=http://yoursite.com/shinian/2019/07/04/javascript面向对象/&via=http://yoursite.com/shinian" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《javascript面向对象》 — 十年&url=http://shinian156.github.io/2019/07/04/javascript面向对象/&via=http://shinian156.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/shinian/2019/07/04/javascript面向对象/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://shinian156.github.io/2019/07/04/javascript面向对象/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -428,7 +488,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://yoursite.com/shinian/2019/07/04/javascript面向对象/" alt="微信分享二维码">
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://shinian156.github.io/2019/07/04/javascript面向对象/" alt="微信分享二维码">
 </div>
 
 
