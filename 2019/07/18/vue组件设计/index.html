@@ -15,25 +15,25 @@
     
     
     
-    <title>vue组件设计 | 十年 | 在等待的日子里，刻苦读书，锻炼身体，谦卑做人，养的深根，日后才能枝繁叶茂。</title>
+    <title>vue组件设计 | 十年 | 任何可以用JavaScript编写的应用程序最终都将用JavaScript编写。</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
     
     
     <meta name="keywords" content>
-    <meta name="description" content="组件的分类1.通用组件基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等2.业务组件业务需求强挂钩会被复用，比如抽奖，摇一摇等等3.页面组件每个页面都是组件，不会复用 完成功能 Vue组件开发1.注册2.使用3.给传递什么值     props4.组件通知外部    事件5.扩展组件        插槽 组件注册HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写字">
-<meta name="keywords" content="web全栈 node.js">
+    <meta name="description" content="组件的分类1.通用组件基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等2.业务组件业务需求强挂钩会被复用，比如抽奖，摇一摇等等3.页面组件每个页面都是组件，不会复用 完成功能 Vue组件开发1.注册2.使用3.给传递什么值     props4.组件通知外部     事件5.扩展组件        插槽 组件注册HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写">
+<meta name="keywords" content="web全栈 vue react 小程序 node.js">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue组件设计">
 <meta property="og:url" content="http://shinian156.github.io/2019/07/18/vue组件设计/index.html">
 <meta property="og:site_name" content="十年">
-<meta property="og:description" content="组件的分类1.通用组件基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等2.业务组件业务需求强挂钩会被复用，比如抽奖，摇一摇等等3.页面组件每个页面都是组件，不会复用 完成功能 Vue组件开发1.注册2.使用3.给传递什么值     props4.组件通知外部    事件5.扩展组件        插槽 组件注册HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写字">
+<meta property="og:description" content="组件的分类1.通用组件基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等2.业务组件业务需求强挂钩会被复用，比如抽奖，摇一摇等等3.页面组件每个页面都是组件，不会复用 完成功能 Vue组件开发1.注册2.使用3.给传递什么值     props4.组件通知外部     事件5.扩展组件        插槽 组件注册HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-29T05:42:54.370Z">
+<meta property="og:updated_time" content="2019-08-29T10:07:09.253Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vue组件设计">
-<meta name="twitter:description" content="组件的分类1.通用组件基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等2.业务组件业务需求强挂钩会被复用，比如抽奖，摇一摇等等3.页面组件每个页面都是组件，不会复用 完成功能 Vue组件开发1.注册2.使用3.给传递什么值     props4.组件通知外部    事件5.扩展组件        插槽 组件注册HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写字">
+<meta name="twitter:description" content="组件的分类1.通用组件基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等2.业务组件业务需求强挂钩会被复用，比如抽奖，摇一摇等等3.页面组件每个页面都是组件，不会复用 完成功能 Vue组件开发1.注册2.使用3.给传递什么值     props4.组件通知外部     事件5.扩展组件        插槽 组件注册HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写">
     
     <link rel="shortcut icon" href="/shinian156.github.io/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -175,7 +175,7 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h2 id="组件的分类"><a href="#组件的分类" class="headerlink" title="组件的分类"></a>组件的分类</h2><p>1.通用组件<br>基础组件，大部分UI库都是这种组建，比如表单，弹窗，布局等等<br>2.业务组件<br>业务需求强挂钩会被复用，比如抽奖，摇一摇等等<br>3.页面组件<br>每个页面都是组件，不会复用 完成功能</p>
-<h2 id="Vue组件开发"><a href="#Vue组件开发" class="headerlink" title="Vue组件开发"></a>Vue组件开发</h2><p>1.注册<br>2.使用<br>3.给传递什么值     props<br>4.组件通知外部    事件<br>5.扩展组件        插槽</p>
+<h2 id="Vue组件开发"><a href="#Vue组件开发" class="headerlink" title="Vue组件开发"></a>Vue组件开发</h2><p>1.注册<br>2.使用<br>3.给传递什么值     props<br>4.组件通知外部     事件<br>5.扩展组件        插槽</p>
 <h2 id="组件注册"><a href="#组件注册" class="headerlink" title="组件注册"></a>组件注册</h2><p>HTML中的特性是名称大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。这意味着你使用Dom中的模板时，camelCasa的prop名需要其等价的kebab-case</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//注册全局组件</span><br><span class="line">Vue.component(<span class="string">'component-a'</span>,&#123;&#125;)</span><br><span class="line">Vue.component(<span class="string">'component-b'</span>,&#123;&#125;)</span><br><span class="line">//使用</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;component<span class="_">-a</span>&gt;&lt;/component<span class="_">-a</span>&gt;</span><br><span class="line">    &lt;component-b&gt;&lt;/component-b&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">//局部注册组件(推荐，依赖可追溯)</span><br><span class="line">new Vue(&#123;</span><br><span class="line">    el: <span class="string">"#app"</span>,</span><br><span class="line">    components: &#123;</span><br><span class="line">        <span class="string">"component-a"</span>: component<span class="_">-a</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
@@ -198,7 +198,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-07-29T05:42:54.370Z" itemprop="dateUpdated">2019-07-29 13:42:54</time>
+    最后更新时间：<time datetime="2019-08-29T10:07:09.253Z" itemprop="dateUpdated">2019-08-29 18:07:09</time>
 </span><br>
 
 
