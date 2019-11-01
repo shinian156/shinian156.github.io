@@ -30,10 +30,12 @@
 <meta property="og:site_name" content="十年">
 <meta property="og:description" content="cookie1.cookie是存储于访问者的计算机中的数据，用于同一浏览器访问统一域的时候共享数据。2.HTTP是无状态协议。也就是说：当你浏览了一个页面，然后跳转到同一网站的另一个页面，服务器无法识别到这是同一个浏览器在访问在访问同一个网站。每次的访问是没有关系的，也就是说服务器无法检测到这个状态。 特点：保存在客户端、用于同一浏览器访问同一个域的时候共享数据。 作用，例如：1.保存用户信息2.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-31T08:11:31.677Z">
+<meta property="og:image" content="http://shinian156.github.io/shinian156.github.io/.io//2019/07/11/cookie与session/cookie.png">
+<meta property="og:updated_time" content="2019-10-31T09:47:54.648Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cookie与ssession">
 <meta name="twitter:description" content="cookie1.cookie是存储于访问者的计算机中的数据，用于同一浏览器访问统一域的时候共享数据。2.HTTP是无状态协议。也就是说：当你浏览了一个页面，然后跳转到同一网站的另一个页面，服务器无法识别到这是同一个浏览器在访问在访问同一个网站。每次的访问是没有关系的，也就是说服务器无法检测到这个状态。 特点：保存在客户端、用于同一浏览器访问同一个域的时候共享数据。 作用，例如：1.保存用户信息2.">
+<meta name="twitter:image" content="http://shinian156.github.io/shinian156.github.io/.io//2019/07/11/cookie与session/cookie.png">
     
     <link rel="shortcut icon" href="/shinian156.github.io/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -150,7 +152,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cookie"><span class="post-toc-number">1.</span> <span class="post-toc-text">cookie</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#特点："><span class="post-toc-number">1.1.</span> <span class="post-toc-text">特点：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#作用，例如："><span class="post-toc-number">1.2.</span> <span class="post-toc-text">作用，例如：</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#cookie"><span class="post-toc-number">1.</span> <span class="post-toc-text">cookie</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#特点："><span class="post-toc-number">1.1.</span> <span class="post-toc-text">特点：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#作用，例如："><span class="post-toc-number">1.2.</span> <span class="post-toc-text">作用，例如：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#koa中设置cookie的值"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">koa中设置cookie的值</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#session"><span class="post-toc-number">2.</span> <span class="post-toc-text">session</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#session的运行机制"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">session的运行机制</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -177,25 +179,18 @@
             <h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p>1.cookie是存储于访问者的计算机中的数据，用于同一浏览器访问统一域的时候共享数据。<br>2.HTTP是无状态协议。也就是说：当你浏览了一个页面，然后跳转到同一网站的另一个页面，服务器无法识别到这是同一个浏览器在访问在访问同一个网站。每次的访问是没有关系的，也就是说服务器无法检测到这个状态。</p>
 <h3 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h3><p>保存在客户端、用于同一浏览器访问同一个域的时候共享数据。</p>
 <h3 id="作用，例如："><a href="#作用，例如：" class="headerlink" title="作用，例如："></a>作用，例如：</h3><p>1.保存用户信息<br>2.浏览历史记录<br>3.10天免登录</p>
-<!-- ### koa中设置cookie的值
-1.设置cookie
+<h3 id="koa中设置cookie的值"><a href="#koa中设置cookie的值" class="headerlink" title="koa中设置cookie的值"></a>koa中设置cookie的值</h3><p>1.设置cookie</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">router.get(<span class="string">'/'</span>, async(ctx, next)=&gt;&#123;</span><br><span class="line">    ctx.cookies.set(<span class="string">"userInfo"</span>, <span class="string">"gouzi"</span>, &#123;</span><br><span class="line">        maxAge: 1000*60*60</span><br><span class="line">    &#125;</span><br><span class="line">    await ctx.render(<span class="string">'index'</span>,&#123;</span><br><span class="line">        title: <span class="string">"Hello Koa"</span></span><br><span class="line">    &#125;)  </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 <p>2.获取cookie</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> userInfo = ctx.cookies.get(<span class="string">"userInfo"</span>);</span><br></pre></td></tr></table></figure>
 
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="https://github.com/shinian156/shinian/blob/master/2019/07/11/cookie%E4%B8%8Esession/cookie.png?raw=true" alt="cookie的参数" title="">
-                </div>
-                <div class="image-caption">cookie的参数</div>
-            </figure>
+<img src="/shinian156.github.io/.io//2019/07/11/cookie与session/cookie.png" title="This is an example image">
 
-<p>3.存储值为汉字的cookie (node.js的cookie是不支持直接存储汉字的)，先转换为buffer (let buffer = new buffer(“转换数据”)) –&gt;</p>
+<p>3.存储值为汉字的cookie (node.js的cookie是不支持直接存储汉字的)，先转换为buffer (let buffer = new buffer(“转换数据”)) </p>
 <h2 id="session"><a href="#session" class="headerlink" title="session"></a>session</h2><p>session是一种记录客户状态的机制，不同的是cookie存储在客户端，session存储在服务端</p>
 <h3 id="session的运行机制"><a href="#session的运行机制" class="headerlink" title="session的运行机制"></a>session的运行机制</h3><p>浏览器访问服务器并第一次发送请求时，服务器会创建一个session对象，类似于key-value的结构，然后把key以cookie的形式存储在客户端，浏览器后续每次请求服务器时都会带上这个key(也就是cookie)，服务器根据这个key来查找相应的value，也就是session。客户的信息都存储在session中。</p>
--->
+
         </div>
 
         <blockquote class="post-copyright">
@@ -203,7 +198,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-07-31T08:11:31.677Z" itemprop="dateUpdated">2019-07-31 16:11:31</time>
+    最后更新时间：<time datetime="2019-10-31T09:47:54.648Z" itemprop="dateUpdated">2019-10-31 17:47:54</time>
 </span><br>
 
 
