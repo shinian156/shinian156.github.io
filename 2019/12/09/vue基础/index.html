@@ -22,18 +22,18 @@
     
     
     <meta name="keywords" content="vue">
-    <meta name="description" content="vue 开发环境搭建1.安装 vue-cli3    1)、npm install -g @vue/cli    2)、npm install -g @vue/cli-service-global2.新建项目    vue create vue-demo3.选择配置    1)、Babel 代码转义    2)、Linter 代码风格    3)、测试4.启动项目    npm run serve">
+    <meta name="description" content="vue 开发环境搭建1.安装 vue-cli3    1)、npm install -g @vue/cli    使用 vue serve 和 vue build 命令对单个 *.vue 文件进行快速原型开发    2)、npm install -g @vue/cli-service-global2.新建项目    vue create hello-world3.选择配置    1)、Babel">
 <meta name="keywords" content="vue">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue基础">
 <meta property="og:url" content="http://shinian156.github.io/2019/12/09/vue基础/index.html">
 <meta property="og:site_name" content="十年">
-<meta property="og:description" content="vue 开发环境搭建1.安装 vue-cli3    1)、npm install -g @vue/cli    2)、npm install -g @vue/cli-service-global2.新建项目    vue create vue-demo3.选择配置    1)、Babel 代码转义    2)、Linter 代码风格    3)、测试4.启动项目    npm run serve">
+<meta property="og:description" content="vue 开发环境搭建1.安装 vue-cli3    1)、npm install -g @vue/cli    使用 vue serve 和 vue build 命令对单个 *.vue 文件进行快速原型开发    2)、npm install -g @vue/cli-service-global2.新建项目    vue create hello-world3.选择配置    1)、Babel">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-10T08:08:35.091Z">
+<meta property="og:updated_time" content="2019-12-10T08:21:30.410Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vue基础">
-<meta name="twitter:description" content="vue 开发环境搭建1.安装 vue-cli3    1)、npm install -g @vue/cli    2)、npm install -g @vue/cli-service-global2.新建项目    vue create vue-demo3.选择配置    1)、Babel 代码转义    2)、Linter 代码风格    3)、测试4.启动项目    npm run serve">
+<meta name="twitter:description" content="vue 开发环境搭建1.安装 vue-cli3    1)、npm install -g @vue/cli    使用 vue serve 和 vue build 命令对单个 *.vue 文件进行快速原型开发    2)、npm install -g @vue/cli-service-global2.新建项目    vue create hello-world3.选择配置    1)、Babel">
     
     <link rel="shortcut icon" href="/shinian156.github.io/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -174,7 +174,7 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="vue-开发环境搭建"><a href="#vue-开发环境搭建" class="headerlink" title="vue 开发环境搭建"></a>vue 开发环境搭建</h2><p>1.安装 vue-cli3<br>    1)、npm install -g @vue/cli<br>    2)、npm install -g @vue/cli-service-global<br>2.新建项目<br>    vue create vue-demo<br>3.选择配置<br>    1)、Babel 代码转义<br>    2)、Linter 代码风格<br>    3)、测试<br>4.启动项目<br>    npm run server 5.项目结构</p>
+            <h2 id="vue-开发环境搭建"><a href="#vue-开发环境搭建" class="headerlink" title="vue 开发环境搭建"></a>vue 开发环境搭建</h2><p>1.安装 vue-cli3<br>    1)、npm install -g @vue/cli<br>    使用 vue serve 和 vue build 命令对单个 *.vue 文件进行快速原型开发<br>    2)、npm install -g @vue/cli-service-global<br>2.新建项目<br>    vue create hello-world<br>3.选择配置<br>    1)、Babel 代码转义<br>    2)、Linter 代码风格<br>    3)、测试<br>4.启动项目<br>    npm run server<br>5.打包部署<br>    npm run serve<br>5.项目结构</p>
 <h2 id="MOCK-数据"><a href="#MOCK-数据" class="headerlink" title="MOCK 数据"></a>MOCK 数据</h2><p>简单的 mock，使用自带的 webpack-dev-server 即可，新建的 vue.config.js 扩展设置</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">    configureWebpack: &#123;</span><br><span class="line">        devServer: &#123;</span><br><span class="line">            before(app) &#123;</span><br><span class="line">                app.get(<span class="string">'/api/goods'</span>, <span class="keyword">function</span> (req, res) &#123;</span><br><span class="line">                    res.json(&#123;</span><br><span class="line">                        list: [</span><br><span class="line">                        &#123; text: <span class="string">'go'</span>, price: 100 &#125;,</span><br><span class="line">                        &#123; text: <span class="string">'web'</span>, price: 80 &#125;,</span><br><span class="line">                        &#123; text: <span class="string">'Python'</span>, price: 60 &#125;]</span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; </span><br><span class="line">         &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
@@ -192,7 +192,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-12-10T08:08:35.091Z" itemprop="dateUpdated">2019-12-10 16:08:35</time>
+    最后更新时间：<time datetime="2019-12-10T08:21:30.410Z" itemprop="dateUpdated">2019-12-10 16:21:30</time>
 </span><br>
 
 
