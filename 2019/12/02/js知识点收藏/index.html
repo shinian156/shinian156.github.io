@@ -30,7 +30,7 @@
 <meta property="og:site_name" content="十年">
 <meta property="og:description" content="1.callback&amp;amp;&amp;amp;callback()1234如果存在回调函数就执行！这是利用了 JS &amp;amp;&amp;amp;符号的一个小技巧&amp;amp;&amp;amp; 符号在前面为假时就不会执行后面的语句了所以这个就相当于if(callback)&amp;#123;    callback();&amp;#125;  2.if语句不带括号if语句加 大括号是表示 满足 小括号中条件时执行的。  而不加 大括号，则">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-10T07:47:44.033Z">
+<meta property="og:updated_time" content="2019-12-24T03:28:37.767Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js知识点收藏">
 <meta name="twitter:description" content="1.callback&amp;amp;&amp;amp;callback()1234如果存在回调函数就执行！这是利用了 JS &amp;amp;&amp;amp;符号的一个小技巧&amp;amp;&amp;amp; 符号在前面为假时就不会执行后面的语句了所以这个就相当于if(callback)&amp;#123;    callback();&amp;#125;  2.if语句不带括号if语句加 大括号是表示 满足 小括号中条件时执行的。  而不加 大括号，则">
@@ -150,7 +150,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-callback-amp-amp-callback"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.callback&amp;&amp;callback()</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-if语句不带括号"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.if语句不带括号</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-callback-amp-amp-callback"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.callback&amp;&amp;callback()</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-if语句不带括号"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.if语句不带括号</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-或与非"><span class="post-toc-number">3.</span> <span class="post-toc-text">3.或与非</span></a></li></ol>
         </nav>
     </aside>
 
@@ -177,7 +177,34 @@
             <h2 id="1-callback-amp-amp-callback"><a href="#1-callback-amp-amp-callback" class="headerlink" title="1.callback&amp;&amp;callback()"></a>1.callback&amp;&amp;callback()</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果存在回调函数就执行！这是利用了 JS &amp;&amp;符号的一个小技巧&amp;&amp; 符号在前面为假时就不会执行后面的语句了所以这个就相当于</span><br><span class="line"><span class="keyword">if</span>(callback)&#123;</span><br><span class="line">    callback();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="2-if语句不带括号"><a href="#2-if语句不带括号" class="headerlink" title="2.if语句不带括号"></a>2.if语句不带括号</h2><p>if语句加 大括号是表示 满足 小括号中条件时执行的。  而不加 大括号，则表示默认的满足条件时，执行后面的第一句话。以分号结束。</p>
+<h2 id="3-或与非"><a href="#3-或与非" class="headerlink" title="3.或与非"></a>3.或与非</h2><p>首先js 会将 &amp;&amp; 和 || 两边的值转成Boolean 类型，然后再进行逻辑关系运算 。</p>
+<p>&amp;&amp;运算如果返回true，则取后面的值，如果 || 返回true,则取前面的值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var num = 44 &amp;&amp; 55;</span><br><span class="line">var num2 = 44 || 55;</span><br><span class="line">console.log(num);  // 55</span><br><span class="line">console.log(num2);  // 44</span><br></pre></td></tr></table></figure>
 
+<p>转换成boolean 的规则 :<br>对象、非零整数、非空字符串返回true<br>空字符串、null、undefined、NaN、false、0 ,返回false<br>短路原则：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var  a = <span class="string">""</span> || null || 3 ||  4;</span><br></pre></td></tr></table></figure>
+
+<p>相当于：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var a = <span class="literal">false</span> || <span class="literal">false</span> || <span class="literal">true</span> || <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<p>短路：第一个false，要去找下一个，第二个同是false，继续往下找。第三个是ture返回，不再检查第四。</p>
+<p>结果为true  则返回第一个true,即是3</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var b = 4 &amp;&amp; 5 &amp;&amp; null &amp;&amp; 0;</span><br></pre></td></tr></table></figure>
+
+<p>相当于：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var b = <span class="literal">true</span> &amp;&amp; <span class="literal">true</span> &amp;&amp; <span class="literal">false</span> &amp;&amp; <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<p>一个为假则为假。当找到第三个时为false，返回。</p>
+<p>结果是false   则返回第一个false   即是null .</p>
+<p>技巧：</p>
+<p>检测是否定义，未定义则赋初始值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 判断一个变量是否存在，如果没有就给他一个初始值</span><br><span class="line">var attr = attr || <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> Foo(option) &#123;</span><br><span class="line">    var defaultValue = option || &#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line">Foo();</span><br></pre></td></tr></table></figure>
+
+<p>利用返回值的特性：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> getType(arg) &#123;</span><br><span class="line">    var num = (arg == 1 &amp;&amp; <span class="string">'类型1'</span>) || (arg == 2 &amp;&amp; <span class="string">'类型2'</span>) || 0;</span><br><span class="line">    <span class="built_in">return</span> num;</span><br><span class="line">&#125;</span><br><span class="line">console.log(getType(1))</span><br></pre></td></tr></table></figure>
+
+<p>优化： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var num = &#123;‘5’:1,’10’:2,’12’:3,’15’:4&#125;[per] || 0;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> getValue(arg) &#123;</span><br><span class="line">    var num = &#123;<span class="string">'5'</span>:1,<span class="string">'10'</span>:2,<span class="string">'12'</span>:3,<span class="string">'15'</span>:4&#125;[arg] || 0;</span><br><span class="line">    <span class="built_in">return</span> num;</span><br><span class="line">&#125;</span><br><span class="line">console.log(getType(5))</span><br></pre></td></tr></table></figure>
         </div>
 
         <blockquote class="post-copyright">
@@ -185,7 +212,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-12-10T07:47:44.033Z" itemprop="dateUpdated">2019-12-10 15:47:44</time>
+    最后更新时间：<time datetime="2019-12-24T03:28:37.767Z" itemprop="dateUpdated">2019-12-24 11:28:37</time>
 </span><br>
 
 
