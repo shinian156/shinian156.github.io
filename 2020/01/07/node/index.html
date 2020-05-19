@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>No title | 十年 | 任何可以用JavaScript编写的应用程序最终都将用JavaScript编写。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="nodejs运行机制 brookfeng0.5692017.12.27 14:28:53字数 1,066阅读 1,8341.简介 Node.js是一个事件驱动I/O服务端JavaScript环境，基于Google的V8引擎，V8引擎执行Javascript的速度非常快，性能非常好。将libuv作为跨平台抽象层，libuv是用c/c++写成的高性能事件驱动的程序库。nodejs的原理类似c/c++系">
+<meta name="keywords" content="web全栈 vue react 小程序 node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="No title">
+<meta property="og:url" content="http://shinian156.github.io/2020/01/07/node/index.html">
+<meta property="og:site_name" content="十年">
+<meta property="og:description" content="nodejs运行机制 brookfeng0.5692017.12.27 14:28:53字数 1,066阅读 1,8341.简介 Node.js是一个事件驱动I/O服务端JavaScript环境，基于Google的V8引擎，V8引擎执行Javascript的速度非常快，性能非常好。将libuv作为跨平台抽象层，libuv是用c/c++写成的高性能事件驱动的程序库。nodejs的原理类似c/c++系">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-07T09:26:17.740Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="No title">
+<meta name="twitter:description" content="nodejs运行机制 brookfeng0.5692017.12.27 14:28:53字数 1,066阅读 1,8341.简介 Node.js是一个事件驱动I/O服务端JavaScript环境，基于Google的V8引擎，V8引擎执行Javascript的速度非常快，性能非常好。将libuv作为跨平台抽象层，libuv是用c/c++写成的高性能事件驱动的程序库。nodejs的原理类似c/c++系">
+    
+    <link rel="shortcut icon" href="/shinian156.github.io/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/shinian156.github.io/img/brand.jpg)">
+      <div class="brand">
+        <a href="/shinian156.github.io/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/shinian156.github.io/img/heads.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">十年</h5>
+          <a href="mailto:2434863139@qq.com" title="2434863139@qq.com" class="mail">2434863139@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/shinian156.github.io/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/shinian156.github.io/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/shinian156.github.io/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/shinian156" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">No title</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">No title</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-01-07T09:25:51.588Z" itemprop="datePublished" class="page-time">
+  2020-01-07
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-node"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">No title</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-01-07 17:25:51" datetime="2020-01-07T09:25:51.588Z"  itemprop="datePublished">2020-01-07</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>nodejs运行机制</p>
+<p>brookfeng<br>0.569<br>2017.12.27 14:28:53<br>字数 1,066<br>阅读 1,834<br>1.简介</p>
+<p>Node.js是一个事件驱动I/O服务端JavaScript环境，基于Google的V8引擎，V8引擎执行Javascript的速度非常快，性能非常好。将libuv作为跨平台抽象层，libuv是用c/c++写成的高性能事件驱动的程序库。nodejs的原理类似c/c++系统编程中的epoll</p>
+<p>2.nodejs运行系统</p>
+<p> 根据上图，Node.js的运行机制如下。</p>
+<p>（1）V8引擎解析JavaScript脚本。</p>
+<p>（2）解析后的代码，调用Node API。</p>
+<p>（3）libuv库负责Node API的执行。它将不同的任务分配给不同的线程，形成一个Event Loop（事件循环），以异步的方式将任务的执行结果返回给V8引擎。</p>
+<p>（4）V8引擎再将结果返回给用户。</p>
+<p>注意：node.js的主进程和Event Loop是分开的，主进程执行完同步代码就不执行了，剩下的就交给事件循环去做了。</p>
+<p>3.事件循环（Event Loop）</p>
+<p>nodejs 执行之后会初始化一个事件循环，执行代码程序（这些程序可能会造成异步调用、定时器或者process.nextTick()），然后开始执行事件循环。</p>
+<p>事件循环的执行循序：</p>
+<p>上边的每一个模块都是事件循环的一个阶段，每个阶段都有一个要执行的回调的FIFO队列。虽然每个阶段都不同，一般来说，当事件执行到一个阶段，先执行这个阶段特有的操作，然后操作这个阶段的队列，当队列执行完或者达到了回调上限，事件循环就会执行下一个阶段。</p>
+<p>各个阶段介绍</p>
+<p>timers:</p>
+<p>执行 setTimeout() 和 setInterval().的回调</p>
+<p>var fs = require(‘fs’);</p>
+<p>function someAsyncOperation (callback) {</p>
+<p>  // Assume this takes 95ms to complete</p>
+<p>  fs.readFile(‘/Users/fyh13/fyh13/redis/nodes.conf’, callback);</p>
+<p>}</p>
+<p>var timeoutScheduled = Date.now();</p>
+<p>setTimeout(function () {</p>
+<p>  var delay = Date.now() - timeoutScheduled;</p>
+<p>  console.log(delay + “ms have passed since I was scheduled”);</p>
+<p>}, 100);</p>
+<p>// do someAsyncOperation which takes 95 ms to complete</p>
+<p>someAsyncOperation(function () {</p>
+<p>  var startCallback = Date.now();</p>
+<p>  // do something that will take 10ms…</p>
+<p>  while (Date.now() - startCallback &lt; 10) {</p>
+<pre><code>; // do nothing</code></pre><p>  }</p>
+<p>  console.log(“someAsyncOperation end…”)</p>
+<p>});</p>
+<p>执行结果:</p>
+<p>someAsyncOperation end…</p>
+<p>102ms have passed since I was scheduled</p>
+<p>从执行结果来看，nodejs先执行setTimeout，后执行someAsyncOperation。执行顺序:进来readFile队列为空，setTimeout队列也是空，readFile先执行完成，将阻塞10ms的回调添加到poll队列，执行完后setTimeout还没执行完，等待，setTimeout时间到，执行回调</p>
+<p>I/O callbacks:</p>
+<p>队列执行几乎所有的异常行为的回调函数，这些异常行为包括被定时器和setImmediate（）预定的关闭的回调。 包括系统操作 例如TCP errors</p>
+<p>idle, prepare:</p>
+<p>内部调用</p>
+<p>poll:</p>
+<p>检索新的I/O事件；在适当的时候阻塞</p>
+<p>1、执行到这一步判断poll队列是否为空 </p>
+<p>2、不为空执行队列，直到队列为空或者回调数超过最大值 </p>
+<p>3、为空 1）如果脚本被setImmediate()计划好了，事件循环结束poll时期，继续check时期去执行计划好的脚本；2）如果脚本没有被setImmediate()计划,事件循环等着回调被添加到队列，然后立马执行</p>
+<p>只要poll队列为空，事件循环将检查哪个定时器的时间已经到了，如果有定时器时间到了，事件循环将回到timer时段处理这些定时的回调</p>
+<p>小结：poll队列为空的时候，事件循环有可能执行check阶段执行setImmediate的回调，也有可能回到timer阶段执行setTimeout的回调，这取决于setImmediate和setTimeout的回调哪个到得早。</p>
+<p>check:</p>
+<p>setImmediate() 的回调在这里执行 当程序执行之后，一般情况下，事件循环会在poll阶段等待连接请求，但是，如果代码中有setImmediate()的回调函数，并且poll阶段空闲，事件循环就会继续执行check阶段，而不会继续在poll阶段等在poll事件</p>
+<p>close callbacks:</p>
+<p>执行像这样的 socket.on(‘close’, …).</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-01-07T09:26:17.740Z" itemprop="dateUpdated">2020-01-07 17:26:17</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/shinian156.github.io/2020/01/07/node/" target="_blank" rel="external">http://shinian156.github.io/2020/01/07/node/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="http://shinian156.github.io">
+            <img src="/shinian156.github.io/img/heads.jpg" alt="十年">
+            十年
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://shinian156.github.io/2020/01/07/node/&title=《No title》 — 十年&pic=http://shinian156.github.io/img/heads.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://shinian156.github.io/2020/01/07/node/&title=《No title》 — 十年&source=十年的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://shinian156.github.io/2020/01/07/node/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《No title》 — 十年&url=http://shinian156.github.io/2020/01/07/node/&via=http://shinian156.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://shinian156.github.io/2020/01/07/node/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/shinian156.github.io/2020/02/06/连接数据库/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">连接数据库</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/shinian156.github.io/2019/12/23/挖矿是如何产生比特币的？/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">挖矿是如何产生比特币的？</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "CWYS8CBPWv5HysiDggSarBm5-gzGzoHsz",
+            appKey: "rJjJss3a4nOrmCvq0VYxyz0b",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/shinian156.github.io/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/shinian156.github.io/img/wechat.jpg" data-alipay="/shinian156.github.io/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>十年 &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://shinian156.github.io/2020/01/07/node/&title=《No title》 — 十年&pic=http://shinian156.github.io/img/heads.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://shinian156.github.io/2020/01/07/node/&title=《No title》 — 十年&source=十年的个人博客" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://shinian156.github.io/2020/01/07/node/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《No title》 — 十年&url=http://shinian156.github.io/2020/01/07/node/&via=http://shinian156.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://shinian156.github.io/2020/01/07/node/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://shinian156.github.io/2020/01/07/node/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/shinian156.github.io/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

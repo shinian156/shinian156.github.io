@@ -22,18 +22,18 @@
     
     
     <meta name="keywords" content="APP">
-    <meta name="description" content="HBuilder在线打包流程，打包需要用到p12文件及配置文件.mobileprovision！ 打包过程很简便，主要是申请iOS证书复杂点！ 打包所需要的资料：AppID：跟申请证书描述.mobileprovision时选择的要一致（又称套装id，appid，BundleID，应用id，包名）profile文件：选择上传配置文件.mobileprovision私钥证书：上传.p12文件私钥密码：">
+    <meta name="description" content="iOS有两种证书和描述文件： 证书类型开发(Development)证书和描述文件:用于开发测试，在 HBuilderX 中打包后可在真机环境通过Safari调试发布(Distribution)证书和描述文件:用于提交 AppStore，在 HBuilderX 中提交云打包后提交到 AppStore 审核发布 HBuilder在线打包流程，打包需要用到p12文件及配置文件.mobileprovis">
 <meta name="keywords" content="APP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IOS发布流程">
 <meta property="og:url" content="http://shinian156.github.io/2019/09/02/IOS发布流程/index.html">
 <meta property="og:site_name" content="十年">
-<meta property="og:description" content="HBuilder在线打包流程，打包需要用到p12文件及配置文件.mobileprovision！ 打包过程很简便，主要是申请iOS证书复杂点！ 打包所需要的资料：AppID：跟申请证书描述.mobileprovision时选择的要一致（又称套装id，appid，BundleID，应用id，包名）profile文件：选择上传配置文件.mobileprovision私钥证书：上传.p12文件私钥密码：">
+<meta property="og:description" content="iOS有两种证书和描述文件： 证书类型开发(Development)证书和描述文件:用于开发测试，在 HBuilderX 中打包后可在真机环境通过Safari调试发布(Distribution)证书和描述文件:用于提交 AppStore，在 HBuilderX 中提交云打包后提交到 AppStore 审核发布 HBuilder在线打包流程，打包需要用到p12文件及配置文件.mobileprovis">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-10T07:50:52.356Z">
+<meta property="og:updated_time" content="2020-01-09T09:44:41.828Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IOS发布流程">
-<meta name="twitter:description" content="HBuilder在线打包流程，打包需要用到p12文件及配置文件.mobileprovision！ 打包过程很简便，主要是申请iOS证书复杂点！ 打包所需要的资料：AppID：跟申请证书描述.mobileprovision时选择的要一致（又称套装id，appid，BundleID，应用id，包名）profile文件：选择上传配置文件.mobileprovision私钥证书：上传.p12文件私钥密码：">
+<meta name="twitter:description" content="iOS有两种证书和描述文件： 证书类型开发(Development)证书和描述文件:用于开发测试，在 HBuilderX 中打包后可在真机环境通过Safari调试发布(Distribution)证书和描述文件:用于提交 AppStore，在 HBuilderX 中提交云打包后提交到 AppStore 审核发布 HBuilder在线打包流程，打包需要用到p12文件及配置文件.mobileprovis">
     
     <link rel="shortcut icon" href="/shinian156.github.io/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -174,10 +174,13 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <p>HBuilder在线打包流程，打包需要用到p12文件及配置文件.mobileprovision！</p>
+            <p>iOS有两种证书和描述文件：</p>
+<p>证书类型<br>开发(Development)证书和描述文件:用于开发测试，在 HBuilderX 中打包后可在真机环境通过Safari调试<br>发布(Distribution)证书和描述文件:用于提交 AppStore，在 HBuilderX 中提交云打包后提交到 AppStore 审核发布</p>
+<p>HBuilder在线打包流程，打包需要用到p12文件及配置文件.mobileprovision！</p>
 <p>打包过程很简便，主要是申请iOS证书复杂点！</p>
 <p>打包所需要的资料：<br>AppID：跟申请证书描述.mobileprovision时选择的要一致（又称套装id，appid，BundleID，应用id，包名）<br>profile文件：选择上传配置文件.mobileprovision<br>私钥证书：上传.p12文件<br>私钥密码：输入创建p12设置的密码。</p>
-<h2 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h2><h2 id="登录iOS-Dev-Center"><a href="#登录iOS-Dev-Center" class="headerlink" title="登录iOS Dev Center"></a>登录iOS Dev Center</h2><h2 id="申请苹果App-ID"><a href="#申请苹果App-ID" class="headerlink" title="申请苹果App ID"></a>申请苹果App ID</h2><h2 id="生成证书请求文件"><a href="#生成证书请求文件" class="headerlink" title="生成证书请求文件"></a>生成证书请求文件</h2><h3 id="申请开发-Development-证书和描述文件"><a href="#申请开发-Development-证书和描述文件" class="headerlink" title="申请开发(Development)证书和描述文件"></a>申请开发(Development)证书和描述文件</h3><h3 id="申请开发-Development-证书"><a href="#申请开发-Development-证书" class="headerlink" title="申请开发(Development)证书"></a>申请开发(Development)证书</h3><h3 id="添加调试设备"><a href="#添加调试设备" class="headerlink" title="添加调试设备"></a>添加调试设备</h3><h2 id="申请开发-Development-描述文件"><a href="#申请开发-Development-描述文件" class="headerlink" title="申请开发(Development)描述文件"></a>申请开发(Development)描述文件</h2><h3 id="申请发布-Distribution-证书和描述文件"><a href="#申请发布-Distribution-证书和描述文件" class="headerlink" title="申请发布(Distribution)证书和描述文件"></a>申请发布(Distribution)证书和描述文件</h3><h3 id="申请发布-Production-证书"><a href="#申请发布-Production-证书" class="headerlink" title="申请发布(Production)证书"></a>申请发布(Production)证书</h3><h3 id="申请发布-Distribution-描述文"><a href="#申请发布-Distribution-描述文" class="headerlink" title="申请发布(Distribution)描述文"></a>申请发布(Distribution)描述文</h3><p>源地址：<a href="https://ask.dcloud.net.cn/article/152" target="_blank" rel="noopener">Dcloud</a>.<a href="http://www.applicationloader.net/blog/zh/3159.html" target="_blank" rel="noopener">Application Loader</a>.</p>
+<h2 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h2><p>1.必需要有苹果开发者账号，（APP ID）<br>2.并且加入了 “iOS Developer Program” （开发者中心）<br>3.Mac OS 10.9以上系统（如果已经申请p12证书则不需要）</p>
+<h2 id="登录iOS-Dev-Center"><a href="#登录iOS-Dev-Center" class="headerlink" title="登录iOS Dev Center"></a>登录iOS Dev Center</h2><h2 id="申请苹果App-ID"><a href="#申请苹果App-ID" class="headerlink" title="申请苹果App ID"></a>申请苹果App ID</h2><h2 id="生成证书请求文件"><a href="#生成证书请求文件" class="headerlink" title="生成证书请求文件"></a>生成证书请求文件</h2><h3 id="申请开发-Development-证书和描述文件"><a href="#申请开发-Development-证书和描述文件" class="headerlink" title="申请开发(Development)证书和描述文件"></a>申请开发(Development)证书和描述文件</h3><h3 id="申请开发-Development-证书"><a href="#申请开发-Development-证书" class="headerlink" title="申请开发(Development)证书"></a>申请开发(Development)证书</h3><h3 id="添加调试设备"><a href="#添加调试设备" class="headerlink" title="添加调试设备"></a>添加调试设备</h3><h2 id="申请开发-Development-描述文件"><a href="#申请开发-Development-描述文件" class="headerlink" title="申请开发(Development)描述文件"></a>申请开发(Development)描述文件</h2><h3 id="申请发布-Distribution-证书和描述文件"><a href="#申请发布-Distribution-证书和描述文件" class="headerlink" title="申请发布(Distribution)证书和描述文件"></a>申请发布(Distribution)证书和描述文件</h3><h3 id="申请发布-Production-证书"><a href="#申请发布-Production-证书" class="headerlink" title="申请发布(Production)证书"></a>申请发布(Production)证书</h3><h3 id="申请发布-Distribution-描述文"><a href="#申请发布-Distribution-描述文" class="headerlink" title="申请发布(Distribution)描述文"></a>申请发布(Distribution)描述文</h3><p>源地址：<a href="https://ask.dcloud.net.cn/article/152" target="_blank" rel="noopener">Dcloud</a>.<br>app开发助手，iOS证书申请，创建iOS开发者证书、iOS发布证书等各类证书，<br><a href="https://bbs.reactnative.cn/topic/3600/2019%E5%B9%B4%E6%9C%80%E6%96%B0ios%E5%BA%94%E7%94%A8%E4%B8%8A%E6%9E%B6%E5%88%B0app-store%E6%B5%81%E7%A8%8B-%E8%AF%A6%E7%BB%86%E5%9B%BE%E6%96%87" target="_blank" rel="noopener">https://bbs.reactnative.cn/topic/3600/2019%E5%B9%B4%E6%9C%80%E6%96%B0ios%E5%BA%94%E7%94%A8%E4%B8%8A%E6%9E%B6%E5%88%B0app-store%E6%B5%81%E7%A8%8B-%E8%AF%A6%E7%BB%86%E5%9B%BE%E6%96%87</a><br><a href="http://www.applicationloader.net/blog/zh/3159.html" target="_blank" rel="noopener">Application Loader</a>.</p>
 
         </div>
 
@@ -186,7 +189,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-12-10T07:50:52.356Z" itemprop="dateUpdated">2019-12-10 15:50:52</time>
+    最后更新时间：<time datetime="2020-01-09T09:44:41.828Z" itemprop="dateUpdated">2020-01-09 17:44:41</time>
 </span><br>
 
 
@@ -385,7 +388,7 @@
         </p>
     </div>
     <div class="bottom">
-        <p><span>十年 &copy; 2015 - 2019</span>
+        <p><span>十年 &copy; 2015 - 2020</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
