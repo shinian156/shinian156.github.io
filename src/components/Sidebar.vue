@@ -192,7 +192,8 @@ const categories = ref<Category[]>([
     articles: [
       { id: '40-Git与GitHub', title: 'Git 与 GitHub 基础' },
       { id: '41-GitHub协作', title: 'GitHub 协作流程' },
-      { id: '42-Git高级操作', title: 'Git 高级操作与 Hooks' }
+      { id: '42-Git高级操作', title: 'Git 高级操作与 Hooks' },
+      { id: '62-GitHub部署流程', title: 'GitHub 部署流程' }
     ]
   },
   {
@@ -205,6 +206,14 @@ const categories = ref<Category[]>([
       { id: '50-树与图', title: '树与图' },
       { id: '51-排序算法', title: '排序算法' },
       { id: '52-动态规划', title: '动态规划' }
+    ]
+  },
+  {
+    name: '前端常用设计模式',
+    icon: '🔧',
+    expanded: false,
+    articles: [
+      { id: '61-前端设计模式', title: '前端常用设计模式' }
     ]
   },
   {
