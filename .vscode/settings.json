@@ -1,0 +1,39 @@
+{
+  "name": "frontend-blog",
+  "settings": {
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+    "vue.inlayHints.optionsWrapperEnabled": false,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "[vue]": {
+      "editor.defaultFormatter": "Vue.volar"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.associations": {
+      "*.vue": "vue"
+    },
+    "path-intellisense.autoTriggerAfterDelay": 500,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.wordWrap": "on"
+  },
+  "recommendations": [
+    "Vue.volar",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "editorconfig.editorconfig"
+  ]
+}
