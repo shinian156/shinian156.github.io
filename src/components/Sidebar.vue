@@ -230,12 +230,16 @@ const categories = ref<Category[]>([
     ]
   },
   {
-    name: '量化交易',
+    name: '股票分析',
     icon: '📈',
     expanded: false,
     articles: [
       { id: '29-量化交易入门', title: '量化交易入门' },
-      { id: '30-量化交易策略实战', title: '量化交易策略实战' }
+      { id: '30-量化交易策略实战', title: '量化交易策略实战' },
+      { id: '62-常见K线图', title: '常见K线图形态' },
+      { id: '63-龙头战法', title: '龙头战法' },
+      { id: '64-游资操盘手法', title: '游资操盘手法' },
+      { id: '65-情绪周期', title: '情绪周期' }
     ]
   }
 ])
