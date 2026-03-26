@@ -64,6 +64,14 @@ import { marked } from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
 
+// 配置 marked - 确保 SVG 等 HTML 元素正确渲染
+marked.use({
+  breaks: true,
+  gfm: true,
+  // 允许原始 HTML，不进行任何过滤
+  renderer: null, // 使用默认渲染器
+})
+
 const route = useRoute()
 
 interface Article {
@@ -237,6 +245,7 @@ const categoryMap: Record<string, string> = {
   '06-Vue组件库开发': '前端框架',
   '03-Vue2源码解析': '前端框架',
   '04-Vue3源码解析': '前端框架',
+  '73-Vue-SSR服务端渲染': '前端框架',
   // 前端 CSS/JS 库
   '31-TailwindCSS': '前端 CSS/JS 库',
   '32-Animate': '前端 CSS/JS 库',
@@ -252,10 +261,16 @@ const categoryMap: Record<string, string> = {
   // 构建与打包
   '20-包管理工具': '构建与打包',
   '21-构建工具': '构建与打包',
+  // 微前端
+  '66-微前端框架对比': '微前端',
+  '67-从0到1实现微前端': '微前端',
   // App 开发
   '27-uni-app': 'App 开发',
   '28-Flutter': 'App 开发',
   '22-App上架应用商店流程': 'App 开发',
+  '68-uni-app集成支付': 'App 开发',
+  '69-uni-app消息推送': 'App 开发',
+  '70-第三方授权登录': 'App 开发',
   // JavaScript 核心
   '06-JavaScript': 'JavaScript 核心',
   '07-JavaScript高级特性': 'JavaScript 核心',
@@ -273,8 +288,12 @@ const categoryMap: Record<string, string> = {
   // Node.js
   '11-Node.js': 'Node.js',
   '12-Koa2后端开发': 'Node.js',
+  '74-NestJS后端开发': 'Node.js',
   '39-NodeCLI': 'Node.js',
   '60-Vue3CLI从0到1': 'Node.js',
+  '72-Node.js数据库': 'Node.js',
+  // Node.js 桌面端
+  '71-Electron桌面端从0到1': 'Node.js 桌面端',
   // Python
   '25-Python': 'Python',
   '26-Flask最佳实战': 'Python',
@@ -288,10 +307,6 @@ const categoryMap: Record<string, string> = {
   // 容器化部署
   '23-Docker': '容器化部署',
   '24-Docker集成Jenkins': '容器化部署',
-  // Git 与 GitHub
-  '40-Git与GitHub': 'Git 与 GitHub',
-  '41-GitHub协作': 'Git 与 GitHub',
-  '42-Git高级操作': 'Git 与 GitHub',
   // 数据结构与算法
   '48-数组与链表': '数据结构与算法',
   '49-栈与队列': '数据结构与算法',
@@ -305,9 +320,20 @@ const categoryMap: Record<string, string> = {
   '56-Web渗透': 'Kali 及渗透',
   '57-密码攻击': 'Kali 及渗透',
   '58-社工攻防': 'Kali 及渗透',
-  // 量化交易
-  '29-量化交易入门': '量化交易',
-  '30-量化交易策略实战': '量化交易'
+  // 前端常用设计模式
+  '61-前端设计模式': '前端常用设计模式',
+  // Git 与 GitHub
+  '40-Git与GitHub': 'Git 与 GitHub',
+  '41-GitHub协作': 'Git 与 GitHub',
+  '42-Git高级操作': 'Git 与 GitHub',
+  '62-GitHub部署流程': 'Git 与 GitHub',
+  // 股票分析
+  '29-量化交易入门': '股票分析',
+  '30-量化交易策略实战': '股票分析',
+  '62-常见K线图': '股票分析',
+  '63-龙头战法': '股票分析',
+  '64-游资操盘手法': '股票分析',
+  '65-情绪周期': '股票分析'
 }
 
 // 模拟文章数据
@@ -974,7 +1000,7 @@ onUnmounted(() => {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   background: white;
@@ -1052,6 +1078,24 @@ onUnmounted(() => {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   margin: 1.5rem 0;
   display: block;
+}
+
+/* SVG 样式 - 确保K线图完整显示 */
+.article-content svg {
+  max-width: 100%;
+  width: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+  margin: 1.5rem 0;
+  display: block;
+}
+
+/* 表格中的 SVG 也要显示完整 */
+.article-content table svg {
+  overflow: visible !important;
+  max-width: none;
+  width: auto !important;
+  height: auto !important;
 }
 
 /* 任务列表 */
@@ -1548,6 +1592,13 @@ onUnmounted(() => {
   .article-content img {
     border-radius: 6px;
     margin: 1rem 0;
+  }
+
+  /* 移动端SVG样式 */
+  .article-content svg {
+    max-width: 100%;
+    height: auto;
+    overflow: visible !important;
   }
 
   .article-actions {
@@ -2070,7 +2121,8 @@ onUnmounted(() => {
 }
 
 /* 图片样式 */
-.article-content img {
+.article-content img,
+.article-content svg {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
@@ -2081,9 +2133,23 @@ onUnmounted(() => {
   transition: all 0.3s;
 }
 
+/* SVG 特殊样式 - 确保显示完整 */
+.article-content svg {
+  max-width: 100%;
+  width: auto !important;
+  height: auto !important;
+  min-height: 40px;
+  overflow: visible !important;
+}
+
 .article-content img:hover {
   transform: scale(1.02);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* SVG hover 效果 */
+.article-content svg:hover {
+  transform: scale(1.01);
 }
 
 /* 删除线 */
@@ -2266,6 +2332,13 @@ onUnmounted(() => {
   /* 移动端浅色主题 - 代码高亮 */
   .article-content pre .hljs {
     color: #24292e;
+  }
+
+  /* 移动端SVG样式 - 确保K线图完整显示 */
+  .article-content svg {
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
   }
 
   .article-content pre .hljs-comment,

@@ -79,6 +79,7 @@ const categories = ref<Category[]>([
       { id: '01-Vue', title: 'Vue' },
       { id: '05-Vue-Router', title: 'Vue Router' },
       { id: '02-Vuex-Pinia', title: 'Vuex 与 Pinia 对比' },
+      { id: '73-Vue-SSR服务端渲染', title: 'Vue SSR 服务端渲染' },
       { id: '06-Vue组件库开发', title: 'Vue 组件库开发' },
       { id: '03-Vue2源码解析', title: 'Vue2 源码解析' },
       { id: '04-Vue3源码解析', title: 'Vue3 源码解析' }
@@ -118,13 +119,25 @@ const categories = ref<Category[]>([
     ]
   },
   {
+    name: '微前端',
+    icon: '🧩',
+    expanded: false,
+    articles: [
+      { id: '66-微前端框架对比', title: '主流微前端框架对比' },
+      { id: '67-从0到1实现微前端', title: '从 0 到 1 实现微前端' }
+    ]
+  },
+  {
     name: 'App 开发',
     icon: '📱',
     expanded: false,
     articles: [
       { id: '27-uni-app', title: 'uni-app' },
       { id: '28-Flutter', title: 'Flutter' },
-      { id: '22-App上架应用商店流程', title: 'App 上架流程' }
+      { id: '22-App上架应用商店流程', title: 'App 上架流程' },
+      { id: '68-uni-app集成支付', title: 'uni-app 集成支付' },
+      { id: '69-uni-app消息推送', title: 'uni-app 消息推送' },
+      { id: '70-第三方授权登录', title: '第三方授权登录' }
     ]
   },
   {
@@ -172,8 +185,18 @@ const categories = ref<Category[]>([
     articles: [
       { id: '11-Node.js', title: 'Node.js' },
       { id: '12-Koa2后端开发', title: 'Koa2' },
+      { id: '74-NestJS后端开发', title: 'NestJS 后端开发' },
       { id: '39-NodeCLI', title: 'Node.js 搭建 CLI' },
-      { id: '60-Vue3CLI从0到1', title: 'Vue3 CLI 从 0 到 1' }
+      { id: '60-Vue3CLI从0到1', title: 'Vue3 CLI 从 0 到 1' },
+      { id: '72-Node.js数据库', title: 'Node.js 数据库' }
+    ]
+  },
+  {
+    name: 'Node.js 桌面端',
+    icon: '🖥️',
+    expanded: false,
+    articles: [
+      { id: '71-Electron桌面端从0到1', title: 'Electron 从 0 到 1' }
     ]
   },
   {
