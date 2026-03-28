@@ -115,7 +115,9 @@ const categories = ref<Category[]>([
     expanded: false,
     articles: [
       { id: '20-包管理工具', title: 'npm、pnpm、npx、yarn' },
-      { id: '21-构建工具', title: '构建工具' }
+      { id: '75-Webpack', title: 'Webpack' },
+      { id: '76-Vite', title: 'Vite' },
+      { id: '77-Rollup', title: 'Rollup' }
     ]
   },
   {

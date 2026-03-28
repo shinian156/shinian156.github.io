@@ -21,7 +21,7 @@
             <span class="meta-text">{{ article.views }} 次阅读</span>
           </span>
         </div>
-      </header>
+        </header>
 
       <div class="article-content" v-html="article.content" @click="handleContentClick"></div>
 
@@ -260,7 +260,9 @@ const categoryMap: Record<string, string> = {
   '19-代码规范': '前端性能优化',
   // 构建与打包
   '20-包管理工具': '构建与打包',
-  '21-构建工具': '构建与打包',
+  '75-Webpack': '构建与打包',
+  '76-Vite': '构建与打包',
+  '77-Rollup': '构建与打包',
   // 微前端
   '66-微前端框架对比': '微前端',
   '67-从0到1实现微前端': '微前端',
@@ -559,49 +561,6 @@ onUnmounted(() => {
   gap: 6px;
   color: #666;
   font-size: 0.9rem;
-}
-
-/* 目录样式 */
-.article-toc {
-  margin-bottom: 30px;
-  padding: 20px 0;
-  border-left: 4px solid #42b883;
-}
-
-.toc-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 15px;
-  padding-left: 15px;
-}
-
-.toc-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.toc-item {
-  padding: 8px 0;
-}
-
-.toc-link {
-  color: #555;
-  text-decoration: none;
-  font-size: 0.95rem;
-  display: block;
-  padding: 6px 15px;
-  transition: all 0.2s;
-  cursor: pointer;
-  border-left: 2px solid transparent;
-}
-
-.toc-link:hover {
-  color: #42b883;
-  background: rgba(66, 184, 131, 0.05);
-  border-left-color: #42b883;
-  padding-left: 20px;
 }
 
 .meta-icon {
@@ -1329,31 +1288,6 @@ onUnmounted(() => {
   .meta-item {
     font-size: 0.85rem;
     color: #666;
-  }
-
-  /* 移动端目录样式 */
-  .article-toc {
-    padding: 15px 0;
-    border-left-width: 3px;
-  }
-
-  .toc-title {
-    font-size: 1rem;
-    margin-bottom: 12px;
-    padding-left: 12px;
-  }
-
-  .toc-item {
-    padding: 6px 0;
-  }
-
-  .toc-link {
-    font-size: 0.9rem;
-    padding: 5px 12px;
-  }
-
-  .toc-link:hover {
-    padding-left: 16px;
   }
 
   .meta-icon {

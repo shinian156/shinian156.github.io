@@ -93,7 +93,9 @@ const categories = ref<Category[]>([
     expanded: false,
     articles: [
       { id: '20-包管理工具', title: 'npm、pnpm、npx、yarn' },
-      { id: '21-构建工具', title: '构建工具' }
+      { id: '75-Webpack', title: 'Webpack' },
+      { id: '76-Vite', title: 'Vite' },
+      { id: '77-Rollup', title: 'Rollup' }
     ]
   },
   {
@@ -249,7 +251,8 @@ const categories = ref<Category[]>([
       { id: '55-漏洞扫描', title: '漏洞扫描与利用' },
       { id: '56-Web渗透', title: 'Web 渗透测试' },
       { id: '57-密码攻击', title: '密码攻击与破解' },
-      { id: '58-社工攻防', title: '社会工程学攻防' }
+      { id: '58-社工攻防', title: '社会工程学攻防' },
+      { id: '59-WiFi渗透测试', title: 'WiFi 渗透测试实战' }
     ]
   },
   {
