@@ -2,18 +2,6 @@
 
 > 涵盖 Animate.css、GSAP、Motion One、AOS、Lottie 等主流动画库
 
-## 目录
-
-1. [Animate.css 开箱即用动画](#一animate-css-开箱即用的纯-css-动画)
-2. [GSAP 高级动画引擎](#二gsap-高级动画引擎)
-3. [Motion One 现代动画库](#三motion-one-现代动画库)
-4. [AOS 滚动动画](#四aos-滚动动画)
-5. [Lottie 复杂动画](#五lottie-复杂动画)
-6. [动画性能优化](#六动画性能优化)
-7. [常见问题](#七常见问题)
-
----
-
 ## 一、Animate.css —— 开箱即用的纯 CSS 动画
 
 ### 安装
