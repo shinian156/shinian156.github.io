@@ -2,6 +2,30 @@
 
 > 涵盖 Animate.css、GSAP、Motion One、AOS、Lottie 等主流动画库
 
+## 目录
+
+- [一、Animate.css —— 开箱即用的纯 CSS 动画](#一animatecss-开箱即用的纯-css-动画)
+  - [安装](#安装)
+  - [基本使用](#基本使用)
+  - [常用动画类](#常用动画类)
+  - [控制速度和延迟](#控制速度和延迟)
+  - [用 JS 控制动画](#用-js-控制动画)
+- [二、GSAP —— 专业级 JS 动画引擎](#二gsap-专业级-js-动画引擎)
+  - [安装](#安装)
+  - [基础动画](#基础动画)
+  - [时间线（Timeline）](#时间线timeline)
+  - [ScrollTrigger 滚动触发](#scrolltrigger-滚动触发)
+  - [在 Vue 中使用](#在-vue-中使用)
+- [三、Motion One —— 基于 Web Animations API 的现代动画库](#三motion-one-基于-web-animations-api-的现代动画库)
+- [四、AOS —— 滚动动画库（简单易用）](#四aos-滚动动画库简单易用)
+- [五、Lottie —— JSON 驱动的矢量动画](#五lottie-json-驱动的矢量动画)
+- [六、CSS 原生动画最佳实践](#六css-原生动画最佳实践)
+  - [关键帧动画](#关键帧动画)
+  - [过渡动画](#过渡动画)
+  - [性能优化原则](#性能优化原则)
+- [七、各库对比与选型](#七各库对比与选型)
+
+---
 ## 一、Animate.css —— 开箱即用的纯 CSS 动画
 
 ### 安装

@@ -67,6 +67,7 @@ const categories = ref<Category[]>([
       { id: '05-Vue-Router', title: 'Vue Router' },
       { id: '02-Vuex-Pinia', title: 'Vuex 与 Pinia 对比' },
       { id: '73-Vue-SSR服务端渲染', title: 'Vue SSR 服务端渲染' },
+      { id: '78-Vue通用业务组件开发', title: 'Vue 通用业务组件开发' },
       { id: '06-Vue组件库开发', title: 'Vue 组件库开发' },
       { id: '03-Vue2源码解析', title: 'Vue2 源码解析' },
       { id: '04-Vue3源码解析', title: 'Vue3 源码解析' }
@@ -81,6 +82,7 @@ const categories = ref<Category[]>([
       { id: '33-Lodash-Underscore', title: 'Lodash & Underscore' },
       { id: '34-Day.js-Moment', title: 'Day.js & Moment.js' },
       { id: '35-Axios-Fetch', title: 'Axios & Fetch' },
+      { id: '79-form-create表单生成器', title: 'form-create 表单生成器' },
       { id: '36-Vueuse', title: 'VueUse 工具库' },
       { id: '37-Swiper', title: 'Swiper 轮播库' },
       { id: '38-工具函数库', title: '常用工具函数库' }
@@ -99,7 +101,9 @@ const categories = ref<Category[]>([
     icon: '⚡',
     articles: [
       { id: '20-包管理工具', title: 'npm、pnpm、npx、yarn' },
-      { id: '21-构建工具', title: '构建工具' }
+      { id: '75-Webpack5', title: 'Webpack 5 完全指南' },
+      { id: '76-Vite原理', title: 'Vite 原理深度解析' },
+      { id: '77-Rollup', title: 'Rollup 打包原理' }
     ]
   },
   {

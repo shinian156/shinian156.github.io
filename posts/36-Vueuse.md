@@ -2,6 +2,37 @@
 
 > Vue 3 组合式函数的瑞士军刀，200+ 实用工具，大幅提升开发效率
 
+## 目录
+
+- [一、简介与安装](#一简介与安装)
+- [二、状态管理](#二状态管理)
+  - [useStorage —— 响应式持久化存储](#usestorage-响应式持久化存储)
+  - [useRefHistory —— 历史记录（撤销/重做）](#userefhistory-历史记录撤销重做)
+- [三、浏览器 API](#三浏览器-api)
+  - [useEventListener —— 事件监听（自动清理）](#useeventlistener-事件监听自动清理)
+  - [useWindowSize —— 响应式窗口尺寸](#usewindowsize-响应式窗口尺寸)
+  - [useScroll —— 滚动状态](#usescroll-滚动状态)
+  - [useIntersectionObserver —— 元素是否可见](#useintersectionobserver-元素是否可见)
+- [四、传感器与设备](#四传感器与设备)
+  - [useMouse —— 鼠标位置](#usemouse-鼠标位置)
+  - [useDeviceOrientation —— 设备方向（移动端）](#usedeviceorientation-设备方向移动端)
+  - [useBattery —— 电池状态](#usebattery-电池状态)
+  - [useGeolocation —— 地理位置](#usegeolocation-地理位置)
+- [五、网络状态](#五网络状态)
+  - [useNetwork —— 网络信息](#usenetwork-网络信息)
+  - [useFetch —— 响应式请求](#usefetch-响应式请求)
+- [六、工具函数](#六工具函数)
+  - [useDebounce / useThrottle —— 防抖节流](#usedebounce-usethrottle-防抖节流)
+  - [useClipboard —— 剪贴板](#useclipboard-剪贴板)
+  - [useTitle —— 动态页面标题](#usetitle-动态页面标题)
+  - [useDark —— 暗色模式](#usedark-暗色模式)
+- [七、动画](#七动画)
+  - [useInterval / useTimeout —— 响应式计时器](#useinterval-usetimeout-响应式计时器)
+  - [useTransition —— 数值过渡动画](#usetransition-数值过渡动画)
+- [八、实用组合示例](#八实用组合示例)
+  - [无限滚动加载](#无限滚动加载)
+
+---
 ## 一、简介与安装
 
 VueUse 是基于 Vue 3 Composition API 构建的工具函数集合，涵盖浏览器 API、传感器、状态、动画、网络等各类场景。

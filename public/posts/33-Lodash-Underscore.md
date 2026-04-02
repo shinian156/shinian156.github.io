@@ -2,6 +2,31 @@
 
 > 最实用的 JavaScript 工具函数库，日常开发必备
 
+## 目录
+
+- [一、简介与选择](#一简介与选择)
+- [二、数组操作](#二数组操作)
+  - [chunk —— 数组分块](#chunk-数组分块)
+  - [flatten —— 数组扁平化](#flatten-数组扁平化)
+  - [uniq / uniqBy —— 数组去重](#uniq-uniqby-数组去重)
+  - [groupBy —— 分组](#groupby-分组)
+  - [orderBy —— 多字段排序](#orderby-多字段排序)
+  - [difference / intersection / union —— 集合运算](#difference-intersection-union-集合运算)
+- [三、对象操作](#三对象操作)
+  - [cloneDeep —— 深克隆](#clonedeep-深克隆)
+  - [merge / assign —— 对象合并](#merge-assign-对象合并)
+  - [pick / omit —— 选取/排除属性](#pick-omit-选取排除属性)
+  - [get / set —— 安全访问深层属性](#get-set-安全访问深层属性)
+- [四、函数工具](#四函数工具)
+  - [debounce —— 防抖](#debounce-防抖)
+  - [throttle —— 节流](#throttle-节流)
+  - [memoize —— 缓存计算结果](#memoize-缓存计算结果)
+  - [once —— 只执行一次](#once-只执行一次)
+- [五、字符串工具](#五字符串工具)
+- [六、实用工具](#六实用工具)
+- [七、Lodash vs 原生 ES](#七lodash-vs-原生-es)
+
+---
 ## 一、简介与选择
 
 **Lodash** 是 Underscore.js 的超集，性能更好、API 更丰富，目前是最流行的 JS 工具库。现代项目推荐使用 Lodash，Underscore 已逐渐退出主流。
