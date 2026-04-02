@@ -3,7 +3,6 @@
 > 从项目创建到自动化部署，手把手教你将前端项目部署到 GitHub Pages。
 
 ## 目录
-
 - [一、创建 GitHub 仓库](#一创建-github-仓库)
 - [二、本地项目初始化](#二本地项目初始化)
 - [三、配置 GitHub Actions 自动部署](#三配置-github-actions-自动部署)

@@ -1,13 +1,6 @@
 # Node.js 数据库开发
 
 ## 目录
-1. [数据库选型](#数据库选型)
-2. [MySQL 集成](#mysql-集成)
-3. [MongoDB 集成](#mongodb-集成)
-4. [Redis 集成](#redis-集成)
-5. [ORM 框架 Sequelize](#orm-框架-sequelize)
-6. [ORM 框架 Prisma](#orm-框架-prisma)
-7. [数据库最佳实践](#数据库最佳实践)
 
 ---
 

@@ -3,29 +3,17 @@
 > GitFlow 分支策略、Pull Request、Code Review 与团队协作
 
 ## 目录
-
 - [一、分支策略概述](#分支策略概述)
-  - [GitFlow 工作流](#gitflow-工作流)
 - [二、GitFlow 完整流程](#gitflow-完整流程)
-  - [1. 开发新功能](#1-开发新功能)
-  - [2. Pull Request 流程](#2-pull-request-流程)
-  - [3. Code Review](#3-code-review)
-  - [4. 合并与清理](#4-合并与清理)
 - [三、团队协作规范](#团队协作规范)
-  - [Commit Message 规范（Conventional Commits）](#commit-message-规范-conventional-commits)
-  - [分支命名规范](#分支命名规范)
 - [四、保护分支设置](#保护分支设置)
 - [五、GitHub Actions CI/CD](#github-actions-cicd)
-  - [基本工作流](#基本工作流)
-  - [自动部署到 Vercel/GitHub Pages](#自动部署到-vercelgithub-pages)
 - [六、GitHub Issues 与项目管理](#github-issues-与项目管理)
-  - [Issue 模板](#issue-模板)
 - [Bug 描述](#bug-描述)
 - [复现步骤](#复现步骤)
 - [期望行为](#期望行为)
 - [截图](#截图)
 - [环境信息](#环境信息)
-  - [GitHub Projects（看板）](#github-projects-看板)
 - [七、常用协作命令速查](#常用协作命令速查)
 
 ---

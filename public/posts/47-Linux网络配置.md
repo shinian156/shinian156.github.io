@@ -3,22 +3,11 @@
 > IP 地址、网卡配置、DNS、防火墙、网络诊断
 
 ## 目录
-
 - [一、网络基础配置](#网络基础配置)
-  - [查看网络信息](#查看网络信息)
 - [二、临时配置网络](#临时配置网络)
 - [三、永久网络配置](#永久网络配置)
-  - [Ubuntu（Netplan）](#ubuntu-netplan)
-  - [CentOS/Rocky Linux](#centosrocky-linux)
 - [四、防火墙 ufw / iptables / firewalld](#防火墙-ufw--iptables--firewalld)
-  - [ufw（Ubuntu 推荐）](#ufw-ubuntu-推荐)
-  - [iptables（通用）](#iptables-通用)
-  - [firewalld（CentOS/Rocky）](#firewalld-centosrocky)
 - [五、网络诊断命令](#网络诊断命令)
-  - [连通性测试](#连通性测试)
-  - [端口与连接](#端口与连接)
-  - [流量与抓包](#流量与抓包)
-  - [DNS 查询](#dns-查询)
 - [六、SSH 隧道与代理](#ssh-隧道与代理)
 - [七、网络故障排查流程](#网络故障排查流程)
 - [八、实用网络配置示例](#实用网络配置示例)

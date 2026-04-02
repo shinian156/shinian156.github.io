@@ -1,14 +1,6 @@
 # Vue SSR 服务端渲染
 
 ## 目录
-1. [SSR 简介](#ssr-简介)
-2. [SSR vs CSR vs SSG](#ssr-vs-csr-vs-ssg)
-3. [Nuxt.js 框架](#nuxtjs-框架)
-4. [手动搭建 Vue SSR](#手动搭建-vue-ssr)
-5. [数据预取](#数据预取)
-6. [SEO 优化](#seo-优化)
-7. [性能优化](#性能优化)
-8. [部署方案](#部署方案)
 
 ---
 

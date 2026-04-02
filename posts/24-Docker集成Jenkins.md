@@ -2,14 +2,6 @@
 
 ## 目录
 
-1. [概述](#概述)
-2. [环境准备](#环境准备)
-3. [Docker 中运行 Jenkins](#docker-中运行-jenkins)
-4. [Jenkins 配置](#jenkins-配置)
-5. [Pipeline 脚本](#pipeline-脚本)
-6. [自动化部署](#自动化部署)
-7. [最佳实践](#最佳实践)
-
 ---
 
 ## 概述

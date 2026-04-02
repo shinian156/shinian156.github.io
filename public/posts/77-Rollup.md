@@ -2,16 +2,6 @@
 
 ## 目录
 
-1. [Rollup 简介](#rollup-简介)
-2. [Rollup vs Webpack](#rollup-vs-webpack)
-3. [快速开始](#快速开始)
-4. [配置文件](#配置文件)
-5. [插件系统](#插件系统)
-6. [代码分割](#代码分割)
-7. [Tree Shaking](#tree-shaking)
-8. [构建目标](#构建目标)
-9. [最佳实践](#最佳实践)
-
 ---
 
 ## Rollup 简介
