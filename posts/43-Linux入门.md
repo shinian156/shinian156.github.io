@@ -3,19 +3,10 @@
 > 从安装到基础操作，全面掌握 Linux
 
 ## 目录
-
 - [一、Linux 简介](#linux-简介)
-  - [什么是 Linux](#什么是-linux)
-  - [常见发行版](#常见发行版)
-  - [安装与启动](#安装与启动)
 - [二、文件系统结构](#文件系统结构)
 - [三、基础命令](#基础命令)
-  - [目录操作](#目录操作)
-  - [文件操作](#文件操作)
-  - [文本处理](#文本处理)
 - [四、用户与权限](#用户与权限)
-  - [用户管理](#用户管理)
-  - [权限体系](#权限体系)
 - [五、软件安装](#软件安装)
 - [六、进程管理](#进程管理)
 - [七、网络基础](#网络基础)
@@ -101,67 +92,6 @@ wsl --list -v
 ## 三、基础命令
 
 ### 目录操作
-
-```bash
-pwd                 # 显示当前目录路径
-ls                  # 列出文件
-ls -la              # 详细列表（含隐藏文件）
-ls -lh              # 人性化大小
-ls -lt              # 按修改时间排序
-ls -R               # 递归列出子目录
-cd /path/to/dir     # 切换目录
-cd ~                # 返回主目录
-cd -                # 返回上一个目录
-cd ..               # 返回上级目录
-```
-
-### 文件操作
-
-```bash
-# 创建
-touch file.txt            # 创建空文件
-mkdir dir1                # 创建目录
-mkdir -p dir1/dir2/dir3   # 递归创建目录
-
-# 查看
-cat file.txt              # 显示文件内容
-less file.txt             # 分页查看（可上下滚动）
-head -n 20 file.txt       # 查看前20行
-tail -n 50 file.txt       # 查看后50行
-tail -f /var/log/syslog   # 实时追踪日志
-
-# 复制/移动/删除
-cp file1.txt file2.txt    # 复制
-cp -r dir1 dir2/           # 递归复制目录
-mv file1.txt /new/path/   # 移动
-mv oldname.txt newname.txt # 重命名
-rm file.txt               # 删除文件
-rm -rf dir/               # 强制递归删除（危险！）
-rmdir empty-dir/          # 删除空目录
-
-# 搜索
-find / -name "*.log" -mtime -7   # 查找7天内修改的日志
-find /home -type f -size +100M    # 查找大于100M的文件
-locate filename                     # 快速文件搜索（需 updatedb）
-which node                          # 查找命令路径
-```
-
-### 文本处理
-
-```bash
-# 查找内容
-grep "keyword" file.txt
-grep -r "keyword" /var/log/
-grep -n "error" file.txt          # 显示行号
-grep -v "comment" file.txt         # 反向查找（不包含的）
-
-# 管道与重定向
-echo "hello" > file.txt            # 覆盖写入
-echo "world" >> file.txt           # 追加写入
-cat file1.txt file2.txt > file3.txt  # 合并
-command > /dev/null 2>&1          # 丢弃所有输出
-cat file.txt | sort | uniq        # 排序去重
-```
 
 ---
 

@@ -1,23 +1,21 @@
 # TypeScript 核心知识
 
 ## 目录
-
-1. [TypeScript 基础](#一typescript-基础)
-2. [基础类型](#二基础类型)
-3. [函数类型](#三函数类型)
-4. [接口](#四接口interface)
-5. [类型别名](#五类型别名type)
-6. [泛型](#六泛型generics)
-7. [枚举](#七枚举enum)
-8. [类型断言与类型守卫](#八类型断言与类型守卫)
-9. [模块与命名空间](#九模块与命名空间)
-10. [装饰器](#十装饰器)
-11. [高级类型](#十一高级类型)
-12. [tsconfig.json 配置](#十二tsconfigjson-配置)
-13. [常见知识点](#十三常见知识点)
+- [一、TypeScript 基础](#一typescript-基础)
+- [二、基础类型](#二基础类型)
+- [三、函数类型](#三函数类型)
+- [四、接口（Interface）](#四接口interface)
+- [五、类型别名（Type）](#五类型别名type)
+- [六、泛型（Generics）](#六泛型generics)
+- [七、枚举（Enum）](#七枚举enum)
+- [八、类型断言与类型守卫](#八类型断言与类型守卫)
+- [九、模块与命名空间](#九模块与命名空间)
+- [十、装饰器（Decorators）](#十装饰器decorators)
+- [十一、高级类型](#十一高级类型)
+- [十二、tsconfig.json 配置](#十二tsconfigjson-配置)
+- [十三、常见知识点](#十三常见知识点)
 
 ---
-
 ## 一、TypeScript 基础
 
 ### 1. TypeScript vs JavaScript

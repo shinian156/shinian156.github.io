@@ -3,35 +3,15 @@
 > OWASP Top 10 漏洞原理与利用，Burp Suite 实战技巧
 
 ## 目录
-
 - [⚠️ 免责声明](#免责声明)
 - [一、渗透测试流程](#渗透测试流程)
 - [二、SQL 注入](#sql-注入)
-  - [原理](#原理)
-  - [常见类型](#常见类型)
-  - [防御措施](#防御措施)
 - [三、XSS（跨站脚本攻击）](#xss-跨站脚本攻击)
-  - [三种类型](#三种类型)
-  - [常见 Payload](#常见-payload)
-  - [防御措施](#防御措施)
 - [四、CSRF（跨站请求伪造）](#csrf-跨站请求伪造)
-  - [原理](#原理)
-  - [攻击示例](#攻击示例)
-  - [防御措施](#防御措施)
 - [五、SSRF（服务器端请求伪造）](#ssrf-服务器端请求伪造)
-  - [原理](#原理)
-  - [攻击示例](#攻击示例)
-  - [防御措施](#防御措施)
 - [六、文件上传漏洞](#文件上传漏洞)
-  - [常见绕过](#常见绕过)
-  - [防御措施](#防御措施)
 - [七、敏感信息泄露](#敏感信息泄露)
-  - [常见泄露点](#常见泄露点)
-  - [敏感文件利用](#敏感文件利用)
 - [八、Burp Suite 实战技巧](#burp-suite-实战技巧)
-  - [常用功能](#常用功能)
-  - [Intruder 攻击类型](#intruder-攻击类型)
-  - [常用 Burp 插件](#常用-burp-插件)
 - [九、API 安全测试](#api-安全测试)
 
 ---
@@ -298,26 +278,6 @@ saved_path = os.path.join(UPLOAD_DIR, new_name)
 /application.properties
 
 # 目录遍历
-# Tomcat: /manager/html
-# phpMyAdmin: /phpmyadmin
-# Jenkins: /jenkins/
-```
-
-### 敏感文件利用
-
-```bash
-# 下载 Git 仓库
-git clone http://target.com/.git
-
-# 获取数据库配置
-curl http://target.com/.env
-
-# 敏感 URL
-/.git/config              # Git 配置（可能含凭证）
-/robots.txt               # 敏感路径
-/sitemap.xml             # 站点地图
-/.well-known/security.txt  # 安全策略文件
-```
 
 ---
 

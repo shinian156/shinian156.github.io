@@ -3,19 +3,11 @@
 > 变基、cherry-pick、子模块、Git Hooks 自动化
 
 ## 目录
-
 - [一、变基（Rebase）](#变基-rebase)
-  - [基本变基](#基本变基)
-  - [交互式变基（压缩提交）](#交互式变基-压缩提交)
-  - [变基原理](#变基原理)
 - [二、Cherry-Pick](#cherry-pick)
 - [三、Git 子模块（Submodule）](#git-子模块-submodule)
 - [四、Git Stash（暂存）](#git-stash-暂存)
 - [五、Git Hooks](#git-hooks)
-  - [常用 Hook 类型](#常用-hook-类型)
-  - [commit-msg 规范检查](#commit-msg-规范检查)
-  - [pre-commit（代码检查）](#pre-commit-代码检查)
-  - [Husky（管理 Git Hooks）](#husky-管理-git-hooks)
 - [六、高级查询](#高级查询)
 - [七、Git 配置别名](#git-配置别名)
 
