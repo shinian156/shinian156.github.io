@@ -138,7 +138,8 @@ const categories = ref<Category[]>([
     expanded: false,
     articles: [
       { id: '09-TypeScript', title: 'TypeScript' },
-      { id: '10-TypeScript进阶', title: 'TypeScript 进阶' }
+      { id: '10-TypeScript进阶', title: 'TypeScript 进阶' },
+      { id: '80-TypeScript常用实战用法', title: 'TypeScript 常用实战用法' }
     ]
   },
   {

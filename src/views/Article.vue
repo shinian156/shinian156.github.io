@@ -282,6 +282,7 @@ const categoryMap: Record<string, string> = {
   // TypeScript
   '09-TypeScript': 'TypeScript',
   '10-TypeScript进阶': 'TypeScript',
+  '80-TypeScript常用实战用法': 'TypeScript',
   // 数据可视化
   '13-ECharts数据可视化': '数据可视化',
   '14-数据大屏开发': '数据可视化',
