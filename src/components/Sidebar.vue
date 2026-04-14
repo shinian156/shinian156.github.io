@@ -58,6 +58,8 @@ const categories = ref<Category[]>([
       { id: '05-Vue-Router', title: 'Vue Router' },
       { id: '02-Vuex-Pinia', title: 'Vuex 与 Pinia 对比' },
       { id: '73-Vue-SSR服务端渲染', title: 'Vue SSR 服务端渲染' },
+      { id: '82-Vue3基础组件开发', title: 'Vue3 基础组件开发' },
+      { id: '83-Vue3选项式API', title: 'Vue3 选项式 API 使用指南' },
       { id: '78-Vue通用业务组件开发', title: 'Vue 通用业务组件开发' },
       { id: '06-Vue组件库开发', title: 'Vue 组件库开发' },
       { id: '03-Vue2源码解析', title: 'Vue2 源码解析' },

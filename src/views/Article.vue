@@ -247,6 +247,8 @@ const categoryMap: Record<string, string> = {
   '03-Vue2源码解析': '前端框架',
   '04-Vue3源码解析': '前端框架',
   '73-Vue-SSR服务端渲染': '前端框架',
+  '82-Vue3基础组件开发': '前端框架',
+  '83-Vue3选项式API': '前端框架',
   // 前端 CSS/JS 库
   '31-TailwindCSS': '前端 CSS/JS 库',
   '32-Animate': '前端 CSS/JS 库',
