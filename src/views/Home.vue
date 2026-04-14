@@ -20,6 +20,16 @@
     </div>
 
     <div class="content">
+      <!-- 龙头战法技术文档入口 -->
+      <a href="/dragon-main.html" target="_blank" class="dragon-card">
+        <span class="dragon-icon">🐉</span>
+        <div class="dragon-info">
+          <h3>龙头主线行情系统 v3.0</h3>
+          <p>狙盘手·短线交易技术文档 — 情绪龙头战法完整知识体系</p>
+        </div>
+        <span class="dragon-arrow">→</span>
+      </a>
+
       <div class="categories">
         <div
           v-for="category in categories"
@@ -493,6 +503,73 @@ const totalArticles = computed(() =>
   .article-arrow {
     font-size: 1rem;
   }
+}
+
+/* 龙头战法技术文档入口卡片 */
+.dragon-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border: 1px solid #c0392b;
+  border-radius: 12px;
+  padding: 24px 30px;
+  margin-bottom: 30px;
+  text-decoration: none;
+  color: #e6edf3;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(192, 57, 43, 0.15);
+}
+
+.dragon-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(192, 57, 43, 0.3);
+  border-color: #e74c3c;
+}
+
+.dragon-icon {
+  font-size: 2.8rem;
+  flex-shrink: 0;
+}
+
+.dragon-info {
+  flex: 1;
+}
+
+.dragon-info h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e74c3c;
+  margin-bottom: 6px;
+}
+
+.dragon-info p {
+  font-size: 0.9rem;
+  color: #8b949e;
+  margin: 0;
+}
+
+.dragon-arrow {
+  font-size: 1.8rem;
+  color: #c0392b;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+
+.dragon-card:hover .dragon-arrow {
+  transform: translateX(6px);
+}
+
+@media (max-width: 768px) {
+  .dragon-card {
+    padding: 16px 18px;
+    gap: 14px;
+    margin-bottom: 15px;
+  }
+  .dragon-icon { font-size: 2rem; }
+  .dragon-info h3 { font-size: 1.05rem; }
+  .dragon-info p { font-size: 0.82rem; }
+  .dragon-arrow { font-size: 1.4rem; }
 }
 
 /* 小屏手机 */

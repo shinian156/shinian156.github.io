@@ -1,0 +1,2821 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>狙盘手·短线交易技术文档</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    :root {
+      --primary: #c0392b;
+      --primary-dark: #922b21;
+      --primary-light: #e74c3c;
+      --accent: #f39c12;
+      --accent-light: #f9ca24;
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --bg-hover: #1c2128;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --text-dim: #6e7681;
+      --green: #27ae60;
+      --red: #e74c3c;
+      --sidebar-width: 280px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── 顶部导航 ── */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 58px;
+      background: rgba(13,17,23,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 100;
+      gap: 16px;
+    }
+    .topbar-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 18px; font-weight: 700;
+      color: var(--primary-light);
+      text-decoration: none;
+    }
+    .topbar-logo .icon { font-size: 22px; }
+    .topbar-sub {
+      font-size: 12px; color: var(--text-muted);
+      border-left: 1px solid var(--border);
+      padding-left: 16px; margin-left: 4px;
+    }
+    .topbar-right {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .badge {
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 12px;
+    }
+    .search-box {
+      display: flex; align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 12px;
+      gap: 8px;
+    }
+    .search-box input {
+      background: none; border: none; outline: none;
+      color: var(--text); font-size: 13px; width: 180px;
+    }
+    .search-box input::placeholder { color: var(--text-dim); }
+
+    /* ── 侧边栏 ── */
+    .layout {
+      display: flex;
+      padding-top: 58px;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: var(--sidebar-width);
+      position: fixed;
+      top: 58px; bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      padding: 16px 0;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .nav-group { margin-bottom: 4px; }
+    .nav-group-title {
+      padding: 8px 20px 4px;
+      font-size: 11px; font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .nav-item {
+      display: flex; align-items: center;
+      padding: 7px 20px;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 0;
+      transition: all 0.15s;
+      border-left: 2px solid transparent;
+      gap: 8px;
+    }
+    .nav-item:hover {
+      background: var(--bg-hover);
+      color: var(--text);
+    }
+    .nav-item.active {
+      color: var(--primary-light);
+      border-left-color: var(--primary-light);
+      background: rgba(231,76,60,0.08);
+      font-weight: 500;
+    }
+    .nav-item .nav-icon { font-size: 14px; flex-shrink: 0; }
+    .nav-badge {
+      margin-left: auto;
+      background: var(--bg-hover);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 10px;
+      padding: 1px 6px; border-radius: 8px;
+    }
+    .nav-divider {
+      height: 1px; background: var(--border);
+      margin: 10px 16px;
+    }
+
+    /* ── 主内容 ── */
+    .main {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 40px 48px;
+      max-width: 960px;
+    }
+
+    /* ── 面包屑 ── */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text-dim);
+      margin-bottom: 24px;
+    }
+    .breadcrumb span { cursor: pointer; }
+    .breadcrumb span:hover { color: var(--text-muted); }
+    .breadcrumb .sep { color: var(--border); }
+
+    /* ── 页面头部 ── */
+    .page-header { margin-bottom: 36px; }
+    .page-title {
+      font-size: 30px; font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .page-title .title-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .page-desc {
+      font-size: 15px; color: var(--text-muted);
+      max-width: 640px;
+    }
+    .page-meta {
+      display: flex; gap: 16px; margin-top: 14px;
+    }
+    .meta-tag {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; color: var(--text-dim);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 3px 10px; border-radius: 6px;
+    }
+
+    /* ── 统计卡片 ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: var(--primary); }
+    .stat-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+    .stat-value { font-size: 26px; font-weight: 700; color: var(--text); }
+    .stat-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+    .stat-card.red .stat-value { color: var(--red); }
+    .stat-card.gold .stat-value { color: var(--accent); }
+    .stat-card.green .stat-value { color: var(--green); }
+
+    /* ── 章节内容 ── */
+    .section { margin-bottom: 40px; }
+    .section-title {
+      font-size: 20px; font-weight: 600;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-title .s-icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+    .section-num {
+      font-size: 12px;
+      color: var(--text-dim);
+      background: var(--bg-hover);
+      border: 1px solid var(--border);
+      padding: 2px 8px; border-radius: 4px;
+      margin-left: auto;
+    }
+
+    /* ── 内容卡片 ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      border-color: rgba(192,57,43,0.4);
+      box-shadow: 0 2px 12px rgba(192,57,43,0.1);
+    }
+    .card-title {
+      font-size: 15px; font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-body {
+      font-size: 13.5px; color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .card-body ul {
+      padding-left: 18px;
+      margin: 6px 0;
+    }
+    .card-body li { margin: 4px 0; }
+    .card-body strong { color: var(--text); }
+
+    /* ── 规则列表 ── */
+    .rule-list { display: flex; flex-direction: column; gap: 8px; }
+    .rule-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      transition: all 0.15s;
+    }
+    .rule-item:hover { border-color: rgba(192,57,43,0.35); }
+    .rule-num {
+      min-width: 26px; height: 26px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px; font-weight: 700;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .rule-content { flex: 1; }
+    .rule-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .rule-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── 警告/提示块 ── */
+    .alert {
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      border-left: 3px solid;
+      font-size: 13.5px;
+    }
+    .alert-warning {
+      background: rgba(243,156,18,0.08);
+      border-color: var(--accent);
+      color: #f0c060;
+    }
+    .alert-danger {
+      background: rgba(231,76,60,0.08);
+      border-color: var(--red);
+      color: #e88070;
+    }
+    .alert-success {
+      background: rgba(39,174,96,0.08);
+      border-color: var(--green);
+      color: #60c080;
+    }
+    .alert-info {
+      background: rgba(52,152,219,0.08);
+      border-color: #3498db;
+      color: #80b8e8;
+    }
+    .alert strong { font-weight: 700; display: block; margin-bottom: 4px; }
+
+    /* ── 双列网格 ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+    /* ── 标签 ── */
+    .tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 4px;
+      margin-right: 4px;
+    }
+    .tag-red { background: rgba(231,76,60,0.15); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
+    .tag-green { background: rgba(39,174,96,0.15); color: var(--green); border: 1px solid rgba(39,174,96,0.3); }
+    .tag-gold { background: rgba(243,156,18,0.15); color: var(--accent); border: 1px solid rgba(243,156,18,0.3); }
+    .tag-blue { background: rgba(52,152,219,0.15); color: #5dade2; border: 1px solid rgba(52,152,219,0.3); }
+    .tag-gray { background: var(--bg-hover); color: var(--text-dim); border: 1px solid var(--border); }
+
+    /* ── 关键词高亮 ── */
+    .hl { color: var(--accent); font-weight: 600; }
+    .hl-red { color: var(--red); font-weight: 600; }
+    .hl-green { color: var(--green); font-weight: 600; }
+
+    /* ── 进度指示器 ── */
+    .progress-list { display: flex; flex-direction: column; gap: 10px; }
+    .progress-item { }
+    .progress-header {
+      display: flex; justify-content: space-between;
+      font-size: 13px; color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+    .progress-bar {
+      height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 1s ease;
+    }
+
+    /* ── Tab ── */
+    .tabs { margin-bottom: 20px; }
+    .tab-header {
+      display: flex; gap: 2px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .tab-btn {
+      padding: 8px 18px;
+      font-size: 13px; cursor: pointer;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      border-radius: 4px 4px 0 0;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      color: var(--primary-light);
+      border-bottom-color: var(--primary-light);
+      background: rgba(231,76,60,0.05);
+    }
+
+    /* ── 表格 ── */
+    .doc-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .doc-table th {
+      background: var(--bg-hover);
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .doc-table td {
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .doc-table tr:hover td { background: var(--bg-hover); color: var(--text); }
+
+    /* ── 首页英雄区 ── */
+    .hero {
+      background: linear-gradient(135deg, rgba(192,57,43,0.15) 0%, rgba(13,17,23,0) 60%);
+      border: 1px solid rgba(192,57,43,0.2);
+      border-radius: 14px;
+      padding: 36px 40px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(192,57,43,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-title {
+      font-size: 28px; font-weight: 800; color: var(--text);
+      margin-bottom: 10px;
+    }
+    .hero-title span { color: var(--primary-light); }
+    .hero-sub { font-size: 15px; color: var(--text-muted); max-width: 520px; }
+    .hero-motto {
+      margin-top: 18px;
+      font-size: 18px; font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── 章节卡片网格（首页导航） ── */
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .chapter-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chapter-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(192,57,43,0.15);
+    }
+    .chapter-card .cc-icon { font-size: 22px; margin-bottom: 8px; }
+    .chapter-card .cc-title {
+      font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px;
+    }
+    .chapter-card .cc-desc {
+      font-size: 12px; color: var(--text-dim); line-height: 1.5;
+    }
+    .chapter-card .cc-count {
+      margin-top: 8px;
+      font-size: 11px; color: var(--text-dim);
+    }
+
+    /* ── 汉堡菜单按钮 ── */
+    .menu-btn {
+      display: none;
+      align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .menu-btn:hover { background: var(--bg-hover); }
+    .menu-btn .menu-icon {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .menu-btn .menu-icon span {
+      display: block; width: 16px; height: 2px;
+      background: var(--text-muted); border-radius: 1px;
+      transition: all 0.25s;
+      transform-origin: center;
+    }
+    .menu-btn.open .menu-icon span:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+    .menu-btn.open .menu-icon span:nth-child(2) {
+      opacity: 0; transform: scaleX(0);
+    }
+    .menu-btn.open .menu-icon span:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    /* ── 移动端搜索图标 ── */
+    .search-icon-btn {
+      display: none;
+      align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-size: 15px;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .search-icon-btn:hover { background: var(--bg-hover); }
+
+    /* ── 移动端搜索展开条 ── */
+    .mobile-search-bar {
+      display: none;
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      z-index: 99;
+      animation: slideDown 0.2s ease;
+    }
+    .mobile-search-bar.show { display: flex; }
+    .mobile-search-bar input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: var(--text); font-size: 14px;
+      outline: none;
+    }
+    .mobile-search-bar input::placeholder { color: var(--text-dim); }
+    .mobile-search-close {
+      margin-left: 10px;
+      padding: 0 12px;
+      color: var(--text-muted);
+      cursor: pointer; font-size: 13px;
+      white-space: nowrap;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── 侧边栏遮罩 ── */
+    .sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 149;
+      backdrop-filter: blur(2px);
+    }
+    .sidebar-overlay.show { display: block; }
+
+    /* 响应式 */
+    @media (max-width: 1100px) {
+      .main { padding: 28px 24px; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .chapter-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      /* topbar 移动端布局 */
+      .topbar { padding: 0 14px; gap: 10px; }
+      .topbar-sub { display: none; }
+      .badge { display: none; }
+      .search-box { display: none; }
+      .topbar-right { gap: 8px; }
+      .menu-btn { display: flex; }
+      .search-icon-btn { display: flex; }
+
+      /* 侧边栏：默认隐藏，通过 .open 类滑入 */
+      .sidebar {
+        display: block;
+        left: -100%;
+        width: min(280px, 82vw);
+        top: 0; bottom: 0;
+        z-index: 150;
+        transition: left 0.28s cubic-bezier(0.4,0,0.2,1);
+        padding-top: 16px;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.4);
+      }
+      .sidebar.open { left: 0; }
+
+      /* 主内容 */
+      .main { margin-left: 0; padding: 20px 16px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .hero { padding: 22px 20px; }
+      .hero-title { font-size: 22px; }
+      .hero-motto { font-size: 15px; }
+      .chapter-grid { grid-template-columns: 1fr 1fr; }
+      .page-title { font-size: 22px; }
+      .doc-table { font-size: 12px; }
+      .doc-table th, .doc-table td { padding: 7px 8px; }
+    }
+    @media (max-width: 400px) {
+      .chapter-grid { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .topbar-logo { font-size: 15px; }
+    }
+
+    /* 滚动动画 */
+    .fade-in { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <!-- 顶部导航 -->
+  <nav class="topbar">
+    <button class="menu-btn" :class="{ open: sidebarOpen }" @click="toggleSidebar" aria-label="菜单">
+      <div class="menu-icon">
+        <span></span><span></span><span></span>
+      </div>
+    </button>
+    <a class="topbar-logo" @click="goHome">
+      <span class="icon">🎯</span>
+      狙盘手
+    </a>
+    <span class="topbar-sub">短线交易技术文档 v2.0</span>
+    <div class="topbar-right">
+      <div class="search-box">
+        <span>🔍</span>
+        <input v-model="searchQuery" placeholder="搜索技术要点..." @input="handleSearch" />
+      </div>
+      <button class="search-icon-btn" @click="toggleMobileSearch" aria-label="搜索">🔍</button>
+      <span class="badge">185页精华</span>
+    </div>
+  </nav>
+
+  <!-- 移动端搜索展开条 -->
+  <div class="mobile-search-bar" :class="{ show: mobileSearchOpen }">
+    <input
+      v-model="searchQuery"
+      placeholder="搜索技术要点..."
+      @input="handleSearch"
+      ref="mobileSearchInput"
+      autofocus
+    />
+    <span class="mobile-search-close" @click="closeMobileSearch">取消</span>
+  </div>
+
+  <!-- 侧边栏遮罩 -->
+  <div class="sidebar-overlay" :class="{ show: sidebarOpen }" @click="closeSidebar"></div>
+
+  <div class="layout" :style="mobileSearchOpen ? 'padding-top: calc(58px + 54px)' : ''">
+    <!-- 侧边栏 -->
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <div class="nav-group">
+        <div class="nav-group-title">快速导航</div>
+        <div class="nav-item" :class="{ active: currentPage === 'home' }" @click="navigate('home'); closeSidebar()">
+          <span class="nav-icon">🏠</span> 文档首页
+        </div>
+      </div>
+      <div class="nav-divider"></div>
+
+      <div class="nav-group" v-for="group in navGroups" :key="group.key">
+        <div class="nav-group-title">{{ group.label }}</div>
+        <div
+          v-for="item in group.items"
+          :key="item.key"
+          class="nav-item"
+          :class="{ active: currentPage === item.key }"
+          @click="navigate(item.key); closeSidebar()"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          {{ item.label }}
+          <span class="nav-badge" v-if="item.count">{{ item.count }}</span>
+        </div>
+        <div class="nav-divider"></div>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main fade-in" :key="currentPage">
+
+      <!-- ═══════ 首页 ═══════ -->
+      <template v-if="currentPage === 'home'">
+        <div class="breadcrumb">
+          <span>📂 狙盘手</span>
+          <span class="sep">›</span>
+          <span style="color:var(--text)">文档首页</span>
+        </div>
+
+        <div class="hero">
+          <div class="hero-title">狙盘手·<span>短线交易</span>技术文档</div>
+          <div class="hero-sub">
+            系统整理"狙哥学习文件"185页核心精华，涵盖分时图研判、止盈止损、涨停板战法、
+            复盘体系、T位操作等完整短线交易方法论。
+          </div>
+          <div class="hero-motto">慢 即 是 快</div>
+        </div>
+
+        <!-- 统计 -->
+        <div class="stat-grid">
+          <div class="stat-card red">
+            <div class="stat-label">📄 文档总页数</div>
+            <div class="stat-value">185</div>
+            <div class="stat-sub">PDF精华内容</div>
+          </div>
+          <div class="stat-card gold">
+            <div class="stat-label">📚 知识章节</div>
+            <div class="stat-value">7</div>
+            <div class="stat-sub">完整体系框架</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-label">🎯 核心战法</div>
+            <div class="stat-value">20+</div>
+            <div class="stat-sub">实战操盘技术</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">💡 技术要点</div>
+            <div class="stat-value" style="color:var(--text)">225+</div>
+            <div class="stat-sub">细化操作规则</div>
+          </div>
+        </div>
+
+        <!-- 章节导航 -->
+        <div class="section-title" style="margin-bottom:16px">
+          <div class="s-icon">📑</div> 章节导航
+        </div>
+        <div class="chapter-grid">
+          <div class="chapter-card" v-for="c in chapters" :key="c.key" @click="navigate(c.key)">
+            <div class="cc-icon">{{ c.icon }}</div>
+            <div class="cc-title">{{ c.title }}</div>
+            <div class="cc-desc">{{ c.desc }}</div>
+            <div class="cc-count">{{ c.count }} 个知识点</div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning">
+          <strong>⚠️ 核心心法</strong>
+          短线操作只做上升趋势中的票，20日均线以下的票坚决不碰。所有拉连扳都是为了套人，3-5天后必然调整。交易只看成交量和均线。
+        </div>
+      </template>
+
+      <!-- ═══════ 第一章：大盘与分时图 ═══════ -->
+      <template v-if="currentPage === 'chapter1'">
+        <div class="breadcrumb">
+          <span @click="navigate('home')">🏠 首页</span>
+          <span class="sep">›</span>
+          <span style="color:var(--text)">第一章：大盘与分时图研判</span>
+        </div>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-icon">📊</div>
+            第一章：大盘与分时图研判
+          </div>
+          <div class="page-desc">掌握大盘节奏判断、分时图形态识别与量价关系分析，是所有操作的前提基础。</div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📈</div>
+            大盘战法与开仓减仓
+            <span class="section-num">1.1</span>
+          </div>
+          <div class="card">
+            <div class="card-title">🎯 顺势而为原则</div>
+            <div class="card-body">
+              <ul>
+                <li>大盘站上 <strong>20日均线</strong>：短线资金积极，可以进场</li>
+                <li>大盘在20日均线之下：短线资金谨慎，减少开仓</li>
+                <li>早盘一开盘账户普遍赚 <span class="hl-green">3-4%</span>：立刻清仓，当日不再开仓</li>
+                <li>早盘账户普遍亏 <span class="hl-red">7-8%</span>：不要急着清仓，会回血</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">✅ 可以进场的形态</div>
+              <div class="card-body">
+                <ul>
+                  <li>回调等均线后第一次拉升3%左右，然后突破</li>
+                  <li>每次拉升1-2%且突破前高（进攻型）</li>
+                  <li>小N型进攻上升（低点、高点均抬高）</li>
+                  <li>昨日涨停隔日开盘下砸4-5%但均线未掉，低位形成W形</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">❌ 禁止入场的形态</div>
+              <div class="card-body">
+                <ul>
+                  <li>开盘就拉7%，砸破均线立即出</li>
+                  <li>弱区拉直线（庄在出货）</li>
+                  <li>垂直过山车形态</li>
+                  <li>倒N型下降，隔天必低开</li>
+                  <li>开板下砸仅1-2%，性价比不高</li>
+                  <li>尾盘开板，隔天大概率低开</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📉</div>
+            分时图形态与量价关系
+            <span class="section-num">1.2</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">①</div>
+              <div class="rule-content">
+                <div class="rule-title">均线三种走势</div>
+                <div class="rule-desc">
+                  <span class="tag tag-green">向上扬</span> 强区不跌破开盘价、中区守住0%、弱区低开高走<br>
+                  <span class="tag tag-gold">平着走</span> 强区5%均线附近；中区0轴附近（T位）<br>
+                  <span class="tag tag-red">下坡走</span> 股价被均线压着，直接砸下来，假T位，不要接
+                </div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">②</div>
+              <div class="rule-content">
+                <div class="rule-title">成交量判断好坏T位</div>
+                <div class="rule-desc">
+                  下跌中出现<strong>绿柱</strong>不是好T位；下跌且成交量很大（<strong>远离均线且放量</strong>）是好T位；拉上去后成交量必须跟上，只有一根大量柱是不够的
+                </div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">③</div>
+              <div class="rule-content">
+                <div class="rule-title">5/15分钟图的陷阱</div>
+                <div class="rule-desc">5分钟、15分钟图容易产生假信号，短线操作以分时图为主，避免被中短期图形误导</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">💰</div>
+            止盈方法论
+            <span class="section-num">1.3</span>
+          </div>
+          <div class="tabs">
+            <div class="tab-header">
+              <div class="tab-btn" :class="{ active: tab1 === 0 }" @click="tab1 = 0">冲高型止盈</div>
+              <div class="tab-btn" :class="{ active: tab1 === 1 }" @click="tab1 = 1">震荡型止盈</div>
+              <div class="tab-btn" :class="{ active: tab1 === 2 }" @click="tab1 = 2">四方体止盈</div>
+            </div>
+            <div v-if="tab1 === 0">
+              <div class="rule-list">
+                <div class="rule-item" v-for="(r, i) in zhuangYinRules" :key="i">
+                  <div class="rule-num">{{ i+1 }}</div>
+                  <div class="rule-content">
+                    <div class="rule-title">{{ r.title }}</div>
+                    <div class="rule-desc">{{ r.desc }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="tab1 === 1">
+              <div class="card">
+                <div class="card-title">九种震荡型止盈（前20min为基准）</div>
+                <div class="card-body">
+                  <ul>
+                    <li><strong>均线向上扬：</strong>强区不跌破开盘价；中区守住0%；弱区低开高走（低点抬高法）</li>
+                    <li><strong>均线平着走：</strong>强区约5%附近守均线；中区T位操作；弱区先观察不急于下手</li>
+                    <li><strong>均线下坡走：</strong>强区消息股不要接，跌破平台加速下跌；弱区直接砸，不要接，假T位</li>
+                    <li><strong>均线拐头：</strong>一旦拐头就出，不要犹豫</li>
+                    <li><strong>第二天不建议：</strong>即使今天成交量起来，第二天确定性不高</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div v-if="tab1 === 2">
+              <div class="card">
+                <div class="card-title">四方体止盈法（短线压力止盈）</div>
+                <div class="card-body">
+                  <ul>
+                    <li>以<strong>前2-3天最低点</strong>为参考止损位，跌破即出</li>
+                    <li>结合<strong>均线压力</strong>（前高、T位）综合判断</li>
+                    <li>做多头向上趋势的票，下跌趋势找不到止损点</li>
+                    <li>每次进场先预测亏损，看今天和昨天的T位</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📐</div>
+            分时图形态详解（强中弱区判断）
+            <span class="section-num">1.4</span>
+          </div>
+          <div class="alert alert-info">
+            <strong>💡 核心原则</strong>
+            分时图是短线操作的最直接工具，前20分钟的走势可作为全天基准参考。均线方向决定操作方向。
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">🟢 强区信号（持仓/加仓）</div>
+              <div class="card-body">
+                <ul>
+                  <li>均线向上扬，股价始终在均线上方</li>
+                  <li>开盘后不跌破昨日收盘价</li>
+                  <li>每次回踩均线都有接盘量（绿柱缩量）</li>
+                  <li>拉升时成交量同步放大（红柱放量）</li>
+                  <li>N型上涨：每次高点和低点都在抬高</li>
+                  <li>0轴以上横盘整理后再度向上</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">🔴 弱区信号（止损/减仓）</div>
+              <div class="card-body">
+                <ul>
+                  <li>均线下坡走，股价被均线压着</li>
+                  <li>0轴以下拉直线（出货特征）</li>
+                  <li>倒N型：每次高点和低点都在降低</li>
+                  <li>垂直过山车形态（快速拉升后垂直下砸）</li>
+                  <li>尾盘拉升（明日大概率低开）</li>
+                  <li>成交量很小但股价快速上涨（无量拉升陷阱）</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <div class="card-title">📊 分时图三种均线走势对应操作</div>
+            <div class="card-body">
+              <table class="doc-table">
+                <thead><tr><th>均线走势</th><th>强区操作</th><th>中区操作</th><th>弱区操作</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>向上扬</strong></td><td>拿住，以均线为止损</td><td>持有观察低点是否抬高</td><td>低开高走，低点抬高可留</td></tr>
+                  <tr><td><strong>平着走</strong></td><td>约5%附近守均线</td><td>T位操作，0轴附近买入</td><td>先观察，不急下手</td></tr>
+                  <tr><td><strong>下坡走</strong></td><td>消息股不要接，跌破平台出</td><td>注意假T位陷阱</td><td>直接砸下来，不要接刀</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">⚡</div>
+            量价关系精解
+            <span class="section-num">1.5</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">①</div>
+              <div class="rule-content">
+                <div class="rule-title">量先于价（量是领先指标）</div>
+                <div class="rule-desc">成交量是股价的先行信号。主力建仓时成交量温和放大；主力出货时成交量异常放大。<strong>拉连扳关键就是看有没有放大量</strong>——以吆喝阶段成交量为基准，超过该基准说明主力在出货。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">②</div>
+              <div class="rule-content">
+                <div class="rule-title">缩量上涨（锁仓信号）</div>
+                <div class="rule-desc">股价上涨但成交量缩小，说明主力锁仓，筹码高度集中，后续还有上涨空间。连扳过程中锁仓阶段成交量小于吆喝阶段，这是正常的健康信号。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">③</div>
+              <div class="rule-content">
+                <div class="rule-title">放量下跌（出货信号）</div>
+                <div class="rule-desc">成交量异常放大的同时股价下跌，是主力快速出货的典型特征。"小李飞刀"（巨量阴线）或"广州塔形"（筹码峰在上方）出现时，立刻清仓，不可犹豫。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">④</div>
+              <div class="rule-content">
+                <div class="rule-title">天量顶（见顶信号）</div>
+                <div class="rule-desc">历史最大成交量出现在高位时，往往是主力完成出货的信号。"天量顶"之后多数会出现大幅调整。不要在天量顶位置追高，此时的上涨大多是诱多陷阱。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">⑤</div>
+              <div class="rule-content">
+                <div class="rule-title">牛牛量能止盈法（实战应用）</div>
+                <div class="rule-desc">牛牛组合行情：<span class="tag tag-green">慢涨期</span>成交量温和红线 → <span class="tag tag-gold">加速区</span>突然成交量剧增（量大于前期） → <span class="tag tag-red">止盈点</span>量又锐减。量剧增后锐减是主力完成派发的信号，此时立刻止盈。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🌅</div>
+            开盘判断与早盘操作
+            <span class="section-num">1.6</span>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">🌤️ 开盘三种情形应对</div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>高开（+3%以上）：</strong>早盘已赚3-4%，马上清仓，<span class="hl-red">当日不再开仓</span>，落袋为安</li>
+                  <li><strong>低开（-7%~-8%）：</strong>账户普遍亏损不急着清仓，大概率会回血，等待反弹时机</li>
+                  <li><strong>超级低开（-8%以上）：</strong>等待翘板机会，翘板后再出，不要在最低点割肉</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">⏰ 早盘15分钟黄金判断</div>
+              <div class="card-body">
+                <ul>
+                  <li>9:25集合竞价即可判断股票当天强弱方向</li>
+                  <li>高开低走：做多单谨慎，等回踩确认支撑</li>
+                  <li>低开高走：弱势反弹，注意均线压力</li>
+                  <li>开盘就拉7%后砸破均线：立即出，不要犹豫</li>
+                  <li>不是游资板的莫名高开：<span class="hl-red">开盘挂跌停出掉</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-danger" style="margin-top:12px">
+            <strong>🚨 早盘陷阱：关二爷的刀</strong>
+            早盘某票冲高，突然垂直下砸到低点，如同关羽的偃月刀形状。此时低开-1%后迅速跌到-9%，不要在-1%时急着出（会被刀），等到企稳后再判断。
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🔢</div>
+            1分钟图实战应用
+            <span class="section-num">1.7</span>
+          </div>
+          <div class="card">
+            <div class="card-title">📈 1分钟图的核心应用场景</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>打板隔天弱区开盘：</strong>打开1分钟图，寻找最佳出货时机</li>
+                <li><strong>关键压力判断：</strong>1分钟图中很长的阴线或阳线高点非常重要，过不去就往下砸</li>
+                <li><strong>均线压力：</strong>反抽时要注意1分钟图里的均线，都是重要压力位</li>
+                <li><strong>多空博弈：</strong>均线边缘是多空双方激烈争夺的位置，弱区票反抽均线失败就要考虑出货</li>
+                <li><strong>追高陷阱识别：</strong>股价上涨但均线没有同步拉高，是散户追高导致的，主力没有参与，不可信</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- ═══════ 第二章：涨停板战法 ═══════ -->
+      <template v-if="currentPage === 'chapter2'">
+        <div class="breadcrumb">
+          <span @click="navigate('home')">🏠 首页</span>
+          <span class="sep">›</span>
+          <span style="color:var(--text)">第二章：涨停板战法</span>
+        </div>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-icon">🚀</div>
+            第二章：涨停板战法
+          </div>
+          <div class="page-desc">涨停板是A股最核心的交易机会，但也是新手亏损最快的战场。系统掌握涨停狙击六招。</div>
+        </div>
+
+        <div class="alert alert-danger">
+          <strong>🚨 核心警示</strong>
+          所有拉连扳上来的都是为了套人（3-5天后），不要仅从技术上去选股，都是概率问题。70%的散户满仓打涨停板，慢即是快！
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🎯</div>
+            涨停狙击六招
+            <span class="section-num">2.1</span>
+          </div>
+          <div class="grid-2">
+            <div class="card" v-for="s in ztSixStrategies" :key="s.num">
+              <div class="card-title">
+                <span class="tag tag-red">第{{ s.num }}招</span> {{ s.title }}
+              </div>
+              <div class="card-body">{{ s.desc }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📋</div>
+            12种常见涨停板类型
+            <span class="section-num">2.2</span>
+          </div>
+          <div class="grid-3">
+            <div class="card" v-for="t in ztTypes" :key="t.name" style="padding:14px 16px">
+              <div class="card-title" style="font-size:13px">{{ t.icon }} {{ t.name }}</div>
+              <div class="card-body" style="font-size:12px">{{ t.desc }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">⚠️</div>
+            拉连扳四阶段（主力行为分析）
+            <span class="section-num">2.3</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item" v-for="(s, i) in lianbanStages" :key="i">
+              <div class="rule-num" :style="{ background: s.color }">{{ s.stage }}</div>
+              <div class="rule-content">
+                <div class="rule-title">{{ s.name }}</div>
+                <div class="rule-desc">{{ s.desc }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning" style="margin-top:12px">
+            <strong>💡 关键判断</strong>
+            拉连扳的关键点是有没有放大量。以吆喝阶段的成交量为基准，成交量大于该基准时主力就在出货了。
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🛡️</div>
+            涨停板止损止盈
+            <span class="section-num">2.4</span>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">📉 常规止损规则</div>
+              <div class="card-body">
+                <ul>
+                  <li>收盘价创新低，<strong>不能加仓</strong></li>
+                  <li>断板后立刻删除自选，不留恋</li>
+                  <li>20日均线以下的票，短线坚决不入</li>
+                  <li>60日线如同分时图均线，股价远离时不要入</li>
+                  <li>筹码峰在上方（广州塔形态），不做</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">📈 小阴小阳四方体止盈</div>
+              <div class="card-body">
+                <ul>
+                  <li>低点抬高法：低点未跌破可以拿着</li>
+                  <li>均线保护：低点砸破但均线未破可留</li>
+                  <li>高位远离均线止盈；低位远离均线可等</li>
+                  <li>牛牛战法：慢涨→成交量剧增（加速区）→量锐减→止盈</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🏆</div>
+            涨停止盈法·溢价止盈详解
+            <span class="section-num">2.5</span>
+          </div>
+          <div class="card">
+            <div class="card-title">💰 三类关键T位止盈点</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>转折T位：</strong>从水下（负值区）拉上来的转折点，以开盘价为转折T位。一旦生效后拐到均线下方，立刻跑！</li>
+                <li><strong>破阵T位：</strong>突破前期区间高点后形成的支撑，主力大资金积极参与，是重要止盈参考</li>
+                <li><strong>封板T位：</strong>涨停封板位，隔天若跌破出一半仓位</li>
+              </ul>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">📐 高开后的止盈操作</div>
+              <div class="card-body">
+                <ul>
+                  <li>高开后跌破开盘价：出一半仓</li>
+                  <li>高开后跌破封板价（昨日涨停价）：全部出掉</li>
+                  <li>一字板持仓：设置价格预警，<span class="hl-red">开板即出</span></li>
+                  <li>如果早盘上冲，冲上去就不能再下来（昨日封板价为界），宁愿卖错不卖迟</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">📊 如何卖在相对高位</div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>上太极法：</strong>上太极→下太极（标准太极形态），在均线拐头处出</li>
+                  <li><strong>低点抬高法：</strong>低点保持抬高就拿着，低点一旦破前低止盈</li>
+                  <li><strong>关键点位突破失败：</strong>突破不过，一拐头马上出</li>
+                  <li><strong>拐头止盈：</strong>格局上"拐头低点不能破"，一旦收阴破前低立即止盈</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📡</div>
+            游资出货识别（连扳股）
+            <span class="section-num">2.6</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">A</div>
+              <div class="rule-content">
+                <div class="rule-title">封板第二天为何会跌停低开？</div>
+                <div class="rule-desc">游资自砸模式：<span class="tag tag-red">跌停</span> → <span class="tag tag-gold">点火拉升</span>（等散户追） → <span class="tag tag-gold">再次点火</span>（继续等散户追） → <span class="tag tag-red">大资金出货</span>。注意点火后的拐点，一旦拐头破位就跑！</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">B</div>
+              <div class="rule-content">
+                <div class="rule-title">翘板（游资换手）</div>
+                <div class="rule-desc">有两种情形：① 等（其他游资有意翘板，有人接单，有成交量）；② 撤（主力压单撤掉，只有少量压单）。翘板后能封板说明多头强势；翘板后封不住说明已转弱。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">C</div>
+              <div class="rule-content">
+                <div class="rule-title">霸王龙张嘴（一字板开板）</div>
+                <div class="rule-desc">① 第一个开板时不要操作；② 注意区间突破/跌破——跌破后可能直接-30%~-40%；③ 等不再创新低时入场5-10%；④ 要破新低时不要入；⑤ 开板后又封回：中途封上且封板时间太长，第二天冲高不能下来，下来一定出。<span class="hl-red">跌破区间下线一定要撤！</span></div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">D</div>
+              <div class="rule-content">
+                <div class="rule-title">下跌途中三种阴线识别</div>
+                <div class="rule-desc">① <strong>小阴线洗盘</strong>：成交量缩小，是主力降低成本的洗盘操作，可以持有；② <strong>放量大阴线</strong>：出货信号，主力大量卖出，立即止损；③ <strong>连续阴线</strong>：趋势已坏，不要抄底，等到止跌信号再考虑</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🛡️</div>
+            涨停板打点防卫战术
+            <span class="section-num">2.7</span>
+          </div>
+          <div class="alert alert-warning">
+            <strong>⚠️ 打板前必须想好</strong>
+            进票之前先想好，要送多少给庄家（即最大亏损容忍度）。以T位为止损点，而不是以自己的成本为止损点。
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">🎯 进场底气四要素</div>
+              <div class="card-body">
+                <ol>
+                  <li><strong>题材：</strong>有清晰的炒作逻辑，不是乱炒</li>
+                  <li><strong>热点：</strong>当前市场资金正在追逐的方向</li>
+                  <li><strong>总龙头：</strong>该题材的最强龙头出现了吗？</li>
+                  <li><strong>T位出现：</strong>有明确的买入T位，不是追涨</li>
+                </ol>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">⚠️ 涨停板空间预估</div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>周线压力位：</strong>有成交量的才是真实压力</li>
+                  <li>离压力位远的票：可以留着观察</li>
+                  <li>离压力位近的票：不追，等回踩</li>
+                  <li>一旦断板：<span class="hl-red">立刻删除自选</span>，不留恋</li>
+                  <li>大幅高开低走：高开往下不是洗盘，是出货，马上出！</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- ═══════ 第三章：龙头与游资战法 ═══════ -->
+      <template v-if="currentPage === 'chapter3'">
+        <div class="breadcrumb">
+          <span @click="navigate('home')">🏠 首页</span>
+          <span class="sep">›</span>
+          <span style="color:var(--text)">第三章：龙头与游资战法</span>
+        </div>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-icon">🐉</div>
+            第三章：龙头与游资战法
+          </div>
+          <div class="page-desc">研究游资行为规律，跟踪龙头股周期，是超额收益的核心来源。</div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">👑</div>
+            龙头股基本原则
+            <span class="section-num">3.1</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item" v-for="(r, i) in longtouRules" :key="i">
+              <div class="rule-num">{{ i+1 }}</div>
+              <div class="rule-content">
+                <div class="rule-title">{{ r.title }}</div>
+                <div class="rule-desc">{{ r.desc }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🗓️</div>
+            游资周期龙（援军战法）
+            <span class="section-num">3.2</span>
+          </div>
+          <div class="card">
+            <div class="card-title">📅 连扳周期节律</div>
+            <div class="card-body">
+              <ul>
+                <li>不一定从周一开始，根据<strong>连扳数</strong>来确定周期起点</li>
+                <li><strong>反包条件：</strong>阴线要在5日线上（无烂不成妖）</li>
+                <li>连扳后成为新的龙头（六天五板），这种破板后还会在5日线徘徊，不会一下跌下来</li>
+                <li><strong>乾坤区间：</strong>连扳 + MACD不死叉 + 历史新高 + 总龙头</li>
+                <li>乾坤区间不能破，一破就打到60日线</li>
+              </ul>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">🔼 新高战法</div>
+              <div class="card-body">
+                <ul>
+                  <li>昨日涨停，隔日下砸4-5%，均线未掉，低位W形，果断进</li>
+                  <li>乾坤区间前（顶）用新高战法</li>
+                  <li>追高战法（天量顶）在乾坤区间后（上方）</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">🏰 皇宫战法</div>
+              <div class="card-body">
+                <ul>
+                  <li>主动断板，走皇宫区间震荡</li>
+                  <li>再来第二波连板（2+2模式）</li>
+                  <li>新规则下高位连板很少，防止被关小黑屋</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🏦</div>
+            庄家行为分析
+            <span class="section-num">3.3</span>
+          </div>
+          <div class="alert alert-info">
+            <strong>💡 核心视角</strong>
+            进场时，不要将自己想成散户，以庄家角度看市场。交易的本质只看成交量和均线，每次交易的目的是降低成本线。
+          </div>
+          <div class="card">
+            <div class="card-title">🎭 庄家操盘规律</div>
+            <div class="card-body">
+              <ul>
+                <li>庄家<strong>不会做慈善</strong>，所有拉升都有目的</li>
+                <li>主力只会在<strong>吆喝阶段（1-2板）建仓</strong>，吆喝来游资接力</li>
+                <li>拉连扳放大量（超过吆喝阶段），主力就在出货</li>
+                <li>金叉死叉都是骗局，主力只用自己的线，不用10日、20日等大众指标</li>
+                <li>牛牛拉涨停板的一定会掉下来，掉到20或60日线左右</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🏰</div>
+            总龙头识别与天花板判断
+            <span class="section-num">3.4</span>
+          </div>
+          <div class="alert alert-info">
+            <strong>💡 总龙头定义</strong>
+            总龙头 = 同一周期内连扳数最多的那只票。上一个总龙头断板驾崩后，才有可能出下一任总龙头。龙头必须有护卫（跟风股），否则说明情绪不稳定。
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">👑 总龙头判断标准</div>
+              <div class="card-body">
+                <ul>
+                  <li>当前周期内连扳高度<strong>最高</strong>的那只票</li>
+                  <li>板块内有多只跟风股配合拉涨</li>
+                  <li>封板流畅，不轻易被炸开</li>
+                  <li>有板块题材支撑，不是孤立行情</li>
+                  <li>龙头开板后要看当前板块整体状态</li>
+                  <li>一字板大多数是<strong>假龙头</strong>，尽量不参与</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">⚠️ 天花板风险识别</div>
+              <div class="card-body">
+                <ul>
+                  <li>每个周期总龙头都有天花板，到达时<strong>最危险</strong></li>
+                  <li>参考前2-3周龙头的天花板连板数</li>
+                  <li>"有4不一定有5"——骗人的连扳口诀</li>
+                  <li>一只票龙头只会当一次，不会当两次</li>
+                  <li>高位连板跟风股（次高位板）不要追</li>
+                  <li>连扳高度越高，断板后下跌越惨烈</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <div class="card-title">🐉 龙头不会独食——护卫跟风判断</div>
+            <div class="card-body">
+              <ul>
+                <li>真龙头必须有<strong>护卫跟风</strong>（板块内其他涨停股）</li>
+                <li>总龙头开板后，如果护卫并没有开板，说明情绪稳定，龙头还会强</li>
+                <li>总龙头开板，护卫也跟着开板——说明情绪崩塌，跟风股都在逃，卖！</li>
+                <li>"远离独食霸王龙"：板块内只有一只票异动，没有跟风者，这种不做，是出货陷阱</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🔄</div>
+            援军战法完整体系
+            <span class="section-num">3.5</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">📋</div>
+              <div class="rule-content">
+                <div class="rule-title">援军战法前提条件</div>
+                <div class="rule-desc">① 有利好支撑；② 主力还没出完货；③ 股价在援军线上方（主升浪初期：以前期大阳线低点为撤军线）；④ MACD未死叉（乾坤区间条件）</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">🏹</div>
+              <div class="rule-content">
+                <div class="rule-title">援军战法核心操作</div>
+                <div class="rule-desc">主升浪或连扳票某天滞涨，小阴不断但没创新低 → 这个新低线就是撤军线 → 尾盘进入 → 次日跌破撤军线，<span class="hl-red">一定先撤！宁愿卖飞也不买错！打赢就跑，别追高！</span></div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">🔑</div>
+              <div class="rule-content">
+                <div class="rule-title">20日线以下的援军陷阱</div>
+                <div class="rule-desc">20日线以下，所有红柱都是<strong>诱多信号</strong>，不要参与。上方套了很多人的，主力不会直接拉的，必须先洗盘。20日线以上，才可以用援军战法。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">💡</div>
+              <div class="rule-content">
+                <div class="rule-title">乾坤大挪移（高位保持人气）</div>
+                <div class="rule-desc">连扳股高位主力的操作：用阴阳结合方式保持人气；靠近10日线突然阳性起来，断板最高点和止跌最低点之间形成乾坤区间。<span class="hl-red">乾坤区间不能破，一破就打到60日线。</span></div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">⚔️</div>
+              <div class="rule-content">
+                <div class="rule-title">援军战法亏损控制</div>
+                <div class="rule-desc">援军战法亏损严格控制在<strong>1-2%</strong>。如果援军做错了，跌破撤军线后1分钟不收回，秒出！然后择机做倒T，把成本做低。当周全仓回撤超过设定值（如15%），当周空仓，等待下一组机会。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🌊</div>
+            题材热点周期轮动
+            <span class="section-num">3.6</span>
+          </div>
+          <div class="card">
+            <div class="card-title">📅 如何判断新题材热点</div>
+            <div class="card-body">
+              <ul>
+                <li>某天某板块突然出现很多涨停板 → 可能是新热点（题材A诞生）</li>
+                <li><strong>延续性判断：</strong>看题材A中能不能把板打上去，把大哥往上推</li>
+                <li>判断新题材能否成为热点：看原来题材是否已断板熄火，只有旧题材熄火，新题材才有空间</li>
+                <li>题材每天都有很多，但龙头只有一个（五板定龙头）</li>
+                <li>注意题材叠加的连板票，但高位要注意风险（防踏空）</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <div class="card-title">🎭 新题材四种股票形态</div>
+            <div class="card-body">
+              <table class="doc-table">
+                <thead><tr><th>类型</th><th>特征</th><th>操作建议</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>第一只</strong></td><td>容易被拉高出货，套住援军战法的人</td><td>🔴 不参与，等待观察</td></tr>
+                  <tr><td><strong>第二只</strong></td><td>在题材出来前已涨在高位，借题材出货</td><td>🔴 不参与，高位风险大</td></tr>
+                  <tr><td><strong>第三只</strong></td><td>温和放量上涨，趋势向上，低点持续抬高</td><td>🟡 可关注，没追到不再追</td></tr>
+                  <tr><td><strong>第四只</strong></td><td>平台突破，题材+利好双重催化</td><td>🟢 最佳，可在突破时参与</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🌧️</div>
+            暴风雨中的顽强者（抗跌横盘战法）
+            <span class="section-num">3.7</span>
+          </div>
+          <div class="card">
+            <div class="card-title">💪 大盘大跌时的选股逻辑</div>
+            <div class="card-body">
+              <ul>
+                <li>大盘大跌当天，某股能保持<strong>横盘震荡</strong>不跌：说明主力在护盘，筹码高度集中</li>
+                <li>大盘一旦反攻，这类横盘抗跌票<strong>必然率先反攻</strong>，涨幅最大</li>
+                <li>这就是"暴风雨中的顽强者"——大风大浪中的相对强势股</li>
+                <li>操作：大盘反转确认当天，优先选择之前最抗跌的票进场</li>
+                <li>早于大盘止跌的票：注意不要在125线（反弹压力）追高，等回踩</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- ═══════ 第四章：T位操作与做T ═══════ -->
+      <template v-if="currentPage === 'chapter4'">
+        <div class="breadcrumb">
+          <span @click="navigate('home')">🏠 首页</span>
+          <span class="sep">›</span>
+          <span style="color:var(--text)">第四章：T位操作与做T</span>
+        </div>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-icon">⚡</div>
+            第四章：T位操作与做T
+          </div>
+          <div class="page-desc">T位是短线交易最核心的技术，精确的T位判断可以把持仓成本T到负数。</div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:20px">
+          <div class="card">
+            <div class="card-title">✅ 真T位特征</div>
+            <div class="card-body">
+              <ul>
+                <li>远离均线且<strong>放量</strong>下跌</li>
+                <li>有明显支撑（前期低点、整数关口）</li>
+                <li>成交量对比：下跌量 &lt; 前期量</li>
+                <li>下砸后快速有接盘红柱（2-3分钟内）</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">❌ 假T位特征</div>
+            <div class="card-body">
+              <ul>
+                <li>下跌中的<strong>绿柱</strong>，不是好T位</li>
+                <li>均线下坡走时的低点（假T位）</li>
+                <li>今天成交量起来但第二天确定性不高</li>
+                <li>弱区拉直线（正在出货）</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🎯</div>
+            做T类型
+            <span class="section-num">4.1</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item" v-for="(t, i) in tTypes" :key="i">
+              <div class="rule-num">{{ t.icon }}</div>
+              <div class="rule-content">
+                <div class="rule-title">{{ t.title }}</div>
+                <div class="rule-desc">{{ t.desc }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🔧</div>
+            追高保护伞：T位应用
+            <span class="section-num">4.2</span>
+          </div>
+          <div class="card">
+            <div class="card-title">🛡️ 追高后的T位保护</div>
+            <div class="card-body">
+              <ul>
+                <li>追高后以<strong>T位为止损位</strong>，跌破立刻出</li>
+                <li>只有封板T位，不能破（封板后买入）</li>
+                <li>昨日涨停隔日开盘下砸4-5%，均线未掉，低位W形 → 果断进</li>
+                <li>3s快速成交：买入挂单高一点，卖出挂单低一点</li>
+              </ul>
+            </div>
+          </div>
+          <div class="alert alert-success">
+            <strong>💰 成本T负数策略</strong>
+            庄家做倒T降成本：拉起来拿货，拿货后洗盘做倒T降成本线。普通投资者可跟踪此节奏，利用洗盘低点加仓，将持仓成本持续降低。
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🗣️</div>
+            盘口语言与T位识别
+            <span class="section-num">4.3</span>
+          </div>
+          <div class="alert alert-info">
+            <strong>💡 短线T王核心：读懂盘口语言</strong>
+            盘口语言是指通过观察买卖盘挂单的变化来判断多空力量。读懂盘口，才能判断T位的真假，比看图形更直接。
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">📖 多头盘口特征（可买入）</div>
+              <div class="card-body">
+                <ul>
+                  <li>卖盘（上方挂单）快速被吃掉，买方主动出击</li>
+                  <li>买盘（下方挂单）越挂越多，护盘力量强</li>
+                  <li>下砸时买盘立刻涌现，下砸幅度快速收窄</li>
+                  <li>成交明细出现大单主动买入（绿字大单）</li>
+                  <li>涨停板挂单量持续增加，封板坚定</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">📖 空头盘口特征（需警惕）</div>
+              <div class="card-body">
+                <ul>
+                  <li>买盘被快速撤掉（假买盘诱多）</li>
+                  <li>卖盘越来越厚，压力越来越大</li>
+                  <li>涨停板挂单持续减少（游资在撤单出货）</li>
+                  <li>成交明细大单持续主动卖出（红字大单）</li>
+                  <li>价格上涨但成交量明显萎缩（无量拉升）</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🏠</div>
+            皇宫区间与乾坤区间操作
+            <span class="section-num">4.4</span>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">🏰 皇宫区间（启动到高点区间）</div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>定义：</strong>票的启动点到最高点之间的区间</li>
+                  <li><strong>狙击线：</strong>前一波段的新高位置，突破后变为支撑</li>
+                  <li>突破后下引线、缺口及狙击线都可以作为支撑</li>
+                  <li>皇宫区间内震荡是正常的，可以做T</li>
+                  <li><strong>后宫别入：</strong>连扳股在皇宫区间内的高位，不追</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">⚡ 夹板单战法</div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>夹板单定义：</strong>股价在某区间内，上有压力下有支撑</li>
+                  <li>一旦突破区间上沿：垂直过山车，做<span class="hl-green">正T</span>（买入）</li>
+                  <li>一旦跌破区间下沿：跌到底，做<span class="hl-red">倒T</span>（卖出）</li>
+                  <li>跳空T：一直等，等到股价止跌时做T</li>
+                  <li>平阴新低：出现新低后的平阴，谨慎操作</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🔑</div>
+            被套后如何从庄家杀跌中解套
+            <span class="section-num">4.5</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">①</div>
+              <div class="rule-content">
+                <div class="rule-title">判断是否值得解套</div>
+                <div class="rule-desc">先判断：该股是否为龙头？主力是否还在？如果主力已出货，或者板块已熄火，立刻止损，不要解套；只有确认主力还在的情况下才考虑解套操作。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">②</div>
+              <div class="rule-content">
+                <div class="rule-title">正T解套（低点加仓摊低成本）</div>
+                <div class="rule-desc">在正T位（底部有明确支撑的低点）买入加仓，当股价拉高后，先卖出高位筹码，留住低位筹码，成本线逐步降低。关键：T位必须真实，下面必须有支撑。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">③</div>
+              <div class="rule-content">
+                <div class="rule-title">跳空T解套（等缺口填补）</div>
+                <div class="rule-desc">利用向下跳空缺口做反T：等到股价在缺口支撑位附近止跌，此时买入做T；当股价反弹回填缺口时，卖出，达到降低成本甚至解套的目的。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">④</div>
+              <div class="rule-content">
+                <div class="rule-title">重振旗鼓策略</div>
+                <div class="rule-desc">当股价回到成本线附近时，先出一半仓位，减轻心理压力；剩余仓位等待进一步反弹。或者在援军线附近买入配合做T，用交易利润来抵消持仓亏损。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">⑤</div>
+              <div class="rule-content">
+                <div class="rule-title">停牌股特殊处理</div>
+                <div class="rule-desc">停牌期间要密切关注所在板块走势。若板块在停牌期间大幅下跌，复牌后该股会补跌，需提前在其他持仓上做对冲，或等复牌后出现翘板机会再出。<span class="hl-red">停牌后都是套人，要提前应对！</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- ═══════ 第五章：选股与复盘体系 ═══════ -->
+      <template v-if="currentPage === 'chapter5'">
+        <div class="breadcrumb">
+          <span @click="navigate('home')">🏠 首页</span>
+          <span class="sep">›</span>
+          <span style="color:var(--text)">第五章：选股与复盘体系</span>
+        </div>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-icon">🔍</div>
+            第五章：选股与复盘体系
+          </div>
+          <div class="page-desc">系统化选股方法与每日复盘框架，是持续盈利的根基。</div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📊</div>
+            短线强势股筛选标准
+            <span class="section-num">5.1</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item" v-for="(r, i) in stockFilterRules" :key="i">
+              <div class="rule-num">{{ i+1 }}</div>
+              <div class="rule-content">
+                <div class="rule-title">{{ r.title }}</div>
+                <div class="rule-desc">{{ r.desc }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning" style="margin-top:12px">
+            <strong>⚠️ 重要提醒</strong>
+            短线操作不要看基本面、消息面。真正确定是否是强势股的还要"瞻前顾后"——考虑止损位和压力位。
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🌡️</div>
+            市场情绪研判
+            <span class="section-num">5.2</span>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">📡 情绪指标</div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>连板高度：</strong>市场情绪晴雨表，3板以上说明情绪高涨</li>
+                  <li><strong>涨停家数：</strong>涨跌家数影响整体市场情绪</li>
+                  <li><strong>短线资金指标：</strong>选股宝的连扳高难度、涨停板数量</li>
+                  <li><strong>龙虎榜：</strong>分析个股是否被游资接力，学游资思路</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">🛠️ 推荐工具</div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>央视新闻、财联社：</strong>头条电报（加红是重点）</li>
+                  <li><strong>选股宝：</strong>快速了解市场（连扳/涨停数量）</li>
+                  <li><strong>开盘啦：</strong>龙虎榜（分析游资交易思路）</li>
+                  <li><strong>牧童咨询：</strong>板块及个股信息公告</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🔄</div>
+            复盘方法论
+            <span class="section-num">5.3</span>
+          </div>
+          <div class="card">
+            <div class="card-title">📅 每日复盘流程</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>收市后：</strong>打开涨幅排名 → 打开细分行业 → 打开该板块 → 对个股进行涨幅排序</li>
+                <li><strong>隔天操作：</strong>在热点板块里找（低吸或打板）机会</li>
+                <li><strong>热点题材：</strong>官网消息才是最早的，不要相信软件里的推荐票</li>
+                <li><strong>看煤炭：</strong>前一天晚上看期货中的煤炭指数，判断隔日A股煤炭股走势</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <div class="card-title">⚖️ 复盘核心原则（短线基础面）</div>
+            <div class="card-body">
+              短线看<strong class="hl">基础面</strong>（板块联动、资金热点、题材逻辑），长线看<strong>基本面</strong>（财务数据、业绩）。短线不能单纯看基本面，要看哪里有资金在动。
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📋</div>
+            超短复盘10步标准流程
+            <span class="section-num">5.4</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">1</div>
+              <div class="rule-content">
+                <div class="rule-title">看当天大盘跌停情况</div>
+                <div class="rule-desc">跌停家数越多（超过5只），次日短线<strong>炸板率高</strong>，谨慎入场；跌停家数少，市场情绪好，可以积极操作</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">2</div>
+              <div class="rule-content">
+                <div class="rule-title">看当天板块涨幅</div>
+                <div class="rule-desc">了解资金连续几日在哪些板块活跃。资金的连续性是判断热点持续性的关键</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">3</div>
+              <div class="rule-content">
+                <div class="rule-title">区分群龙头与助攻股</div>
+                <div class="rule-desc">看涨幅板块是否有多只出现连扳，区分出板块龙头（连扳最多）和助攻股（跟风连扳）。只做龙头，不做小弟</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">4</div>
+              <div class="rule-content">
+                <div class="rule-title">看连扳总龙头的高度</div>
+                <div class="rule-desc">连扳高度决定小弟是否继续跟风拉板。龙头高度越高，情绪越热，小弟涨停成功率越高</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">5</div>
+              <div class="rule-content">
+                <div class="rule-title">看低位连板（2-3板）是否有新题材</div>
+                <div class="rule-desc">一旦上一周期高位连扳断板，低位板（2-3板）有可能篡位上攻，成为新的热点龙头</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">6</div>
+              <div class="rule-content">
+                <div class="rule-title">看当天大新闻</div>
+                <div class="rule-desc">判断市场是否有新热点或新题材。<strong>官网消息才是最早的</strong>，不要相信软件推荐。官方政策方向决定资金流向</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">7</div>
+              <div class="rule-content">
+                <div class="rule-title">看前五名连扳的封板健康度</div>
+                <div class="rule-desc">封板是否流畅：封板越流畅，说明做多力度越强，次日溢价越高；封板越勉强，次日炸板率越高</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">8</div>
+              <div class="rule-content">
+                <div class="rule-title">看自选个股的位置和板块</div>
+                <div class="rule-desc">所处位置是高位还是低位？所处板块是热点板块还是冷门板块？热点板块内的低位票是最佳选择</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">9</div>
+              <div class="rule-content">
+                <div class="rule-title">检查潜伏者风险</div>
+                <div class="rule-desc">看自选个股前方是否有其他战法的潜伏者，被潜伏者出货袭击时，要提前做好防守策略或撤军策略</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">10</div>
+              <div class="rule-content">
+                <div class="rule-title">早上9:10看大宗商品</div>
+                <div class="rule-desc">大宗商品所处板块（煤炭、有色、钢铁等）的期货走势，以及各国指数异常，会直接影响A股相关板块当天表现。尤其是煤炭，可通过前一晚期货煤炭指数预判次日A股煤炭股</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🛠️</div>
+            复盘工具箱（详细用法）
+            <span class="section-num">5.5</span>
+          </div>
+          <div class="card">
+            <div class="card-title">🔧 五大核心工具使用方法</div>
+            <div class="card-body">
+              <table class="doc-table">
+                <thead><tr><th>工具</th><th>用途</th><th>核心功能</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>央视新闻/财联社</strong></td>
+                    <td>政策题材挖掘</td>
+                    <td>头条电报（加红的是往期重点），官方政策第一手信息，官网消息才是最早的</td>
+                  </tr>
+                  <tr>
+                    <td><strong>选股宝</strong></td>
+                    <td>市场情绪晴雨表</td>
+                    <td>快速了解市场：连扳高难度（几板最强）、涨停板数量、大盘赚钱效应</td>
+                  </tr>
+                  <tr>
+                    <td><strong>开盘啦（看盘啦）</strong></td>
+                    <td>游资行为分析</td>
+                    <td>龙虎榜——分析个股是否被游资接力拉涨，学习游资的交易思路和偏好</td>
+                  </tr>
+                  <tr>
+                    <td><strong>牧童咨询</strong></td>
+                    <td>板块与个股监控</td>
+                    <td>关注重要板块和个股的信息公告，及时获取催化剂事件</td>
+                  </tr>
+                  <tr>
+                    <td><strong>雪球/风口板块</strong></td>
+                    <td>热股追踪</td>
+                    <td>看热股讨论和风口板块动向，了解市场情绪倾向</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🌡️</div>
+            大盘时机判断体系
+            <span class="section-num">5.6</span>
+          </div>
+          <div class="alert alert-info">
+            <strong>💡 大盘判断原则</strong>
+            大盘不需要天天预测涨跌。做好：20日线上做多、60日线上看整体趋势、乖离度过大时等待回调。
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">📊 大盘技术面判断</div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>20日均线：</strong>做多与不做多的分界线，之上可多，之下谨慎</li>
+                  <li><strong>60日均线（乖离度）：</strong>股价远离60日线越大，回调可能性越高</li>
+                  <li><strong>长K线区间成交量：</strong>一旦突破区间最大成交量往上冲；跌破则下走</li>
+                  <li><strong>30分钟缺口：</strong>缺口越多，反弹压力越大；缺口位是重要阻力</li>
+                  <li><strong>黄金分割线：</strong>最高点与最低点连接，测算反弹可能到的力度</li>
+                  <li><strong>KDJ指标（仅用于大盘）：</strong>J值>80滞涨要小心；J值<20可看多做反弹</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">🌐 大盘联动面判断</div>
+              <div class="card-body">
+                <ul>
+                  <li><strong>美元/人民币：</strong>美元贬值+人民币升值 → 大A看涨；美元升值 → 大A承压</li>
+                  <li><strong>富时A50（CN0Y）：</strong>大白马整体趋势，决定大A整体方向</li>
+                  <li><strong>恒生指数（HIS）：</strong>与大A紧密联动，港股大跌A股难涨</li>
+                  <li><strong>大茅（茅台）：</strong>整体走势影响大A蓝筹，宁王影响创业板</li>
+                  <li><strong>道琼斯指数：</strong>外围参考，看日线、周线即可</li>
+                  <li><strong>板块赚/亏钱效应：</strong>通过跌停数判断，跌停多则谨慎</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🔀</div>
+            板块追踪个股操作框架
+            <span class="section-num">5.7</span>
+          </div>
+          <div class="card">
+            <div class="card-title">📱 从板块到个股的完整追踪流程</div>
+            <div class="card-body">
+              <ol>
+                <li><strong>收市后打开涨幅排名</strong> → 找涨幅最大的板块</li>
+                <li><strong>打开细分行业</strong> → 确认是哪个细分子板块在领涨</li>
+                <li><strong>打开该板块</strong> → 对板块内个股进行涨幅排序</li>
+                <li><strong>找连扳龙头</strong> → 确定明日操作标的（低吸或打板）</li>
+                <li><strong>标注止损位</strong> → 以当日最低点或T位为止损参考</li>
+                <li><strong>第二天开盘前</strong> → 再次确认板块情绪和龙头状态</li>
+              </ol>
+            </div>
+          </div>
+          <div class="alert alert-warning" style="margin-top:12px">
+            <strong>⚠️ 超短的悲剧：打听到好板块却亏钱</strong>
+            别人收了米，你一进去就吃大面的原因：你打听到的已经是滞后信息，主力早就在高位了。解决方法：自己做板块复盘，不等别人推荐，比别人早一步发现热点。
+          </div>
+        </div>
+      </template>
+
+      <!-- ═══════ 第六章：风控与交易心法 ═══════ -->
+      <template v-if="currentPage === 'chapter6'">
+        <div class="breadcrumb">
+          <span @click="navigate('home')">🏠 首页</span>
+          <span class="sep">›</span>
+          <span style="color:var(--text)">第六章：风控与交易心法</span>
+        </div>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-icon">🧠</div>
+            第六章：风控与交易心法
+          </div>
+          <div class="page-desc">交易心法和风险控制往往比技术更重要，决定最终盈亏的是交易纪律。</div>
+        </div>
+
+        <div class="alert alert-danger">
+          <strong>🚨 核心戒律</strong>
+          20日均线以下的票，短线坚决不碰！筹码峰在上（广州塔形），不要做！收盘价创新低，不能加仓！
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">⚖️</div>
+            仓位管理
+            <span class="section-num">6.1</span>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">📊 仓位原则</div>
+              <div class="card-body">
+                <ul>
+                  <li>游资一般用<strong>资产的5%-10%</strong>左右</li>
+                  <li>不要满仓追涨停（70%散户犯此错误）</li>
+                  <li>仓位与回撤息息相关</li>
+                  <li>做加法时（2进3、3进4）最危险</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">📉 盈利曲线管理</div>
+              <div class="card-body">
+                <ul>
+                  <li>早盘账户普遍赚3-4%，马上清仓，<strong>当日不再开仓</strong></li>
+                  <li>早盘普遍亏7-8%，不急着清仓，会回血</li>
+                  <li>以"挑战自己"看待账户，而非"忽惊既喜"</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="progress-list">
+            <div class="progress-item" v-for="p in positionGuide" :key="p.label">
+              <div class="progress-header">
+                <span>{{ p.label }}</span>
+                <span>{{ p.pct }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" :style="{ width: p.pct + '%', background: p.color }"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🚫</div>
+            十大交易之忌
+            <span class="section-num">6.2</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item" v-for="(j, i) in tradigJi" :key="i">
+              <div class="rule-num" style="background:#922b21">{{ i+1 }}</div>
+              <div class="rule-content">
+                <div class="rule-title">{{ j.title }}</div>
+                <div class="rule-desc">{{ j.desc }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">⚔️</div>
+            令·阵·守·防·攻（五字诀）
+            <span class="section-num">6.3</span>
+          </div>
+          <div class="grid-3">
+            <div class="card" v-for="w in wuZi" :key="w.word">
+              <div class="card-title" style="font-size:20px;color:var(--primary-light)">{{ w.word }}</div>
+              <div class="card-body" style="font-size:13px">{{ w.desc }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">💡</div>
+            解套策略（援军战法）
+            <span class="section-num">6.4</span>
+          </div>
+          <div class="card">
+            <div class="card-title">🔄 三套解套方案</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>方案A：</strong>正T形态解套——找到正T位，在低点加仓摊低成本</li>
+                <li><strong>方案B：</strong>反T和跳空T——判断跳空缺口，利用跳空反T</li>
+                <li><strong>方案C：</strong>重振旗鼓——股价回到成本线附近出一半，剩余等待</li>
+                <li><strong>停牌股：</strong>停牌期间板块下跌，复牌后会补跌，及时应对</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🧮</div>
+            止损的真正含义
+            <span class="section-num">6.5</span>
+          </div>
+          <div class="alert alert-danger">
+            <strong>🚨 止损的谎言</strong>
+            很多人以"自己的成本"为止损点，这是错误的！止损点应该是<strong>T位</strong>（技术位置），而不是你买入的价格。亏损多少不是止损依据，位置破了才是止损信号。
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">✅ 正确的止损设定</div>
+              <div class="card-body">
+                <ul>
+                  <li>以<strong>T位（技术支撑位）</strong>为止损点</li>
+                  <li>跟风一字板：止损位在一字板上方，开板就出</li>
+                  <li>抄底反弹（援军战法）：打赢就跑，以撤军线为止损</li>
+                  <li>乾坤大挪移：下单后错了，止损在低点；下单后对了，止损升到T位</li>
+                  <li>别把煮熟的鸭子飞了：对了之后保住利润是关键</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">❌ 常见的止损错误</div>
+              <div class="card-body">
+                <ul>
+                  <li>以成本价为止损点（心理止损，不是技术止损）</li>
+                  <li>亏了5%就止损（固定亏损比例，不看位置）</li>
+                  <li>涨了就不设止损（贪心不保利润）</li>
+                  <li>跌了不止损，反而加仓（越亏越买）</li>
+                  <li>断板后舍不得删自选（留恋旧情）</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🧠</div>
+            交易心理与反人性训练
+            <span class="section-num">6.6</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">①</div>
+              <div class="rule-content">
+                <div class="rule-title">短线情绪的反人性</div>
+                <div class="rule-desc">人性喜欢追涨（在高点买入），喜欢扛亏（在低点不止损）。短线操作恰恰相反：在低点买、在高点卖、亏损时果断止损。克服人性弱点是短线成功的关键。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">②</div>
+              <div class="rule-content">
+                <div class="rule-title">以"挑战自己"的心态看账户</div>
+                <div class="rule-desc">不要以账户余额的忽惊忽喜来驾驭决策。亏了不要报复性交易，赚了不要得意忘形。把每次交易看作是对规则执行力的测试，而不是赚钱的机会。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">③</div>
+              <div class="rule-content">
+                <div class="rule-title">庄家角度看市场</div>
+                <div class="rule-desc">进场时，不要将自己想成散户。以庄家角度看：这个位置主力会怎么想？主力的成本在哪里？主力现在是在建仓还是出货？用主力思维来指导自己的操作。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">④</div>
+              <div class="rule-content">
+                <div class="rule-title">慢即是快的深层含义</div>
+                <div class="rule-desc">"慢即是快"不是叫你不操作，而是叫你不要频繁操作。等待确定性高的机会，一旦机会来了再果断出手。宁可少做，不能乱做。高手年化收益不一定来自于每天操作，而是来自于精准的几笔。</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">⑤</div>
+              <div class="rule-content">
+                <div class="rule-title">不做情怀大援哥</div>
+                <div class="rule-desc">高开的肯定先卖（无论你情不情愿）；大阴加缺口是强烈出货信号；T位破了秒出，不要犹豫！援军线破了秒出，<span class="hl-red">不要犹豫！</span>情怀是亏钱的根本原因之一。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📊</div>
+            仓位管理进阶（全周回撤控制）
+            <span class="section-num">6.7</span>
+          </div>
+          <div class="card">
+            <div class="card-title">📅 当周全仓位回撤控制策略</div>
+            <div class="card-body">
+              <ul>
+                <li>设定每周回撤红线（例如：当周亏损超过总仓位的一定比例）</li>
+                <li>连续两笔亏损（如-7.9%和-7.2%合计-15.1%），当周回撤达1.5%时立即空仓</li>
+                <li><strong>管住手痒，不受诱惑</strong>，确保当周利润不回吐</li>
+                <li>等待下一组机会，周末复盘，下周再战</li>
+                <li>不要在亏损状态下频繁操作（报复性交易）</li>
+              </ul>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">⚡ 做加法的风险（2进3、3进4）</div>
+              <div class="card-body">
+                <ul>
+                  <li>打板从2板晋级3板是最危险的时刻</li>
+                  <li>此时大量跟风散户涌入，主力借机出货</li>
+                  <li>晋级时仓位最多保持在20-30%</li>
+                  <li>高位连板股（5板以上）不追，风险极高</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">💡 多只跌停时的应对</div>
+              <div class="card-body">
+                <ul>
+                  <li>超级低开（-8%）：不急着出，等翘板再出</li>
+                  <li>低开（-1%）后迅速跌-9%：也不急，等企稳</li>
+                  <li>低开后低点抬高、均线向上走：股价远离均线时考虑出</li>
+                  <li>关二爷的刀：等刀落下后再判断，不在-1%时割肉</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">💎</div>
+            草船借兵·止盈策略进阶
+            <span class="section-num">6.8</span>
+          </div>
+          <div class="card">
+            <div class="card-title">🚢 散户如何把庄家"套住"</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>草船借兵：</strong>用盈利去博弈，而不是用本金去博弈。当仓位已经有浮盈时，用浮盈部分去追加更大的赌注</li>
+                <li><strong>双剑合璧（波段+连板）：</strong>既做波段持仓，又做连板短线，两种收益同时获取</li>
+                <li><strong>风险系数大的两种票不做：</strong>① 炒跌停（翘地板）票——风险极高；② 短期几个月内已翻倍的票——吃了跌停马上出，别想长线</li>
+                <li>核心思路：让庄家的出货行为成为你的止盈时机，顺势而为</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- ═══════ 第七章：牛牛组合与均线体系 ═══════ -->
+      <template v-if="currentPage === 'chapter7'">
+        <div class="breadcrumb">
+          <span @click="navigate('home')">🏠 首页</span>
+          <span class="sep">›</span>
+          <span style="color:var(--text)">第七章：牛牛组合与均线体系</span>
+        </div>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-icon">📐</div>
+            第七章：牛牛组合与均线体系
+          </div>
+          <div class="page-desc">均线是交易的核心工具，牛牛组合是识别强势股的重要形态。</div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📈</div>
+            牛牛组合形态
+            <span class="section-num">7.1</span>
+          </div>
+          <div class="card">
+            <div class="card-title">🐂 牛牛组合特征</div>
+            <div class="card-body">
+              <ul>
+                <li>一段暴跌后出现<strong>连续小阳线</strong>，成交量也一直是红线</li>
+                <li>股价持续在<strong>5日线上方</strong>，每根小阳约1-3%</li>
+                <li>以<strong>前一日最低点为止损点</strong>，低点抬高法，高点也在抬高</li>
+                <li>某一天拉涨停板，可能有危险，只有封板T位不能破</li>
+                <li>牛牛拉涨停板必然掉回到20日或60日线左右，<strong>不追高</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">📊 牛牛两种结局</div>
+              <div class="card-body">
+                <ul>
+                  <li>超跌 → 震荡反弹（短期）</li>
+                  <li>超跌 → 震荡 → 再跌 → 突破箱体 → 拉连板（可能出龙头）</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">⚠️ 牛牛操作注意</div>
+              <div class="card-body">
+                <ul>
+                  <li>庄家成本无法想象，拉起来为了拿货</li>
+                  <li>拿货后还要洗盘，做倒T降成本</li>
+                  <li>不在穿新高就要注意撤了</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📏</div>
+            均线体系应用
+            <span class="section-num">7.2</span>
+          </div>
+          <div class="card">
+            <div class="card-title">五日均线 · 埋伏出击</div>
+            <div class="card-body">
+              <ul>
+                <li>20日是<strong>趋势线</strong>，下跌趋势的5日均线不做</li>
+                <li>突破箱体后，走主升浪的嫌疑，找T位做（5日均线止损；找前三天的低点）</li>
+                <li>主升浪中股价离5日线过远，不急着进，等砸到5日线附近再考虑</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <div class="card-title">均线体系层级</div>
+            <div class="card-body">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>均线</th><th>用途</th><th>级别</th><th>说明</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="ma in maTable" :key="ma.line">
+                    <td><strong>{{ ma.line }}</strong></td>
+                    <td>{{ ma.use }}</td>
+                    <td><span :class="'tag tag-' + ma.color">{{ ma.level }}</span></td>
+                    <td>{{ ma.note }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">⏰</div>
+            各时间周期联动
+            <span class="section-num">7.3</span>
+          </div>
+          <div class="card">
+            <div class="card-title">📊 多周期分析框架</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>分时图：</strong>短线入场出场的核心依据</li>
+                <li><strong>5/15分钟图：</strong>有陷阱，慎用，不要被骗</li>
+                <li><strong>日线：</strong>短线主要参考（5日、20日均线）</li>
+                <li><strong>30分钟图：</strong>各级别分时图压力（30min内20日线向下即看跌）</li>
+                <li><strong>周线：</strong>有成交量的才是真实压力位，无量压力位可忽略</li>
+                <li><strong>月线：</strong>长线操作参考，一旦跌破60日线不再操作</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🔬</div>
+            MACD指标实战应用
+            <span class="section-num">7.4</span>
+          </div>
+          <div class="alert alert-warning">
+            <strong>⚠️ MACD的正确使用姿势</strong>
+            MACD不能用于判断个股买卖点（庄家不按MACD操盘），但可以用于：① 判断大盘趋势；② 乾坤区间条件之一（MACD不能死叉）；③ 主升浪MACD能量柱判断。
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">📈 主升浪MACD能量柱</div>
+              <div class="card-body">
+                <ul>
+                  <li>主升浪中MACD红色能量柱应当<strong>持续增大</strong></li>
+                  <li>能量柱在减少时不要做多（动能减弱）</li>
+                  <li>牛牛组合做5日线以上，低点再抬高</li>
+                  <li>MACD金叉在牛牛组合配合时可参考</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">⚠️ 乾坤区间MACD条件</div>
+              <div class="card-body">
+                <ul>
+                  <li>乾坤区间成立条件之一：MACD<strong>不能死叉</strong></li>
+                  <li>MACD死叉说明中期动能已经衰减</li>
+                  <li>一旦MACD死叉，乾坤区间失效，可能打到60日线</li>
+                  <li>大盘KDJ指标：J值>80滞涨要小心；J值<20可看多</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">📦</div>
+            筹码分析与底部筹码峰
+            <span class="section-num">7.5</span>
+          </div>
+          <div class="card">
+            <div class="card-title">🔢 筹码分析基础</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>最长的筹码峰可能就是主力</strong>：主力建仓区域成交最多，筹码峰最大</li>
+                <li><strong>底部筹码峰稳定</strong>：说明主力在锁仓，散户没有恐慌抛售，后续行情可期</li>
+                <li><strong>筹码峰在上方（广州塔形）</strong>：上方大量套牢盘，解套压力大，不做！</li>
+                <li><strong>筹码分散</strong>：说明换手充分，有效洗盘完毕，可关注</li>
+                <li><strong>筹码集中度高</strong>：主力控盘能力强，走势更可预期</li>
+              </ul>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">✅ 理想筹码形态</div>
+              <div class="card-body">
+                <ul>
+                  <li>下方底部筹码峰厚实（主力仓位）</li>
+                  <li>上方几乎无套牢盘（空间通畅）</li>
+                  <li>筹码持续向下（低位）集中</li>
+                  <li>成交量配合缩量（锁仓状态）</li>
+                </ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">❌ 危险筹码形态</div>
+              <div class="card-body">
+                <ul>
+                  <li>筹码峰高度集中在高位（广州塔）</li>
+                  <li>筹码高度分散（洗盘不干净）</li>
+                  <li>上方密集套牢盘区（强阻力）</li>
+                  <li>成交量放大但筹码不集中（散户追涨）</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🔁</div>
+            金叉死叉的骗局与主力线
+            <span class="section-num">7.6</span>
+          </div>
+          <div class="alert alert-danger">
+            <strong>🚨 金叉死叉都是骗局！</strong>
+            主力不会按照大众化的技术指标（金叉/死叉）来操盘。他们有自己的成本线（主力线），每只股票的"主力线"都不同，只能根据趋势来临时调整。X均线会随着股票趋势不断变化。
+          </div>
+          <div class="card">
+            <div class="card-title">🎯 如何找到真实的主力线</div>
+            <div class="card-body">
+              <ul>
+                <li>不要固守10日、20日等大众均线</li>
+                <li>观察股价在哪条均线附近有<strong>明显支撑</strong>（多次止跌反弹），那条就是当前主力线</li>
+                <li>高手只用一种线：21日均线，只做21日线之上的票</li>
+                <li>均线会随趋势变化而变化：上升趋势中5日线是主力线；中期趋势中20日线是主力线</li>
+                <li>书上说的都是大众化的东西，庄家不会按大众化的东西来操盘</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🗺️</div>
+            主升浪格局判断
+            <span class="section-num">7.7</span>
+          </div>
+          <div class="rule-list">
+            <div class="rule-item">
+              <div class="rule-num">📐</div>
+              <div class="rule-content">
+                <div class="rule-title">主升浪的三个特征</div>
+                <div class="rule-desc">① 股价在均线上方运行，每次回踩均线都有强劲反弹；② 成交量配合放大，每次上涨都有量；③ 低点持续抬高，高点也在不断创新高（N型上涨结构）</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">🚩</div>
+              <div class="rule-content">
+                <div class="rule-title">主升浪结束信号</div>
+                <div class="rule-desc">① 出现天量顶（历史最大成交量）；② MACD能量柱开始减少；③ 股价大幅远离均线后突然转弱；④ 出现广州塔形（高位大量阴线）；⑤ 收盘价跌破20日均线</div>
+              </div>
+            </div>
+            <div class="rule-item">
+              <div class="rule-num">💰</div>
+              <div class="rule-content">
+                <div class="rule-title">主升浪中的操作要点</div>
+                <div class="rule-desc">以5日均线为止损点，以前3天的低点为参考；股价离5日线过远时不急着进，等砸回5日线附近再考虑；突破箱体后走主升浪的嫌疑，可以找T位做。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <div class="s-icon">🎓</div>
+            融会贯通·综合实战心法
+            <span class="section-num">7.8</span>
+          </div>
+          <div class="alert alert-success">
+            <strong>🌟 最高心法</strong>
+            没有一招制胜，只有融会贯通。援军战法、炸鸡战法、次新战法等，所有战法都有共同的底层逻辑：量能 + 均线 + T位。
+          </div>
+          <div class="card">
+            <div class="card-title">🔗 入场逻辑三步法</div>
+            <div class="card-body">
+              <ol>
+                <li><strong>先看板块：</strong>确认板块是否在热点方向，板块内是否有主力资金活跃</li>
+                <li><strong>从板块看个股：</strong>板块内选出形态最好、位置最低的票</li>
+                <li><strong>个股要有识别度：</strong>能清楚说出"为什么买这只票"，有明确的进出场依据</li>
+              </ol>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <div class="card-title">📊 四种市场类型（熊市中的选择）</div>
+            <div class="card-body">
+              <table class="doc-table">
+                <thead><tr><th>类型</th><th>特征</th><th>操作建议</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>A型</strong></td><td>早于大盘止跌（大白马、牛牛、非连扳）</td><td>注意125线位置千万别追；等回踩</td></tr>
+                  <tr><td><strong>B型</strong></td><td>止跌点与大盘同步</td><td>可用援军战法，注意撤军线</td></tr>
+                  <tr><td><strong>C型</strong></td><td>创新高的票（欲突破陷阱）</td><td>高位别追，防止被欲突破割韭菜</td></tr>
+                  <tr><td><strong>D型</strong></td><td>连扳股（皇宫区间）</td><td>后宫别入，高位连板不追</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px">
+            <div class="card-title">🏆 A股亏钱的真正原因</div>
+            <div class="card-body">
+              <ul>
+                <li><strong>90%散户亏损</strong>的真正原因不是技术不行，而是<span class="hl-red">仓位管理失策</span></li>
+                <li>指标只有一个作用：装逼（庄家不按指标操盘）</li>
+                <li>高手盘面上只用一种线：<strong>21日均线</strong>，只做21日线之上的票</li>
+                <li>方向错了，再努力也是徒劳无功；趋势不对，技术再好也亏钱</li>
+                <li>一买就跌、一卖就飞的解决方法：做T；均线走平，买低卖高</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- ═══════ 搜索结果 ═══════ -->
+      <template v-if="currentPage === 'search'">
+        <div class="breadcrumb">
+          <span @click="navigate('home')">🏠 首页</span>
+          <span class="sep">›</span>
+          <span style="color:var(--text)">搜索：{{ searchQuery }}</span>
+        </div>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-icon">🔍</div>
+            搜索结果
+          </div>
+          <div class="page-desc">共找到 {{ searchResults.length }} 条相关结果</div>
+        </div>
+        <div class="rule-list">
+          <div class="rule-item" v-for="r in searchResults" :key="r.id" @click="navigate(r.page)">
+            <div class="rule-num" style="background:var(--accent);color:#000">🔍</div>
+            <div class="rule-content">
+              <div class="rule-title">{{ r.title }} <span class="tag tag-gray" style="margin-left:6px">{{ r.chapter }}</span></div>
+              <div class="rule-desc" v-html="r.content"></div>
+            </div>
+          </div>
+        </div>
+        <div v-if="searchResults.length === 0" style="text-align:center;padding:60px 0;color:var(--text-muted)">
+          <div style="font-size:40px;margin-bottom:12px">🔍</div>
+          <div>未找到相关内容，请尝试其他关键词</div>
+        </div>
+      </template>
+
+    </main>
+  </div>
+</div>
+
+<script>
+const { createApp, ref, computed } = Vue;
+
+createApp({
+  setup() {
+    const currentPage = ref('home');
+    const searchQuery = ref('');
+    const tab1 = ref(0);
+    const sidebarOpen = ref(false);
+    const mobileSearchOpen = ref(false);
+    const mobileSearchInput = ref(null);
+
+    function toggleSidebar() { sidebarOpen.value = !sidebarOpen.value; }
+    function closeSidebar() { sidebarOpen.value = false; }
+    function toggleMobileSearch() {
+      mobileSearchOpen.value = !mobileSearchOpen.value;
+      if (mobileSearchOpen.value) {
+        Vue.nextTick(() => { mobileSearchInput.value && mobileSearchInput.value.focus(); });
+      }
+    }
+    function closeMobileSearch() {
+      mobileSearchOpen.value = false;
+    }
+
+
+
+    const navGroups = [
+      {
+        key: 'tech', label: '技术分析',
+        items: [
+          { key: 'chapter1', icon: '📊', label: '大盘与分时图研判', count: '28' },
+          { key: 'chapter2', icon: '🚀', label: '涨停板战法', count: '35' },
+          { key: 'chapter3', icon: '🐉', label: '龙头与游资战法', count: '32' },
+          { key: 'chapter4', icon: '⚡', label: 'T位操作与做T', count: '25' },
+          { key: 'chapter7', icon: '📐', label: '牛牛组合与均线体系', count: '30' },
+        ]
+      },
+      {
+        key: 'ops', label: '实战体系',
+        items: [
+          { key: 'chapter5', icon: '🔍', label: '选股与复盘体系', count: '35' },
+          { key: 'chapter6', icon: '🧠', label: '风控与交易心法', count: '40' },
+        ]
+      }
+    ];
+
+    const chapters = [
+      { key: 'chapter1', icon: '📊', title: '大盘与分时图研判', desc: '大盘节奏判断、分时形态识别、量价关系分析、1分钟图应用', count: 28 },
+      { key: 'chapter2', icon: '🚀', title: '涨停板战法', desc: '涨停狙击六招、12种涨停类型、连扳四阶段、游资出货识别', count: 35 },
+      { key: 'chapter3', icon: '🐉', title: '龙头与游资战法', desc: '龙头股规律、游资周期、庄家行为、援军战法完整体系', count: 32 },
+      { key: 'chapter4', icon: '⚡', title: 'T位操作与做T', desc: '真假T位判断、盘口语言、皇宫区间、被套解套五法', count: 25 },
+      { key: 'chapter5', icon: '🔍', title: '选股与复盘体系', desc: '强势股筛选、情绪研判、超短复盘10步、大盘联动面', count: 35 },
+      { key: 'chapter6', icon: '🧠', title: '风控与交易心法', desc: '仓位管理、十大交易之忌、五字诀、止损真义、全周回撤控制', count: 40 },
+      { key: 'chapter7', icon: '📐', title: '牛牛组合与均线体系', desc: '牛牛形态、均线应用、MACD实战、筹码分析、主升浪格局', count: 30 },
+    ];
+
+    // 冲高止盈四法
+    const zhuangYinRules = [
+      { title: '低点抬高法', desc: '只要低点持续抬高，股价没有跌破前低，就可以继续持有' },
+      { title: '均线保护法', desc: '低点被砸破但均线没跌破可留；低点砸破且均线跌破则需立即出' },
+      { title: '高位远离均线止盈', desc: '股价高位大幅远离均线时止盈；低位远离均线反而可以等' },
+      { title: '牛牛战法（量能止盈）', desc: '先慢涨→突然成交量剧增进入加速区→量又锐减→立刻考虑止盈' },
+    ];
+
+    // 涨停狙击六招
+    const ztSixStrategies = [
+      { num: '一', title: '时机选择', desc: '大盘在20日均线之上，市场情绪积极，短线资金活跃时出手' },
+      { num: '二', title: '目标特征', desc: '周线压力位有成交量才是真实压力；离压力远的可留观察；断板立删' },
+      { num: '三', title: '目标锁定（真T位）', desc: '识别真实T位而非假T位，为什么新手打涨停输最快就是因为看错T位' },
+      { num: '四', title: '买卖节奏', desc: '3s快速成交：买入挂单高一点，卖出挂单低一点，确保成交' },
+      { num: '五', title: '止损纪律', desc: '每进一笔都预测亏损；以今天和昨天的T位为参考' },
+      { num: '六', title: '持仓管理', desc: '仓位控制在5-10%，不满仓追板，分散风险' },
+    ];
+
+    // 12种涨停板类型
+    const ztTypes = [
+      { name: '一字涨停', icon: '⚡', desc: '直接开盘涨停，极强势，一般不追' },
+      { name: 'T字涨停', icon: '🔤', desc: '开盘涨停后砸开又封回，观察封板力度' },
+      { name: '冲高涨停', icon: '📈', desc: '盘中冲高直线封板，追进T位' },
+      { name: '震荡涨停', icon: '〰️', desc: '震荡走势最后封板，成本较低' },
+      { name: '炸板涨停', icon: '💥', desc: '涨停被炸开，谨慎，次日大概率低开' },
+      { name: '尾盘涨停', icon: '🌙', desc: '尾盘才封板，次日低开概率大，不追' },
+      { name: '低位涨停', icon: '📉', desc: '低位第一个涨停，底部信号' },
+      { name: '高位涨停', icon: '🏔️', desc: '高位连板，风险极高，接力谨慎' },
+      { name: '反包涨停', icon: '🔄', desc: '阴线后反包涨停，援军战法核心' },
+      { name: '缩量涨停', icon: '🎯', desc: '缩量封板，筹码锁定好，次日可期' },
+      { name: '放量涨停', icon: '📊', desc: '放量封板，主力在出货，慎追' },
+      { name: '开板后封板', icon: '🔒', desc: '涨停被打开后再度封板，强势信号' },
+    ];
+
+    // 连扳四阶段
+    const lianbanStages = [
+      { stage: '①', name: '吆喝阶段（1-2板）', desc: '主力建仓期，成交量为基准参考值。这是最安全的介入时机，主力吆喝来游资接力', color: '#27ae60' },
+      { stage: '②', name: '锁仓阶段（3板左右）', desc: '游资、主力锁仓阶段，缩量上涨，成交量要小于吆喝阶段', color: '#2980b9' },
+      { stage: '③', name: '放大量阶段（高位）', desc: '成交量超过吆喝阶段基准值时，主力开始出货（A信号）！此时不要追', color: '#f39c12' },
+      { stage: '④', name: '阴线出货阶段', desc: '小李飞刀或广州塔形态出现，主力放量出货完毕（B信号），立即离场', color: '#c0392b' },
+    ];
+
+    // 龙头股规则
+    const longtouRules = [
+      { title: '一山不容二虎', desc: '同一时期的同一板块内，只有一个真龙头。找到真龙头才有最大利润' },
+      { title: '周期总龙头的天花板', desc: '每个周期的总龙头都有天花板，到达天花板时是最危险的时候' },
+      { title: '为何天天打龙头都吃面', desc: '打板时机、T位判断、仓位控制任意一个出错都会亏损' },
+      { title: '涨停被套怎么办', desc: '判断是否为龙头，是则考虑援军战法解套；否则及时止损' },
+      { title: '新手超短复盘基础', desc: '从最简单的案例开始复盘，不要一上来就分析复杂K线' },
+    ];
+
+    // T位类型
+    const tTypes = [
+      { icon: '📏', title: '短线T王——做T精髓·盘口语言', desc: '通过盘口语言判断T位真假，读懂买卖盘挂单变化' },
+      { icon: '💹', title: '把持仓成本T到负数', desc: '高频做T，每次在T位买入，在高点卖出，持续摊低成本线至负数' },
+      { icon: '🔄', title: '解套：反T和跳空T', desc: '利用跳空缺口做反T，在缺口支撑位买入，达到解套目的' },
+      { icon: '🎯', title: '做T解套·正T形态', desc: '在正T位（底部支撑位）买入加仓，拉高后出售高位筹码，摊低成本' },
+    ];
+
+    // 选股标准
+    const stockFilterRules = [
+      { title: '牛牛形态', desc: '股价在5日线上，每根小阳1-3%，持续低点抬高' },
+      { title: '每日收盘价高于5日线', desc: '最好踩都不要踩（即股价紧贴5日线上方，没有跌破）' },
+      { title: '底部筹码峰不要动', desc: '底部筹码峰稳定说明主力在锁仓，散户没有恐慌抛售' },
+      { title: '瞻前顾后', desc: '考虑止损位（前期低点）和压力位（前期高点、均线压力），确保有盈利空间' },
+      { title: '20日均线以上', desc: '短线操作必须在20日均线之上，之下不碰' },
+      { title: '成交量特征', desc: '短线热点需有成交量配合，缩量的冷门股不做' },
+    ];
+
+    // 仓位指引
+    const positionGuide = [
+      { label: '游资/专业：单票仓位上限', pct: 10, color: 'linear-gradient(90deg, #27ae60, #2ecc71)' },
+      { label: '稳健操作：单票仓位参考', pct: 30, color: 'linear-gradient(90deg, #2980b9, #3498db)' },
+      { label: '危险区域：散户常见仓位', pct: 70, color: 'linear-gradient(90deg, #e67e22, #f39c12)' },
+      { label: '禁止区域：满仓追板', pct: 100, color: 'linear-gradient(90deg, #c0392b, #e74c3c)' },
+    ];
+
+    // 交易之忌
+    const tradigJi = [
+      { title: '忌看基本面做短线', desc: '短线不看基本面、消息面，只看技术面（量和均线）' },
+      { title: '忌追5/15分钟图信号', desc: '5分钟、15分钟图有陷阱，短线以分时图为准' },
+      { title: '忌追高位连板', desc: '高位连扳都是为了套人，不要做追高晋级' },
+      { title: '忌追不是游资板的异动', desc: '不是游资板的莫名高开，要小心，开盘挂跌停出掉' },
+      { title: '忌相信软件推荐', desc: '不要相信软件里的推荐票，选票还得看是否符合自己的模式' },
+      { title: '忌20日线之下操作', desc: '20日均线以下的票，短线不要入；60日线远离时不要入' },
+      { title: '忌持有停牌股不管', desc: '停牌期间板块下跌，复牌后会补跌，需要提前应对' },
+      { title: '忌满仓追板', desc: '游资也只用资产5-10%，散户满仓追板是亏损的根本原因' },
+      { title: '忌收盘创新低加仓', desc: '收盘价创新低，坚决不加仓，是主力出货信号' },
+      { title: '忌以情绪驾驭账户', desc: '多以"挑战自己"来看清自己，勿以账户余额忽惊既喜' },
+    ];
+
+    // 五字诀
+    const wuZi = [
+      { word: '令', desc: '明确规则与纪律，制定自己的交易规则并严格执行' },
+      { word: '阵', desc: '进场时以庄家角度看，不要将自己想成散户' },
+      { word: '守', desc: '雷区：20日线之下不入；60日线远离不入；广州塔形不做' },
+      { word: '防', desc: '收盘价创新低，不能加仓；断板立刻删除自选' },
+      { word: '攻', desc: '交易的本质只看成交量和均线，每次交易目的是降低成本线' },
+    ];
+
+    // 均线表格
+    const maTable = [
+      { line: '5日均线', use: '短线T位、止损', level: '超短线', color: 'red', note: '主升浪中以5日均线为止损点' },
+      { line: '20日均线', use: '趋势判断', level: '短线', color: 'gold', note: '短线核心参考线，之下不操作' },
+      { line: '60日均线', use: '中期趋势', level: '中线', color: 'blue', note: '如同分时图中均线，远离不入' },
+      { line: '周线均线', use: '压力位参考', level: '长线', color: 'gray', note: '有成交量才是真实压力' },
+    ];
+
+    // 搜索数据库
+    const allContent = [
+      { id: 1, title: '大盘20日均线判断', chapter: '第一章', page: 'chapter1', content: '大盘站上20日均线，说明短线资金积极；20日均线以下的票短线不碰', keywords: ['20日', '均线', '大盘', '短线'] },
+      { id: 2, title: '止盈四种方法', chapter: '第一章', page: 'chapter1', content: '低点抬高法、均线保护法、高位远离均线止盈、牛牛量能止盈', keywords: ['止盈', '止损', '均线'] },
+      { id: 3, title: '涨停板狙击六招', chapter: '第二章', page: 'chapter2', content: '时机选择、目标特征、目标锁定、买卖节奏、止损纪律、持仓管理', keywords: ['涨停', '狙击', '六招'] },
+      { id: 4, title: '连扳四阶段', chapter: '第二章', page: 'chapter2', content: '吆喝→锁仓→放大量（主力出货信号）→阴线出货', keywords: ['连扳', '主力', '出货', '涨停'] },
+      { id: 5, title: 'T位判断（真假）', chapter: '第四章', page: 'chapter4', content: '远离均线且放量是真T位；下跌中的绿柱是假T位', keywords: ['T位', '真假', '均线', '放量'] },
+      { id: 6, title: '牛牛组合形态', chapter: '第七章', page: 'chapter7', content: '连续小阳线、成交量红线、股价在5日线上，每根1-3%', keywords: ['牛牛', '小阳', '5日线'] },
+      { id: 7, title: '庄家行为规律', chapter: '第三章', page: 'chapter3', content: '主力只在吆喝阶段建仓；金叉死叉都是骗局', keywords: ['庄家', '主力', '连扳'] },
+      { id: 8, title: '仓位管理', chapter: '第六章', page: 'chapter6', content: '游资用资产5-10%，不满仓追板，慢即是快', keywords: ['仓位', '满仓', '止损'] },
+      { id: 9, title: '援军战法（周期龙）', chapter: '第三章', page: 'chapter3', content: '乾坤区间：连扳+MACD不死叉+历史新高+总龙头，一破打到60日线', keywords: ['援军', '乾坤', '连扳', '龙头'] },
+      { id: 10, title: '复盘方法', chapter: '第五章', page: 'chapter5', content: '收市后打开涨幅排名→细分行业→板块→个股涨幅排序，隔天找热点', keywords: ['复盘', '热点', '涨幅', '板块'] },
+      { id: 11, title: '5日均线埋伏出击', chapter: '第七章', page: 'chapter7', content: '突破箱体后走主升浪，以5日均线止损；离5日线过远等砸回再入', keywords: ['5日线', '埋伏', '主升浪'] },
+      { id: 12, title: '开盘判断法', chapter: '第一章', page: 'chapter1', content: '早盘赚3-4%立刻清仓当日不再开仓；亏7-8%不急清仓会回血', keywords: ['开盘', '清仓', '仓位'] },
+      { id: 13, title: '强中弱区判断', chapter: '第一章', page: 'chapter1', content: '分时图均线向上扬为强区；向下走为弱区；平走为中区。强区持仓，弱区止损', keywords: ['强区', '弱区', '分时图', '均线'] },
+      { id: 14, title: '量价关系精解', chapter: '第一章', page: 'chapter1', content: '量先于价，吆喝阶段量为基准；超过基准主力出货；缩量上涨是锁仓；放量下跌是出货', keywords: ['量价', '成交量', '锁仓', '出货'] },
+      { id: 15, title: '总龙头识别', chapter: '第三章', page: 'chapter3', content: '总龙头=周期内连扳最多的票；必须有护卫跟风；独食霸王龙不做；一字板多数是假龙头', keywords: ['总龙头', '护卫', '一字板', '连扳'] },
+      { id: 16, title: '超短复盘10步流程', chapter: '第五章', page: 'chapter5', content: '看跌停数、板块涨幅、区分龙头助攻、看龙头高度、看低位新题材、看大新闻、封板健康度等10步', keywords: ['复盘', '跌停', '龙头', '封板'] },
+      { id: 17, title: '盘口语言判断T位', chapter: '第四章', page: 'chapter4', content: '多头盘口：买盘涌现、卖盘被吃；空头盘口：买盘撤掉、卖盘越来越厚', keywords: ['盘口', 'T位', '买卖盘', '挂单'] },
+      { id: 18, title: '乾坤区间条件', chapter: '第三章', page: 'chapter3', content: '乾坤区间四条件：连扳+MACD不死叉+历史新高+总龙头。区间不破，一破打到60日线', keywords: ['乾坤', 'MACD', '连扳', '龙头'] },
+      { id: 19, title: '止损的谎言', chapter: '第六章', page: 'chapter6', content: '止损点应是T位（技术支撑），而非自己的成本价。金叉死叉是骗局，主力用自己的线', keywords: ['止损', 'T位', '成本', '技术支撑'] },
+      { id: 20, title: '筹码分析', chapter: '第七章', page: 'chapter7', content: '最长筹码峰可能就是主力；底部筹码峰稳定说明锁仓；广州塔（筹码在上）不做', keywords: ['筹码', '底部', '广州塔', '主力'] },
+      { id: 21, title: '草船借兵止盈', chapter: '第六章', page: 'chapter6', content: '用盈利去博弈，不用本金博弈。短期翻倍票吃跌停马上出；炒跌停翘地板风险系数大不做', keywords: ['止盈', '翻倍', '跌停', '仓位'] },
+      { id: 22, title: '反包连扳防守', chapter: '第七章', page: 'chapter7', content: '首阴反包：第二天高开不能掉下来；出现亏钱效应立即出；随便震荡但必须收回', keywords: ['反包', '首阴', '亏钱效应', '防守'] },
+      { id: 23, title: '大盘联动面', chapter: '第五章', page: 'chapter5', content: '美元贬值+人民币升值=大A看涨；恒生指数与大A紧密联动；KDJ仅适用大盘', keywords: ['大盘', '美元', '恒生', 'KDJ'] },
+    ];
+
+    const searchResults = ref([]);
+
+    function handleSearch() {
+      const q = searchQuery.value.trim();
+      if (!q) { searchResults.value = []; return; }
+      const results = allContent.filter(item =>
+        item.keywords.some(k => k.includes(q)) ||
+        item.title.includes(q) ||
+        item.content.includes(q)
+      );
+      searchResults.value = results;
+      if (q) currentPage.value = 'search';
+    }
+
+    function navigate(page) {
+      currentPage.value = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goHome() { navigate('home'); }
+
+    return {
+      currentPage, searchQuery, tab1,
+      sidebarOpen, mobileSearchOpen, mobileSearchInput,
+      toggleSidebar, closeSidebar, toggleMobileSearch, closeMobileSearch,
+      navGroups, chapters,
+      zhuangYinRules, ztSixStrategies, ztTypes, lianbanStages,
+      longtouRules, tTypes, stockFilterRules,
+      positionGuide, tradigJi, wuZi, maTable,
+      searchResults, handleSearch, navigate, goHome
+    };
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
